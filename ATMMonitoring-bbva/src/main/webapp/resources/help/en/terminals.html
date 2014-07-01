@@ -1,0 +1,177 @@
+<h1 style="font-size: 3.2em;">Terminals</h1>
+<p>We can access Terminals page through the link Scheduler the left menu.</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/terminalsLeftButton.png" src="resources/help/en/images/terminalsLeftButton.png" style="width: 40pt;" />
+<p class="caption">Link to <em>Terminals</em> in the left menu.</p>
+</div>
+<p>In the Terminal section is possible to see the list of ATM (or terminals) that are a  result from a query, each user can create his own query and execute them in this area.
+From the list is possible to see the details of each ATM machine, export the list to a csv file or view in a map the location of each ATM Machine</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/terminals.png" src="resources/help/en/images/terminals.png" style="width: 600px; height: 400px;" />
+<p class="caption">Terminal Section</p>
+</div>
+<div class="section" id="queries">
+<h1>Queries</h1>
+<p>In this part of the page is possible to execute different queries and see the result in the list below. Each query brings a list of ATM Machines acording
+to restrictions added by the user.</p>
+<div class="section" id="execute-a-saved-query">
+<h2>Execute a Saved Query</h2>
+<p>To execute an existing query, just select from the list the desired query, then press the  <em>Apply</em> button. After doing this, the list will be updated.
+Is possible to filter the results by adding a date for query to auditable elements, to do so, pick the desired date pressing the calendar button and then the <em>Apply</em> button</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/execute_query.png" src="resources/help/en/images/execute_query.png" />
+<p class="caption">Query Selection</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">The title of the list will change after executing a query, from <strong>Terminals</strong> to <strong>Terminals for the query : Name of the query</strong></p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">To execute the default query (will bring all the ATM) select the option <em>Choose..</em> from the list and then press <em>Apply</em>. the title of the list will say <strong>Terminals</strong></p>
+</div>
+</div>
+<div class="section" id="my-queries">
+<h2>My Queries</h2>
+<p>In this section is possible to manage the existing queries, to access this section press the button <strong>My Queries</strong></p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/myQueries.png" src="resources/help/en/images/myQueries.png" />
+<p class="caption">My queries Button</p>
+</div>
+<p>After pressing the button you will be redirected to <em>My Queries</em> section, once there is possible to see all the existing queries, edit or create a new one</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/myQueries_page.png" src="resources/help/en/images/myQueries_page.png" style="width: 600px; height: 300px;" />
+<p class="caption">My Queries Section</p>
+</div>
+<div class="section" id="new-query">
+<h3>New Query</h3>
+<p>To access to the Add Query section is necessary to press the button <em>New Query</em> located to the right</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/newQueryButton.png" src="resources/help/en/images/newQueryButton.png" />
+<p class="caption">New Query Button</p>
+</div>
+<p>Then will be possible to see the following:</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/newQuery.png" src="resources/help/en/images/newQuery.png" style="width: 600px; height: 300px;" />
+<p class="caption">Add Query Section</p>
+</div>
+<p>In order to create the query, is needed to add the criterias, grouped in three categories which are:</p>
+<blockquote>
+<ul class="simple">
+<li><strong>Terminal Data</strong>: Holds the criterias related to the ATM Machine such as IP, MAC Address, Bank, Terminal Model and Type, Serial Number, etc.</li>
+<li><strong>Hardware</strong>: Contains all the related to the hardware present in the ATM, such as Floppy Drive, Hard Drive, Memory, Ports, Network Adapter, Financial Device information, XFS and JXFS Component information, etc.</li>
+<li><strong>Software</strong>: Have all the criterias related to the software installed in the ATM, like Operating system, Internet Explorer, Hotfix, XFS Service Providers, etc.</li>
+</ul>
+</blockquote>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">Is possible to open and close a category just by clicking in the title, the arrow next to it indicate if the category is open ( pointing up) or closed (pointing down).</p>
+</div>
+<div class="section" id="adding-a-criteria">
+<h4>Adding a Criteria</h4>
+<p>To add a criteria to a query, just select one from the list titled <em>Field</em>, then add a Comparison and finally a value to make the comparison</p>
+<p>The available comparisons are:</p>
+<blockquote>
+<ul class="simple">
+<li><em>Alphabetical After/before After/Before equals</em>: The result will be bring records that are after or before (or including) the reference value, taking into account the alphabetic order. E.g. <em>Alphabetical After B will bring the matching results  starting from C</em></li>
+<li><em>Contains</em> : The result will have matches that contains the given value</li>
+<li><em>End/Start With</em>: The result will have matches that starts or end with given value</li>
+<li><em>Equals</em>:The result will have matches that  are equals with given value</li>
+<li><em>Is Null</em>: The result will have matches that  are empty or null in the database</li>
+<li><em>Is True/False</em>: The result will have matches that  have values true or false</li>
+</ul>
+</blockquote>
+<p>If the Not box is checked, will negate the comparison, for example if <em>Contains</em> is selected will be translated to <em>Do not contains</em></p>
+<p>To add more criterias, just press the plus button in the right</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/criterias.png" src="resources/help/en/images/criterias.png" style="width: 600px;" />
+<p class="caption">Criterias</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">To clear the criterias, just press the cancel button located in the bottom right</p>
+</div>
+</div>
+<div class="section" id="executing-a-new-query">
+<h4>Executing a New Query</h4>
+<p>Once all criterias are selected, is possible to test the results, to do so, press the  execute button on the bottom right</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/executeNewQuery.png" src="resources/help/en/images/executeNewQuery.png" />
+<p class="caption">Execute new Query button</p>
+</div>
+<p>The result of the execution will be shown in a new page where will be possible to see the results of the query ( at the bottom),edit or add new criterias ( top) , execute again, delete the query or save it</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/executeResults.png" src="resources/help/en/images/executeResults.png" style="width: 600px;" />
+<p class="caption">Execute Result Page</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">To edit or add new criterias  follow the instruction from the section <strong>Adding a Criteria</strong> and to save follow the instructions from <strong>Saving a New Query</strong></p>
+</div>
+</div>
+<div class="section" id="saving-a-new-query">
+<h4>Saving a New Query</h4>
+<p>To save  the query, just press  the button labeled <strong>Save Query</strong>, once pressed, a small window will appear below the save button. In the small window write a name for this query ( this field is required)  and a description ( optional). Finally press <em>Save</em> in the small window</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/saveQuery.png" src="resources/help/en/images/saveQuery.png" />
+<p class="caption">Save Query Window</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">The save option is available from the New Query section and the Execute new Query Section</p>
+</div>
+</div>
+</div>
+<div class="section" id="edit-existing-query">
+<h3>Edit Existing Query</h3>
+<p>In the section <em>My Queries</em> press on the name of the query that you want to edit, you will be redirected to a new page similar to the one shown in the section <strong>Executing a New Query</strong> labeled as Execute Result Page. To edit the selected criteria, follow the instructions given in the <strong>Adding a Criteria</strong> Section, once you have finish changing the criteria , you can execute the modified query (follow the instruction in <strong>Executing a New Query</strong>) or save the modifications (follow the instructions given in Saving a New Query, but leave  the field Name as it is)</p>
+</div>
+</div>
+</div>
+<div class="section" id="list-of-atms">
+<h1>List of ATMS</h1>
+<p>In the Terminal page is shown the result of a given query, each query returns a list of match ATMs machines that are presented in a table. Is possible to navigate through the results using the numbers located below the table, or just go to the next group of result by pressing the <em>&gt;</em> button located at the end of the numbers row</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/paginator.png" src="resources/help/en/images/paginator.png" />
+<p class="caption">Navigate through results</p>
+</div>
+<div class="figure align-center">
+<img alt="resources/help/en/images/resultTable.png" src="resources/help/en/images/resultTable.png" style="width: 600px;" />
+<p class="caption">Result Table</p>
+</div>
+<div class="section" id="view-atm-details">
+<h2>View ATM Details</h2>
+<p>To see the details of an ATM, just click on it and you will be redirected to the detail page</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/terminalDetails.png" src="resources/help/en/images/terminalDetails.png" style="width: 600px; height: 300px;" />
+<p class="caption">ATM Details</p>
+</div>
+</div>
+<div class="section" id="export-result-as-csv">
+<h2>Export result as csv</h2>
+<p>Is possible to export the result of a query to a comma separated values or CSV file, to do so, click on <em>Download results as .csv</em> visible on top and below the  result table</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/downloadCsv.png" src="resources/help/en/images/downloadCsv.png" />
+<p class="caption">Download Result as .csv</p>
+</div>
+</div>
+<div class="section" id="view-geografic-location">
+<h2>View Geografic Location</h2>
+<p>The system gives the option to see in a map the current location of the ATMs, to switch to this view, press the button located on the top right from the result table</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/geographicLocation.png" src="resources/help/en/images/geographicLocation.png" />
+<p class="caption">Switch to Map view</p>
+</div>
+<p>Once pressed the result table will disappear and will be replaced with a map where is possible to see the ATMs, as is shown bellow</p>
+<div class="figure align-center">
+<img alt="resources/help/en/images/mapView.png" src="resources/help/en/images/mapView.png" style="width: 600px; height: 300px;" />
+<p class="caption">Map View</p>
+</div>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p>Each ATM is represented using this icon:</p>
+<img alt="resources/help/en/images/simpleMarker.png" src="resources/help/en/images/simpleMarker.png" />
+<p class="last">clicking on it will display the details as is shown in the picture above.</p>
+</div>
+</div>
+</div>

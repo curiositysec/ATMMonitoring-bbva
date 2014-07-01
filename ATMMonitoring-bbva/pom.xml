@@ -1,0 +1,405 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+	http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.ncr.ATMMonitoring</groupId>
+	<artifactId>ATMMonitoring</artifactId>
+	<packaging>war</packaging>
+	<version>1.0</version>
+	<name>ATMMonitoring</name>
+	<url>http://maven.apache.org</url>
+	<repositories>
+		<repository>
+			<id>java.net</id>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+		<repository>
+			<id>repository.jboss.org-public</id>
+			<name>JBoss repository</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>spring-milestone</id>
+			<name>SpringSource Milestone Releases</name>
+			<url>http://maven.springframework.org/milestone</url>
+		</repository>
+		<repository>
+			<id>local-repo</id>
+			<url>file://${project.basedir}/lib</url>
+		</repository>
+	</repositories>
+	<properties>
+		<hibernate.version>4.1.8.Final</hibernate.version>
+		<org.springframework.version>3.1.3.RELEASE</org.springframework.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>ncr.ATMMonitoring.agent</groupId>
+			<artifactId>ATMAgent</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<!-- Gson: Java to Json conversion -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.2.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>2.2.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Application Context (depends on spring-core, spring-expression, spring-aop, 
+			spring-beans) This is the central artifact for Spring's Dependency Injection 
+			Container and is generally always defined -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- JDBC Data Access Library (depends on spring-core, spring-beans, spring-context, 
+			spring-tx) Define this if you use Spring's JdbcTemplate API (org.springframework.jdbc.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Object-to-Relation-Mapping (ORM) integration with Hibernate, JPA and 
+			iBatis. (depends on spring-core, spring-beans, spring-context, spring-tx) 
+			Define this if you need ORM (org.springframework.orm.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Web application development utilities applicable to both Servlet and 
+			Portlet Environments (depends on spring-core, spring-beans, spring-context) 
+			Define this if you use Spring MVC, or wish to use Struts, JSF, or another 
+			web framework with Spring (org.springframework.web.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Spring MVC for Servlet Environments (depends on spring-core, spring-beans, 
+			spring-context, spring-web) Define this if you use Spring MVC with a Servlet 
+			Container such as Apache Tomcat (org.springframework.web.servlet.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<!-- Core utilities used by other modules. Define this if you use Spring 
+			Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-core</artifactId> 
+			<version>${org.springframework.version}</version> </dependency> -->
+
+		<!-- Aspect Oriented Programming (AOP) Framework (depends on spring-core, 
+			spring-beans) Define this if you use Spring AOP APIs (org.springframework.aop.*) -->
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-aop</artifactId> 
+			<version>${org.springframework.version}</version> </dependency> -->
+
+		<!-- Transaction Management Abstraction (depends on spring-core, spring-beans, 
+			spring-aop, spring-context) Define this if you use Spring Transactions or 
+			DAO Exception Hierarchy (org.springframework.transaction.*/org.springframework.dao.*) -->
+		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-tx</artifactId> 
+			<version>${org.springframework.version}</version> </dependency> -->
+
+		<!-- Support for testing Spring applications with tools such as JUnit and 
+			TestNG This artifact is generally always defined with a 'test' scope for 
+			the integration testing framework and unit testing stubs -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.faces</groupId>
+			<artifactId>jsf-api</artifactId>
+			<version>2.1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mindrot</groupId>
+			<artifactId>jbcrypt</artifactId>
+			<version>0.3m</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections-maven</artifactId>
+			<version>0.9.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.7</version>
+		</dependency>
+
+		<!-- For JBoss Deployment - Dashboard Failures -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.7.4</version>
+		</dependency>
+
+
+	</dependencies>
+
+
+	<build>
+		<pluginManagement>
+			<plugins>
+
+				<!-- <plugin> -->
+				<!-- <groupId>org.apache.maven.plugins</groupId> -->
+				<!-- <artifactId>maven-war-plugin</artifactId> -->
+				<!-- <version>2.4</version> -->
+				<!-- <executions> -->
+				<!-- <execution> -->
+				<!-- First step is to disable the default-war build step. -->
+				<!-- <id>default-war</id> -->
+				<!-- <phase>none</phase> -->
+				<!-- </execution> -->
+				<!-- <execution> -->
+				<!-- Second step is to create an exploded war. Done in prepare-package -->
+				<!-- <id>war-exploded</id> -->
+				<!-- <phase>prepare-package</phase> -->
+				<!-- <goals> -->
+				<!-- <goal>exploded</goal> -->
+				<!-- </goals> -->
+				<!-- </execution> -->
+				<!-- <execution> -->
+				<!-- Last step is to make sure that the war is built in the package phase -->
+				<!-- <id>custom-war</id> -->
+				<!-- <phase>package</phase> -->
+				<!-- <goals> -->
+				<!-- <goal>war</goal> -->
+				<!-- </goals> -->
+				<!-- </execution> -->
+				<!-- </executions> -->
+				<!-- <configuration> -->
+				<!-- <archiveClasses>true</archiveClasses> -->
+				<!-- <webResources> -->
+				<!-- <resource> -->
+				<!-- <directory>lib</directory> -->
+				<!-- <targetPath>WEB-INF/lib</targetPath> -->
+				<!-- <filtering>true</filtering> -->
+				<!-- <includes> -->
+				<!-- <include>**/*.jar</include> -->
+				<!-- </includes> -->
+				<!-- </resource> -->
+				<!-- <resource> -->
+				<!-- <directory>src/main/resources</directory> -->
+				<!-- <targetPath>WEB-INF/classes</targetPath> -->
+				<!-- <filtering>true</filtering> -->
+				<!-- </resource> -->
+				<!-- </webResources> -->
+				<!-- <packagingExcludes> -->
+				<!-- WEB-INF/lib/*_proguard_base.jar -->
+				<!-- </packagingExcludes> -->
+				<!-- </configuration> -->
+				<!-- </plugin> -->
+
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+						<encoding>ISO-8859-1</encoding>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<version>2.0</version>
+					<configuration>
+						<url>http://localhost:8080/manager/text</url>
+						<path>/atm</path>
+						<update>true</update>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<artifactId>exec-maven-plugin</artifactId>
+					<groupId>org.codehaus.mojo</groupId>
+					<executions>
+						<execution><!-- Generate the help pages -->
+							<id>Generate help html</id>
+							<phase>generate-sources</phase>
+						</execution>
+					</executions>
+					<configuration>
+						<executable>${basedir}/doc/user/create_help.sh</executable>
+					</configuration>
+				</plugin>
+
+				<!-- <plugin> <groupId>com.pyx4me</groupId> <artifactId>proguard-maven-plugin</artifactId> 
+					<executions> <execution> <phase>prepare-package</phase> <goals> <goal>proguard</goal> 
+					</goals> </execution> </executions> <configuration> <proguardVersion>4.4</proguardVersion> 
+					<obfuscate>true</obfuscate> <injar>${project.artifactId}-${project.version}/WEB-INF/lib/${project.artifactId}-${project.version}.jar</injar> 
+					<outjar>${project.artifactId}-${project.version}/WEB-INF/lib/${project.artifactId}-${project.version}-obf.jar</outjar> 
+					<outputDirectory>${project.build.directory}</outputDirectory> <options> <option>-target 
+					1.6</option> <option>-allowaccessmodification</option> <option><![CDATA[ 
+					-keep public class * { public <init>(...); public void set*(...); public 
+					void init*(...); public void close*(...); public ** get*(...); public boolean 
+					is*(...); public boolean can*(...); } ]]></option> <option><![CDATA[ -keepclassmembers 
+					class * { @javax.inject.Inject *; @javax.inject.Named *; java.util.Set *; 
+					@org.springframework.beans.factory.annotation.Autowired *; @org.springframework.beans.factory.annotation.Qualifier 
+					*; @org.springframework.beans.factory.annotation.Value *; @org.springframework.beans.factory.annotation.Required 
+					*; } ]]></option> <option>-keep @org.springframework.beans.factory.annotation.Service 
+					class *</option> <option>-keep @org.springframework.stereotype.Service class 
+					*</option> <option>-keep @org.springframework.stereotype.Component class 
+					* </option> <option>-keep @org.springframework.stereotype.Repository class 
+					*</option> <option>-keep @org.springframework.stereotype.Controller class 
+					* </option> <option>-keepattributes *Annotation*</option> <option>-keepdirectories</option> 
+					</options> <libs> <lib>${java.home}/lib/rt.jar</lib> <lib>${java.home}/lib/jsse.jar</lib> 
+					<lib>${java.home}/lib/jce.jar</lib> </libs> </configuration> </plugin> -->
+
+			</plugins>
+		</pluginManagement>
+	</build>
+
+</project>

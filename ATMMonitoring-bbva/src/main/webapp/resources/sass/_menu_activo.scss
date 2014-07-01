@@ -1,0 +1,26 @@
+#main_nav, #footer_nav{
+	li{
+		#dashboard &.dashboard a,
+		#terminals &.terminals a,
+		#query &.terminals a,
+		#users &.users a,
+		#reports &.reports a,
+		#schedule &.schedule a,
+		#help &.help a{
+			background-color: $colorB2;
+			background-position-y: 0;
+			color: $colorW;
+			&:after {
+			    content: "";
+			    position: absolute;
+			    top: 25px;
+			    left: 90px;
+			    border-width: 15px 0 15px 20px;
+			    border-style: solid;
+			    border-color: transparent $colorB2;
+			    display: block;
+			    width: 0;
+			  }
+		}
+	}
+}

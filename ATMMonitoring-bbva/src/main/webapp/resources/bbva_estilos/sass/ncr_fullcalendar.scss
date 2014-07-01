@@ -1,0 +1,41 @@
+@import "compass/css3";
+@import "variables";
+
+.fc-view table tr:nth-child(2n+1) {
+	background-color: $colorW;
+	}
+.fc-border-separate{
+	border: none;
+	border-right: 1px solid $colorK5;
+}
+.fc-header,.fc-header td{
+	background-color: $colorW;
+	border: none;
+}
+.fc-widget-header, .fc-widget-content{
+	border: 1px solid $colorK4;
+}
+.fc-border-separate th, .fc-agenda-slots th{
+	padding: .5em;
+}
+.fc-event{
+	padding: .5em;
+	border: 1px solid $colorK4;
+	&.fc-event-end{
+		border-left: none;
+	}
+	&.fc-event-start{
+		border-right: none;
+	}
+	&.fc-event-end.fc-event-start{
+		border: 1px solid $colorK5;
+	}
+	&.monthly{
+		background-color: $colorY1;
+		color: $colorK2;
+	}
+	&.weekly{
+		background-color: $colorO;
+		color: $colorW;
+	}
+}

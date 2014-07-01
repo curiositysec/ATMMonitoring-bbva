@@ -1,0 +1,229 @@
+.margin-box {
+  overflow: auto;
+}
+.table_buttons{
+	overflow: hidden;
+	@include border-radius(4px);
+	background:$colorW1;
+	border:1px solid $colorW1;
+	table{
+		border-right:none;
+		border-left: none;
+		td:first-child{
+			border-left: none;
+		}
+	}
+	.botonera{
+		padding: 0;
+		margin: .5em 1em;
+		label{
+			padding:.5em 1em 0
+		}
+	}
+}
+table{
+	width: 100%;
+	margin: .5em 0;
+	border: 1px solid $colorK4;
+	th{
+		background:$colorB1;
+		color:$colorW;
+		&.order{
+			background-image:url("../images/icons/colunm_order.png");
+			background-repeat: no-repeat;
+			background-position: right top;
+			padding-right: 2em;
+			&.bottom{
+				background-image:url("../images/icons/colunm_order.png");
+				background-repeat: no-repeat;
+				background-position: right -40px;
+				background-color: $colorB2;
+				color: $colorW;
+				a{
+					color: $colorW;
+				}
+			}
+			&.top{
+				background-image:url("../images/icons/colunm_order.png");
+				background-repeat: no-repeat;
+				background-position: right -80px;
+				background-color: $colorB2;
+				color: $colorW;
+				a{
+					color: $colorW;
+				}
+			}
+		}
+		a{
+			color:$colorW;
+		}
+	}
+	th:last-child, td:last-child{
+		border-right: none;
+	}
+	th,td{
+		padding: .5em .8em;
+		border: 1px solid $colorK5;
+		border-collapse: collapse;
+		vertical-align: top;
+		&.note_detail{
+			&:hover{
+				color: $colorK1;
+			}
+			border-bottom: 2px solid $colorB5;
+			border-left:  2px solid $colorB5;
+			border-right:  2px solid $colorB5;
+			background:$colorB5;
+			float: none;
+			padding: 1em;
+			div{
+				position: relative;
+				background:$colorW;
+				padding: 1em;
+				@include border-radius(4px);
+				&:after {
+				    content: "";
+				    position: absolute;
+				    top: -20px;
+				    left: 105px;
+				    border-width: 0 15px 25px;
+				    border-style: solid;
+				    border-color: $colorW transparent;
+				    display: block;
+				    width: 0;
+				  }	
+				@include shadow;
+				li{
+					border-bottom: 2px dotted $colorK4;
+					margin-bottom: 1em;
+				}
+				li:last-child{
+					border: none;
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+	tr{
+		background: $colorW;
+		&:nth-child(2n+1) {
+			background: $colorW1;
+		}
+		&.active{
+			background:$colorB5;
+			border-top: 2px solid $colorB5;
+			border-left:  2px solid $colorB5;
+			border-right:  2px solid $colorB5;
+		}
+	}
+	&.query-form{
+		border:1px solid $colorW;
+		margin-bottom: 2em;
+		tr{
+			border:1px solid $colorW;
+			border-bottom: 2px dotted $colorW1;
+			background: $colorW;
+			&:hover{
+				cursor: inherit;
+				border:1px solid $colorW;
+				border-bottom: 2px dotted $colorW1;
+			}
+			&:nth-child(2n+1) {
+				background: $colorW;
+			}
+		}
+		td:first-child{
+			width:30%;
+		}
+		td:nth-child(2){
+			width: 3em;
+		}
+		th{
+			border:1px solid $colorW;
+			border-bottom: 2px solid $colorW1;
+			color: $colorB;
+			background:$colorB5;
+			&:hover{
+				cursor: inherit;
+				border:1px solid $colorW;
+				border-bottom: 2px solid $colorW1;
+			}
+		}
+		td{
+			background:$colorW;
+			border:1px solid $colorW;
+			&:hover{
+				background:$colorW;
+				border:1px solid $colorW;
+			}
+			&.btn_add{
+				border:1px solid $colorW;
+				div{
+					position: relative;
+					overflow: hidden;
+				}
+			}
+			&.btn_add .btn{
+				float: right;
+			}
+		}
+	}
+	&.link{
+		tr{
+			cursor: pointer;
+			&:hover{
+				background:$colorB6;
+				color: $colorB;
+			}
+		}
+		label{
+			cursor: pointer;
+		}
+		// show detail
+		tr.showdetail.open, tr.showdetail.open:hover{
+			background:$colorB4;
+			//color: $colorW;
+		}
+		tr.detail, tr.detail:hover{
+			background:$colorB4;
+			color: $colorK;
+			div{
+				position: relative;
+			}
+			ul{
+				padding: 1%;
+				background:$colorW;
+				@include shadow();
+				overflow: hidden;
+				cursor: inherit;
+				li{
+					float: left;
+					width: 32%;
+					margin-right: 1%;
+					padding: .5em 0;
+					border-bottom: 1px solid $colorK3;
+					strong{
+						width: 30%;
+						display: block;
+						float: left;
+						text-align: right;
+						margin-right: 1em;
+					}
+				}
+				&:before {
+				    content: "";
+				    font-size: 20em;
+				    color: #ff0000;
+				    position: absolute;
+				    top: -20px;
+				    left: 45px;
+				    border-width: 0 15px 25px;
+				    border-style: solid;
+				    border-color: $colorW transparent;
+				    display: block;
+				    width: 0;
+			  	}
+			}
+		}
+	}
+}

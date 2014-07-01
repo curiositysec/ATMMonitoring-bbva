@@ -1,0 +1,20 @@
+.. ATMMonitoring documentation master file, created by Otto Abreu Using
+   sphinx-quickstart on Fri Jan 10 11:20:39 2014 NCR All Rights Reserved.
+
+ATMMonitoring: ATM's Data Management Application
+================================================
+
+.. include:: 
+
+.. toctree::
+   :maxdepth: 2
+   
+   introduction.rst
+   installation/install-deploy.rst
+
+
+
+
+
+
+

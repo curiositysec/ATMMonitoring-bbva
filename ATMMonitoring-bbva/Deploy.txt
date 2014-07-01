@@ -1,0 +1,17 @@
+Steps for success :
+
+1-> On Web.xml delete lines
+"
+<listener>
+<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+</listener>"
+    
+2 -> Pom.xml
+On agent dependecy, delete lines
+" 
+<scope>system</scope>
+<systemPath>${project.basedir}/lib/InventoryAgentData.jar</systemPath>"
+
+3 -> Copy messages.properties to messages_es.properties
+
+4 -> mvn package

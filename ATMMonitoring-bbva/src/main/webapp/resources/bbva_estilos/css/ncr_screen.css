@@ -1,0 +1,3433 @@
+/* line 17, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1,
+#main h2,
+#cboxContent h2,
+#main h3,
+#cboxContent h3,
+#main h4,
+#cboxContent h4,
+#main h5,
+#cboxContent h5, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../../../../../../Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+  display: block;
+}
+
+/*
+    Colorbox Core Style:
+    The following CSS is consistent between example themes and should not be altered.
+*/
+/* line 5, ../sass/_js.scss */
+#colorbox, #cboxOverlay, #cboxWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* line 6, ../sass/_js.scss */
+#cboxOverlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+/* line 7, ../sass/_js.scss */
+#cboxMiddleLeft, #cboxBottomLeft {
+  clear: left;
+}
+
+/* line 8, ../sass/_js.scss */
+#cboxContent {
+  position: relative;
+}
+
+/* line 9, ../sass/_js.scss */
+#cboxLoadedContent {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* line 10, ../sass/_js.scss */
+#cboxTitle {
+  margin: 0;
+}
+
+/* line 11, ../sass/_js.scss */
+#cboxLoadingOverlay, #cboxLoadingGraphic {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* line 12, ../sass/_js.scss */
+#cboxPrevious, #cboxNext, #cboxClose, #cboxSlideshow {
+  cursor: pointer;
+}
+
+/* line 13, ../sass/_js.scss */
+.cboxPhoto {
+  float: left;
+  margin: auto;
+  border: 0;
+  display: block;
+  max-width: none;
+  -ms-interpolation-mode: bicubic;
+}
+
+/* line 14, ../sass/_js.scss */
+.cboxIframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+/* line 15, ../sass/_js.scss */
+#colorbox, #cboxContent, #cboxLoadedContent {
+  box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+}
+
+/* 
+    User Style:
+    Change the following styles to modify the appearance of Colorbox.  They are
+    ordered & tabbed in a way that represents the nesting of the generated HTML.
+*/
+/* line 22, ../sass/_js.scss */
+#cboxOverlay {
+  background: #333;
+}
+
+/* line 23, ../sass/_js.scss */
+#colorbox {
+  outline: 0;
+}
+
+/* line 24, ../sass/_js.scss */
+#cboxTopLeft {
+  width: 25px;
+  height: 25px;
+  background: url(images/border1.png) no-repeat 0 0;
+}
+
+/* line 25, ../sass/_js.scss */
+#cboxTopCenter {
+  height: 25px;
+  background: url(images/border1.png) repeat-x 0 -50px;
+}
+
+/* line 26, ../sass/_js.scss */
+#cboxTopRight {
+  width: 25px;
+  height: 25px;
+  background: url(images/border1.png) no-repeat -25px 0;
+}
+
+/* line 27, ../sass/_js.scss */
+#cboxBottomLeft {
+  width: 25px;
+  height: 25px;
+  background: url(images/border1.png) no-repeat 0 -25px;
+}
+
+/* line 28, ../sass/_js.scss */
+#cboxBottomCenter {
+  height: 25px;
+  background: url(images/border1.png) repeat-x 0 -75px;
+}
+
+/* line 29, ../sass/_js.scss */
+#cboxBottomRight {
+  width: 25px;
+  height: 25px;
+  background: url(images/border1.png) no-repeat -25px -25px;
+}
+
+/* line 30, ../sass/_js.scss */
+#cboxMiddleLeft {
+  width: 25px;
+  background: url(images/border2.png) repeat-y 0 0;
+}
+
+/* line 31, ../sass/_js.scss */
+#cboxMiddleRight {
+  width: 25px;
+  background: url(images/border2.png) repeat-y -25px 0;
+}
+
+/* line 32, ../sass/_js.scss */
+#cboxContent {
+  background: #fff;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  padding-top: 2em;
+}
+
+/* line 33, ../sass/_js.scss */
+.cboxIframe {
+  background: #fff;
+}
+
+/* line 34, ../sass/_js.scss */
+#cboxError {
+  padding: 50px;
+  border: 1px solid #cccccc;
+}
+
+/* line 35, ../sass/_js.scss */
+#cboxLoadedContent {
+  margin-bottom: 20px;
+}
+
+/* line 36, ../sass/_js.scss */
+#cboxTitle {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  text-align: center;
+  width: 100%;
+  color: #999;
+}
+
+/* line 37, ../sass/_js.scss */
+#cboxCurrent {
+  position: absolute;
+  bottom: 0px;
+  left: 100px;
+  color: #999;
+}
+
+/* line 38, ../sass/_js.scss */
+#cboxLoadingOverlay {
+  background: white url(images/loading.gif) no-repeat 5px 5px;
+}
+
+/* these elements are buttons, and may need to have additional styles reset to avoid unwanted base styles */
+/* line 41, ../sass/_js.scss */
+#cboxPrevious, #cboxNext, #cboxSlideshow, #cboxClose {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  width: auto;
+  background: none;
+}
+
+/* avoid outlines on :active (mouseclick), but preserve outlines on :focus (tabbed navigating) */
+/* line 44, ../sass/_js.scss */
+#cboxPrevious:active, #cboxNext:active, #cboxSlideshow:active, #cboxClose:active {
+  outline: 0;
+}
+
+/* line 46, ../sass/_js.scss */
+#cboxSlideshow {
+  position: absolute;
+  bottom: 0px;
+  right: 42px;
+  color: #444;
+}
+
+/* line 47, ../sass/_js.scss */
+#cboxPrevious {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  color: #444;
+}
+
+/* line 48, ../sass/_js.scss */
+#cboxNext {
+  position: absolute;
+  bottom: 0px;
+  left: 63px;
+  color: #444;
+}
+
+/* line 49, ../sass/_js.scss */
+#cboxClose {
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  display: block;
+  margin: 1em;
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/close_color.png") no-repeat;
+  -o-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+/* line 59, ../sass/_js.scss */
+#cboxClose:hover {
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  background-color: #4d4d4f;
+}
+/* line 63, ../sass/_js.scss */
+#cboxClose span {
+  position: absolute;
+  top: 50px;
+}
+
+/*
+  The following fixes a problem where IE7 and IE8 replace a PNG's alpha transparency with a black fill
+  when an alpha filter (opacity change) is set on the element or ancestor element.  This style is not applied to or needed in IE9.
+  See: http://jacklmoore.com/notes/ie-transparency-problems/
+*/
+/* line 82, ../sass/_js.scss */
+.cboxIE #cboxTopLeft,
+.cboxIE #cboxTopCenter,
+.cboxIE #cboxTopRight,
+.cboxIE #cboxBottomLeft,
+.cboxIE #cboxBottomCenter,
+.cboxIE #cboxBottomRight,
+.cboxIE #cboxMiddleLeft,
+.cboxIE #cboxMiddleRight {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF);
+}
+
+/* line 86, ../sass/_js.scss */
+#ui-datepicker-div {
+  display: none;
+  -webkit-box-shadow: 0px 0px 8px #6d6e71;
+  -moz-box-shadow: 0px 0px 8px #6d6e71;
+  box-shadow: 0px 0px 8px #6d6e71;
+  position: relative;
+  padding: 1em;
+  background: white;
+}
+/* line 92, ../sass/_js.scss */
+#ui-datepicker-div .ui-datepicker-title {
+  text-align: center;
+}
+/* line 95, ../sass/_js.scss */
+#ui-datepicker-div .ui-datepicker-prev {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  left: 0;
+  padding: 0.5em 1em;
+}
+/* line 102, ../sass/_js.scss */
+#ui-datepicker-div .ui-datepicker-next {
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 0;
+  padding: 0.5em 1em;
+}
+/* line 109, ../sass/_js.scss */
+#ui-datepicker-div table a {
+  display: block;
+  text-align: right;
+}
+/* line 112, ../sass/_js.scss */
+#ui-datepicker-div table a:hover {
+  color: #4d4d4f;
+  text-decoration: none;
+}
+
+/* line 1, ../sass/_header.scss */
+#main_header {
+  background: white;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid #d1d3d4;
+  height: 50px;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+/* line 9, ../sass/_header.scss */
+#main_header #rButton {
+  height: 40px;
+  width: 40px;
+  overflow: hidden;
+  background: url("../images/general/rButton.png") no-repeat bottom;
+}
+/* line 14, ../sass/_header.scss */
+#main_header #rButton.btn_close {
+  background: url("../images/general/rButton.png") no-repeat top;
+}
+/* line 18, ../sass/_header.scss */
+#main_header h1, #main_header #main h2, #main #main_header h2, #main_header #cboxContent h2, #cboxContent #main_header h2, #main_header #main h3, #main #main_header h3, #main_header #cboxContent h3, #cboxContent #main_header h3, #main_header #main h4, #main #main_header h4, #main_header #cboxContent h4, #cboxContent #main_header h4, #main_header #main h5, #main #main_header h5, #main_header #cboxContent h5, #cboxContent #main_header h5 {
+  position: absolute;
+  font-size: 16px;
+  color: #094fa4;
+  height: 40px;
+  top: 0;
+  left: 0;
+}
+/* line 25, ../sass/_header.scss */
+#main_header h1 img, #main_header #main h2 img, #main #main_header h2 img, #main_header #cboxContent h2 img, #cboxContent #main_header h2 img, #main_header #main h3 img, #main #main_header h3 img, #main_header #cboxContent h3 img, #cboxContent #main_header h3 img, #main_header #main h4 img, #main #main_header h4 img, #main_header #cboxContent h4 img, #cboxContent #main_header h4 img, #main_header #main h5 img, #main #main_header h5 img, #main_header #cboxContent h5 img, #cboxContent #main_header h5 img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+/* line 30, ../sass/_header.scss */
+#main_header h1 span, #main_header #main h2 span, #main #main_header h2 span, #main_header #cboxContent h2 span, #cboxContent #main_header h2 span, #main_header #main h3 span, #main #main_header h3 span, #main_header #cboxContent h3 span, #cboxContent #main_header h3 span, #main_header #main h4 span, #main #main_header h4 span, #main_header #cboxContent h4 span, #cboxContent #main_header h4 span, #main_header #main h5 span, #main #main_header h5 span, #main_header #cboxContent h5 span, #cboxContent #main_header h5 span {
+  position: absolute;
+  top: -200px;
+}
+/* line 34, ../sass/_header.scss */
+#main_header h1 strong, #main_header #main h2 strong, #main #main_header h2 strong, #main_header #cboxContent h2 strong, #cboxContent #main_header h2 strong, #main_header #main h3 strong, #main #main_header h3 strong, #main_header #cboxContent h3 strong, #cboxContent #main_header h3 strong, #main_header #main h4 strong, #main #main_header h4 strong, #main_header #cboxContent h4 strong, #cboxContent #main_header h4 strong, #main_header #main h5 strong, #main #main_header h5 strong, #main_header #cboxContent h5 strong, #cboxContent #main_header h5 strong {
+  top: 12px;
+  left: 85px;
+  position: absolute;
+  font-weight: normal;
+  font-size: 1.8em;
+  padding: 6px 0 6px 40px;
+}
+/* line 43, ../sass/_header.scss */
+#main_header #user_info {
+  text-transform: uppercase;
+  font-size: .8em;
+  color: #52bcec;
+  margin-left: 20em;
+  position: absolute;
+  right: 5px;
+  top: 0;
+}
+/* line 52, ../sass/_header.scss */
+#main_header #user_info > div, #main_header #user_info > nav {
+  float: left;
+  margin-left: 2em;
+  margin-top: 1.8em;
+}
+/* line 58, ../sass/_header.scss */
+#main_header #user_info .date {
+  margin-right: 1em;
+}
+/* line 61, ../sass/_header.scss */
+#main_header #user_info #exit {
+  margin-top: 0;
+  padding-top: 0;
+}
+/* line 66, ../sass/_header.scss */
+#main_header #lang {
+  display: inline;
+  cursor: pointer;
+  color: #52bcec;
+  text-transform: uppercase;
+  text-align: right;
+}
+/* line 72, ../sass/_header.scss */
+#main_header #lang .txt {
+  display: block;
+  padding-right: 2.5em;
+  background: url("../images/icons/icons_onoff_w.png") no-repeat right bottom;
+}
+/* line 76, ../sass/_header.scss */
+#main_header #lang .txt.content_hide {
+  background: url("../images/icons/icons_onoff_w.png") no-repeat right top;
+}
+/* line 80, ../sass/_header.scss */
+#main_header #lang ul {
+  display: none;
+  padding-top: 1em;
+  position: absolute;
+}
+/* line 85, ../sass/_header.scss */
+#main_header #lang li {
+  background: #eeeeee;
+  color: #094fa4;
+}
+/* line 88, ../sass/_header.scss */
+#main_header #lang li a {
+  padding: 0.5em 1em;
+  border: 1px solid #bcbec0;
+  text-align: left;
+  display: block;
+}
+/* line 93, ../sass/_header.scss */
+#main_header #lang li a:hover {
+  text-decoration: none;
+  background: white;
+}
+/* line 101, ../sass/_header.scss */
+#main_header #exit a {
+  margin-top: 0;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  display: block;
+  background: url("../images/general/exit.png") no-repeat;
+}
+/* line 109, ../sass/_header.scss */
+#main_header #exit a span {
+  color: white;
+  position: absolute;
+  top: -100px;
+}
+
+/* line 117, ../sass/_header.scss */
+#header_g {
+  position: relative;
+  clear: both;
+  height: 3em;
+  position: relative;
+}
+/* line 123, ../sass/_header.scss */
+#header_g #breadcrumb li {
+  float: left;
+  margin-right: .5em;
+}
+/* line 126, ../sass/_header.scss */
+#header_g #breadcrumb li a:after {
+  content: " > ";
+}
+/* line 131, ../sass/_header.scss */
+#header_g .botonera {
+  position: absolute;
+  right: 0;
+  top: 3em;
+}
+/* line 135, ../sass/_header.scss */
+#header_g .botonera li {
+  float: left;
+  margin-left: .5em;
+}
+/* line 139, ../sass/_header.scss */
+#header_g .botonera .btn, #header_g .botonera .save,
+#header_g .botonera #cboxContent .action_box .save,
+#cboxContent .action_box #header_g .botonera .save,
+#header_g .botonera #main .pagination .save,
+#main .pagination #header_g .botonera .save,
+#header_g .botonera #cboxContent .pagination .save,
+#cboxContent .pagination #header_g .botonera .save {
+  margin-right: 0;
+  margin-left: .5em;
+}
+
+/* line 2, ../sass/_dashboard.scss */
+#dashboard #sortable {
+  overflow: hidden;
+}
+/* line 4, ../sass/_dashboard.scss */
+#dashboard #sortable.one_column li {
+  width: 98%;
+}
+/* line 7, ../sass/_dashboard.scss */
+#dashboard #sortable > li {
+  margin-right: 4%;
+  margin-top: 4%;
+  float: left;
+}
+/* line 11, ../sass/_dashboard.scss */
+#dashboard #sortable > li.ui-sortable-helper .content {
+  -webkit-box-shadow: 0px 0px 8px #6d6e71;
+  -moz-box-shadow: 0px 0px 8px #6d6e71;
+  box-shadow: 0px 0px 8px #6d6e71;
+}
+/* line 14, ../sass/_dashboard.scss */
+#dashboard #sortable > li > div {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
+}
+/* line 21, ../sass/_dashboard.scss */
+#dashboard #sortable.column1 li.ui-state-default {
+  width: 96%;
+}
+/* line 24, ../sass/_dashboard.scss */
+#dashboard #sortable.column2 li.ui-state-default {
+  width: 46%;
+}
+/* line 27, ../sass/_dashboard.scss */
+#dashboard #sortable.column3 li.ui-state-default {
+  width: 29%;
+}
+/* line 30, ../sass/_dashboard.scss */
+#dashboard #sortable.column4 li.ui-state-default {
+  width: 21%;
+}
+/* line 33, ../sass/_dashboard.scss */
+#dashboard #sortable div.content {
+  position: relative;
+  border: 1px solid #6d6e71;
+  background: white url("../images/icons/icon_loader.gif") no-repeat center;
+  cursor: move;
+  padding-bottom: 86.25%;
+  padding-top: 3em;
+  height: 0;
+  overflow: hidden;
+  margin-bottom: 1em;
+}
+/* line 43, ../sass/_dashboard.scss */
+#dashboard #sortable div.content .graph {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+/* line 51, ../sass/_dashboard.scss */
+#dashboard #sortable div.content:hover .icons_bg {
+  display: block;
+}
+/* line 57, ../sass/_dashboard.scss */
+#dashboard .message, #dashboard .no_queries {
+  margin-left: 350px;
+  margin-top: 2em;
+}
+/* line 62, ../sass/_dashboard.scss */
+#dashboard #header_g #components {
+  position: relative;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* line 66, ../sass/_dashboard.scss */
+#dashboard #header_g #components #my_components, #dashboard #header_g #components #add_components {
+  border: 2px solid #52bcec;
+  background-color: #094fa4;
+  color: white;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  float: left;
+  margin-right: 1em;
+}
+/* line 73, ../sass/_dashboard.scss */
+#dashboard #header_g #components #my_components > a:hover, #dashboard #header_g #components #add_components > a:hover {
+  text-decoration: none;
+  background: #094fa4;
+  color: white;
+}
+/* line 78, ../sass/_dashboard.scss */
+#dashboard #header_g #components #my_components > a, #dashboard #header_g #components #add_components > a {
+  padding: 8px 20px;
+  display: block;
+}
+/* line 83, ../sass/_dashboard.scss */
+#dashboard #header_g #components #my_components .content_hide span, #dashboard #header_g #components #add_components .content_hide span {
+  background: url("../images/icons/icons_onoff.png") no-repeat right top #009ee5;
+}
+/* line 89, ../sass/_dashboard.scss */
+#dashboard #header_g #components #my_components span {
+  background: url("../images/icons/icons_onoff.png") no-repeat right bottom;
+}
+/* line 92, ../sass/_dashboard.scss */
+#dashboard #header_g #components #my_components span, #dashboard #header_g #components #my_components > a {
+  padding: 8px 40px 8px 8px;
+  display: block;
+}
+/* line 98, ../sass/_dashboard.scss */
+#dashboard #header_g #components ul {
+  display: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 1em;
+  position: absolute;
+  z-index: 5;
+  border: 1px solid #939598;
+  width: 250px;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 8px 8px 5px #6d6e71;
+  -moz-box-shadow: 8px 8px 5px #6d6e71;
+  box-shadow: 8px 8px 5px #6d6e71;
+}
+/* line 109, ../sass/_dashboard.scss */
+#dashboard #header_g #components ul li {
+  background: white;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #6d6e71;
+  white-space: nowrap;
+}
+/* line 114, ../sass/_dashboard.scss */
+#dashboard #header_g #components ul li.off {
+  background: #eeeeee;
+  color: #6d6e71;
+}
+/* line 118, ../sass/_dashboard.scss */
+#dashboard #header_g #components ul li.on {
+  color: #52bcec;
+  padding-right: 3em;
+  display: block;
+  background: url("../images/icons/ico_add.png") right no-repeat white;
+}
+/* line 125, ../sass/_dashboard.scss */
+#dashboard #header_g #components ul li:last-child {
+  border: none;
+}
+
+/* line 1, ../sass/_list.scss */
+.box_list {
+  margin: 1% 0 0 1%;
+}
+/* line 3, ../sass/_list.scss */
+.box_list a {
+  display: block;
+  padding: 1em;
+  border: 1px solid #b5e5f9;
+  background: #f1f8fc;
+  overflow: hidden;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+/* line 11, ../sass/_list.scss */
+.box_list a img {
+  width: 150px;
+  float: left;
+  margin: 0 1em 1em 0;
+  border: 1px solid #bcbec0;
+}
+/* line 17, ../sass/_list.scss */
+.box_list a:hover {
+  background: #b5e5f9;
+  text-decoration: none;
+  -webkit-box-shadow: 0px 0px 8px #6d6e71;
+  -moz-box-shadow: 0px 0px 8px #6d6e71;
+  box-shadow: 0px 0px 8px #6d6e71;
+}
+/* line 22, ../sass/_list.scss */
+.box_list a p {
+  color: #4d4d4f;
+}
+
+/* line 27, ../sass/_list.scss */
+.column3 .box_list {
+  float: left;
+  width: 32%;
+}
+/* line 30, ../sass/_list.scss */
+.column3 .box_list a {
+  height: 17em;
+  overflow-y: auto;
+}
+
+/* line 2, ../sass/_documentation.scss */
+.documentation #header_g {
+  width: 100%;
+  background: white;
+  background-position: rgba(255, 255, 255, 0.7);
+  position: fixed;
+  top: 40px;
+  left: 125px;
+  padding-top: 16px;
+}
+/* line 11, ../sass/_documentation.scss */
+.documentation .menu {
+  position: fixed;
+  top: 80px;
+  left: 126px;
+  width: 15%;
+}
+/* line 16, ../sass/_documentation.scss */
+.documentation .menu ul {
+  width: 90%;
+}
+/* line 19, ../sass/_documentation.scss */
+.documentation .menu li {
+  border-top: 2px doted #6d6e71;
+}
+/* line 22, ../sass/_documentation.scss */
+.documentation .menu li li a {
+  margin-left: 1em;
+  color: #6d6e71;
+}
+/* line 27, ../sass/_documentation.scss */
+.documentation .menu li a {
+  padding: .5em;
+  display: block;
+}
+/* line 30, ../sass/_documentation.scss */
+.documentation .menu li a:hover {
+  text-decoration: none;
+  background: #eeeeee;
+  font-size: 1.2em;
+}
+/* line 35, ../sass/_documentation.scss */
+.documentation .menu li a.current {
+  background: #b5e5f9;
+  color: #094fa4;
+  position: relative;
+  font-size: 1.2em;
+}
+/* line 40, ../sass/_documentation.scss */
+.documentation .menu li a.current:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -20px;
+  border-width: 15px 0 15px 20px;
+  border-style: solid;
+  border-color: transparent #b5e5f9;
+  display: block;
+  width: 0;
+}
+/* line 55, ../sass/_documentation.scss */
+.documentation .scroll {
+  width: 80%;
+  float: right;
+  margin-top: 40px;
+}
+/* line 59, ../sass/_documentation.scss */
+.documentation .scroll ul.features {
+  overflow: hidden;
+  padding: 2em;
+  background: #f1f8fc;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+/* line 67, ../sass/_documentation.scss */
+#users .documentation .scroll {
+  margin-top: 110px;
+}
+/* line 68, ../sass/_documentation.scss */
+#users .documentation .scroll h3 {
+  border-bottom: 2px dotted #6d6e71;
+}
+/* line 71, ../sass/_documentation.scss */
+#users .documentation .scroll ul {
+  margin-bottom: 1em;
+  overflow: hidden;
+}
+/* line 76, ../sass/_documentation.scss */
+#users .documentation .scroll li li {
+  float: left;
+  margin-right: 1%;
+  width: 32%;
+  border: none;
+}
+/* line 83, ../sass/_documentation.scss */
+#users .documentation label {
+  float: none;
+  text-align: left;
+}
+/* line 87, ../sass/_documentation.scss */
+#users .documentation input[type="checkbox"] {
+  float: left;
+  margin-right: 1em;
+}
+
+/* line 9, ../sass/_menu_activo.scss */
+#dashboard #main_nav li.dashboard a, #terminals #main_nav li.terminals a, #query #main_nav li.terminals a, #users #main_nav li.users a, #reports #main_nav li.reports a, #schedule #main_nav li.schedule a, #help #main_nav li.help a, #dashboard #footer_nav li.dashboard a, #terminals #footer_nav li.terminals a, #query #footer_nav li.terminals a, #users #footer_nav li.users a, #reports #footer_nav li.reports a, #schedule #footer_nav li.schedule a, #help #footer_nav li.help a {
+  background-color: #009ee5;
+  background-position-y: 0;
+  color: white;
+}
+/* line 13, ../sass/_menu_activo.scss */
+#dashboard #main_nav li.dashboard a:after, #terminals #main_nav li.terminals a:after, #query #main_nav li.terminals a:after, #users #main_nav li.users a:after, #reports #main_nav li.reports a:after, #schedule #main_nav li.schedule a:after, #help #main_nav li.help a:after, #dashboard #footer_nav li.dashboard a:after, #terminals #footer_nav li.terminals a:after, #query #footer_nav li.terminals a:after, #users #footer_nav li.users a:after, #reports #footer_nav li.reports a:after, #schedule #footer_nav li.schedule a:after, #help #footer_nav li.help a:after {
+  content: "";
+  position: absolute;
+  top: 25px;
+  left: 90px;
+  border-width: 15px 0 15px 20px;
+  border-style: solid;
+  border-color: transparent #009ee5;
+  display: block;
+  width: 0;
+}
+
+/* line 12, ../sass/_action_box.scss */
+h1#editQuery, #main h2#editQuery, #cboxContent h2#editQuery, #main h3#editQuery, #cboxContent h3#editQuery, #main h4#editQuery, #cboxContent h4#editQuery, #main h5#editQuery, #cboxContent h5#editQuery,
+h2#editQuery,
+h3#editQuery,
+h4#editQuery,
+h5#editQuery,
+h6#editQuery,
+h1.txt,
+#main h2.txt,
+#cboxContent h2.txt,
+#main h3.txt,
+#cboxContent h3.txt,
+#main h4.txt,
+#cboxContent h4.txt,
+#main h5.txt,
+#cboxContent h5.txt,
+h2.txt,
+h3.txt,
+h4.txt,
+h5.txt,
+h6.txt {
+  background: url("../images/icons/icon_box_show.png") no-repeat top left;
+  cursor: pointer;
+  margin: 0;
+  padding: 3px;
+  padding-left: 1.5em;
+  border-bottom: 2px dotted #b5e5f9;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+/* line 20, ../sass/_action_box.scss */
+h1#editQuery:hover, #main h2#editQuery:hover, #cboxContent h2#editQuery:hover, #main h3#editQuery:hover, #cboxContent h3#editQuery:hover, #main h4#editQuery:hover, #cboxContent h4#editQuery:hover, #main h5#editQuery:hover, #cboxContent h5#editQuery:hover,
+h2#editQuery:hover,
+h3#editQuery:hover,
+h4#editQuery:hover,
+h5#editQuery:hover,
+h6#editQuery:hover,
+h1.txt:hover,
+#main h2.txt:hover,
+#cboxContent h2.txt:hover,
+#main h3.txt:hover,
+#cboxContent h3.txt:hover,
+#main h4.txt:hover,
+#cboxContent h4.txt:hover,
+#main h5.txt:hover,
+#cboxContent h5.txt:hover,
+h2.txt:hover,
+h3.txt:hover,
+h4.txt:hover,
+h5.txt:hover,
+h6.txt:hover {
+  background-color: #b5e5f9;
+}
+/* line 23, ../sass/_action_box.scss */
+h1#editQuery.content_hide, #main h2#editQuery.content_hide, #cboxContent h2#editQuery.content_hide, #main h3#editQuery.content_hide, #cboxContent h3#editQuery.content_hide, #main h4#editQuery.content_hide, #cboxContent h4#editQuery.content_hide, #main h5#editQuery.content_hide, #cboxContent h5#editQuery.content_hide,
+h2#editQuery.content_hide,
+h3#editQuery.content_hide,
+h4#editQuery.content_hide,
+h5#editQuery.content_hide,
+h6#editQuery.content_hide,
+h1.txt.content_hide,
+#main h2.txt.content_hide,
+#cboxContent h2.txt.content_hide,
+#main h3.txt.content_hide,
+#cboxContent h3.txt.content_hide,
+#main h4.txt.content_hide,
+#cboxContent h4.txt.content_hide,
+#main h5.txt.content_hide,
+#cboxContent h5.txt.content_hide,
+h2.txt.content_hide,
+h3.txt.content_hide,
+h4.txt.content_hide,
+h5.txt.content_hide,
+h6.txt.content_hide {
+  background-position: left -62px;
+}
+/* line 25, ../sass/_action_box.scss */
+h1#editQuery.content_hide.last, #main h2#editQuery.content_hide.last, #cboxContent h2#editQuery.content_hide.last, #main h3#editQuery.content_hide.last, #cboxContent h3#editQuery.content_hide.last, #main h4#editQuery.content_hide.last, #cboxContent h4#editQuery.content_hide.last, #main h5#editQuery.content_hide.last, #cboxContent h5#editQuery.content_hide.last,
+h2#editQuery.content_hide.last,
+h3#editQuery.content_hide.last,
+h4#editQuery.content_hide.last,
+h5#editQuery.content_hide.last,
+h6#editQuery.content_hide.last,
+h1.txt.content_hide.last,
+#main h2.txt.content_hide.last,
+#cboxContent h2.txt.content_hide.last,
+#main h3.txt.content_hide.last,
+#cboxContent h3.txt.content_hide.last,
+#main h4.txt.content_hide.last,
+#cboxContent h4.txt.content_hide.last,
+#main h5.txt.content_hide.last,
+#cboxContent h5.txt.content_hide.last,
+h2.txt.content_hide.last,
+h3.txt.content_hide.last,
+h4.txt.content_hide.last,
+h5.txt.content_hide.last,
+h6.txt.content_hide.last {
+  border-bottom: none;
+}
+
+/* line 30, ../sass/_action_box.scss */
+#main .action_box, #cboxContent .action_box, #main .pagination, #cboxContent .pagination {
+  border: 1px solid #b5e5f9;
+  background: #f1f8fc;
+  padding: 1em;
+  margin-bottom: 2em;
+  overflow: hidden;
+  position: relative;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+/* line 38, ../sass/_action_box.scss */
+#main .action_box .collapsible, #cboxContent .action_box .collapsible, #main .pagination .collapsible, #cboxContent .pagination .collapsible {
+  border-bottom: 1px dotted #939598;
+  padding: 1em;
+  margin-bottom: 1em;
+}
+/* line 42, ../sass/_action_box.scss */
+#main .action_box .collapsible.last, #cboxContent .action_box .collapsible.last, #main .pagination .collapsible.last, #cboxContent .pagination .collapsible.last {
+  border-bottom: none;
+}
+/* line 46, ../sass/_action_box.scss */
+#main .action_box .photo, #cboxContent .action_box .photo, #main .pagination .photo, #cboxContent .pagination .photo {
+  float: left;
+}
+/* line 50, ../sass/_action_box.scss */
+#main .action_box.data .model, #cboxContent .action_box.data .model, #main .data.pagination .model, #cboxContent .data.pagination .model {
+  margin-top: 2em;
+  float: left;
+  width: 20%;
+  position: relative;
+}
+/* line 55, ../sass/_action_box.scss */
+#main .action_box.data .model .photo, #cboxContent .action_box.data .model .photo, #main .data.pagination .model .photo, #cboxContent .data.pagination .model .photo {
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  border: 1px solid #bcbec0;
+  background: white;
+  height: 0;
+  width: 100%;
+  margin: 0;
+  margin-bottom: .5em;
+  padding: 0;
+  padding-top: 100%;
+  overflow: hidden;
+  position: relative;
+}
+/* line 68, ../sass/_action_box.scss */
+#main .action_box.data .model .photo img, #cboxContent .action_box.data .model .photo img, #main .data.pagination .model .photo img, #cboxContent .data.pagination .model .photo img {
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+/* line 74, ../sass/_action_box.scss */
+#main .action_box.data .model .desplegable, #cboxContent .action_box.data .model .desplegable, #main .data.pagination .model .desplegable, #cboxContent .data.pagination .model .desplegable {
+  background: white;
+  clear: both;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  margin-top: 1em;
+}
+/* line 79, ../sass/_action_box.scss */
+#main .action_box.data .model .desplegable .txt, #cboxContent .action_box.data .model .desplegable .txt, #main .data.pagination .model .desplegable .txt, #cboxContent .data.pagination .model .desplegable .txt {
+  cursor: pointer;
+  float: none;
+  padding: 0.5em 1em 0.5em 3em;
+  background: url("../images/icons/icon_collapsible.png") no-repeat #6d6e71 left bottom;
+  color: white;
+  border: 2px solid #6d6e71;
+}
+/* line 80, ../sass/_action_box.scss */
+#main .action_box.data .model .desplegable .txt.content_hide, #cboxContent .action_box.data .model .desplegable .txt.content_hide, #main .data.pagination .model .desplegable .txt.content_hide, #cboxContent .data.pagination .model .desplegable .txt.content_hide {
+  background: url("../images/icons/icon_collapsible.png") no-repeat #6d6e71 left top;
+}
+/* line 90, ../sass/_action_box.scss */
+#main .action_box.data .model .desplegable dl, #cboxContent .action_box.data .model .desplegable dl, #main .data.pagination .model .desplegable dl, #cboxContent .data.pagination .model .desplegable dl {
+  margin-top: 1em;
+  padding: 1em;
+  background: white;
+  overflow: hidden;
+}
+/* line 95, ../sass/_action_box.scss */
+#main .action_box.data .model .desplegable dl dt, #cboxContent .action_box.data .model .desplegable dl dt, #main .data.pagination .model .desplegable dl dt, #cboxContent .data.pagination .model .desplegable dl dt {
+  font-weight: bold;
+}
+/* line 98, ../sass/_action_box.scss */
+#main .action_box.data .model .desplegable dl dd, #cboxContent .action_box.data .model .desplegable dl dd, #main .data.pagination .model .desplegable dl dd, #cboxContent .data.pagination .model .desplegable dl dd {
+  border-bottom: 1px solid #939598;
+  padding: 0.5em 0;
+  margin-bottom: .5em;
+}
+/* line 102, ../sass/_action_box.scss */
+#main .action_box.data .model .desplegable dl dd:last-child, #cboxContent .action_box.data .model .desplegable dl dd:last-child, #main .data.pagination .model .desplegable dl dd:last-child, #cboxContent .data.pagination .model .desplegable dl dd:last-child {
+  border: none;
+}
+/* line 109, ../sass/_action_box.scss */
+#main .action_box.data .ul_data, #cboxContent .action_box.data .ul_data, #main .data.pagination .ul_data, #cboxContent .data.pagination .ul_data, #main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide {
+  margin-top: 2em;
+  float: right;
+  width: 75%;
+}
+/* line 113, ../sass/_action_box.scss */
+#main .action_box.data .ul_data > ul, #cboxContent .action_box.data .ul_data > ul, #main .data.pagination .ul_data > ul, #cboxContent .data.pagination .ul_data > ul, #main .action_box.data .ul_data_wide > ul, #cboxContent .action_box.data .ul_data_wide > ul, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul, #main .data.pagination .ul_data_wide > ul, #cboxContent #main .data.pagination .ul_data_wide > ul, #main #cboxContent .data.pagination .ul_data_wide > ul, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul, #main #cboxContent .data.pagination .ul_data_wide > ul, #cboxContent #main .data.pagination .ul_data_wide > ul, #cboxContent .data.pagination .ul_data_wide > ul {
+  overflow: hidden;
+  margin-bottom: 2em;
+}
+/* line 116, ../sass/_action_box.scss */
+#main .action_box.data .ul_data > ul li, #cboxContent .action_box.data .ul_data > ul li, #main .data.pagination .ul_data > ul li, #cboxContent .data.pagination .ul_data > ul li, #main .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li, #main .data.pagination .ul_data_wide > ul li, #cboxContent #main .data.pagination .ul_data_wide > ul li, #main #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li, #main #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent #main .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li {
+  margin-left: 4%;
+  padding: 0.5em 0;
+  float: left;
+  width: 46%;
+  border-bottom: 1px solid #8bd1f3;
+}
+/* line 122, ../sass/_action_box.scss */
+#main .action_box.data .ul_data > ul li strong, #cboxContent .action_box.data .ul_data > ul li strong, #main .data.pagination .ul_data > ul li strong, #cboxContent .data.pagination .ul_data > ul li strong, #main .action_box.data .ul_data_wide > ul li strong, #cboxContent .action_box.data .ul_data_wide > ul li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li strong, #main .data.pagination .ul_data_wide > ul li strong, #cboxContent #main .data.pagination .ul_data_wide > ul li strong, #main #cboxContent .data.pagination .ul_data_wide > ul li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li strong, #main #cboxContent .data.pagination .ul_data_wide > ul li strong, #cboxContent #main .data.pagination .ul_data_wide > ul li strong, #cboxContent .data.pagination .ul_data_wide > ul li strong {
+  width: 45%;
+  margin-right: 4%;
+  float: left;
+  display: block;
+}
+/* line 127, ../sass/_action_box.scss */
+#main .action_box.data .ul_data > ul li strong label, #cboxContent .action_box.data .ul_data > ul li strong label, #main .data.pagination .ul_data > ul li strong label, #cboxContent .data.pagination .ul_data > ul li strong label, #main .action_box.data .ul_data_wide > ul li strong label, #cboxContent .action_box.data .ul_data_wide > ul li strong label, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li strong label, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li strong label, #main .data.pagination .ul_data_wide > ul li strong label, #cboxContent #main .data.pagination .ul_data_wide > ul li strong label, #main #cboxContent .data.pagination .ul_data_wide > ul li strong label, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li strong label, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li strong label, #main #cboxContent .data.pagination .ul_data_wide > ul li strong label, #cboxContent #main .data.pagination .ul_data_wide > ul li strong label, #cboxContent .data.pagination .ul_data_wide > ul li strong label {
+  width: 100%;
+}
+/* line 134, ../sass/_action_box.scss */
+#main .action_box.data .ul_data.editable > ul li, #cboxContent .action_box.data .ul_data.editable > ul li, #main .data.pagination .ul_data.editable > ul li, #cboxContent .data.pagination .ul_data.editable > ul li, #main .action_box.data .editable.ul_data_wide > ul li, #cboxContent .action_box.data .editable.ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .editable.ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .editable.ul_data_wide > ul li, #main .data.pagination .editable.ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .editable.ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .editable.ul_data_wide > ul li, #cboxContent .data.pagination .editable.ul_data_wide > ul li {
+  min-height: 3em;
+}
+/* line 137, ../sass/_action_box.scss */
+#main .action_box.data .ul_data.editable input[type="text"], #cboxContent .action_box.data .ul_data.editable input[type="text"], #main .data.pagination .ul_data.editable input[type="text"], #cboxContent .data.pagination .ul_data.editable input[type="text"], #main .action_box.data .editable.ul_data_wide input[type="text"], #cboxContent .action_box.data .editable.ul_data_wide input[type="text"], #cboxContent .data.pagination .action_box.data .editable.ul_data_wide input[type="text"], #cboxContent .action_box.data .data.pagination .editable.ul_data_wide input[type="text"], #main .data.pagination .editable.ul_data_wide input[type="text"], #cboxContent .action_box.data .data.pagination .editable.ul_data_wide input[type="text"], #cboxContent .data.pagination .action_box.data .editable.ul_data_wide input[type="text"], #cboxContent .data.pagination .editable.ul_data_wide input[type="text"] {
+  width: 40%;
+}
+/* line 139, ../sass/_action_box.scss */
+#main .action_box.data .ul_data.editable input[type="text"].num, #cboxContent .action_box.data .ul_data.editable input[type="text"].num, #main .data.pagination .ul_data.editable input[type="text"].num, #cboxContent .data.pagination .ul_data.editable input[type="text"].num, #main .action_box.data .editable.ul_data_wide input[type="text"].num, #cboxContent .action_box.data .editable.ul_data_wide input[type="text"].num, #cboxContent .data.pagination .action_box.data .editable.ul_data_wide input[type="text"].num, #cboxContent .action_box.data .data.pagination .editable.ul_data_wide input[type="text"].num, #main .data.pagination .editable.ul_data_wide input[type="text"].num, #cboxContent .action_box.data .data.pagination .editable.ul_data_wide input[type="text"].num, #cboxContent .data.pagination .action_box.data .editable.ul_data_wide input[type="text"].num, #cboxContent .data.pagination .editable.ul_data_wide input[type="text"].num {
+  width: 2em;
+}
+/* line 144, ../sass/_action_box.scss */
+#main .action_box.data .ul_data .ul_data, #cboxContent .action_box.data .ul_data .ul_data, #main .data.pagination .ul_data .ul_data, #cboxContent .data.pagination .ul_data .ul_data, #main .action_box.data .ul_data_wide .ul_data, #cboxContent .action_box.data .ul_data_wide .ul_data, #cboxContent .data.pagination .action_box.data .ul_data_wide .ul_data, #cboxContent .action_box.data .data.pagination .ul_data_wide .ul_data, #main .data.pagination .ul_data_wide .ul_data, #cboxContent .action_box.data .data.pagination .ul_data_wide .ul_data, #cboxContent .data.pagination .action_box.data .ul_data_wide .ul_data, #cboxContent .data.pagination .ul_data_wide .ul_data, #main .action_box.data .ul_data .ul_data_wide, #cboxContent .data.pagination .ul_data #main .action_box.data .ul_data_wide, #main .action_box.data .ul_data_wide .ul_data_wide, #cboxContent .data.pagination .ul_data_wide #main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data .ul_data_wide, #main .data.pagination .ul_data #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .ul_data .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide .ul_data_wide, #main .data.pagination .ul_data_wide #cboxContent .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide .ul_data_wide, #cboxContent .data.pagination .ul_data_wide .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide .ul_data_wide, #cboxContent .action_box.data .ul_data #main .data.pagination .ul_data_wide, #main .data.pagination .ul_data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide #main .data.pagination .ul_data_wide, #main .data.pagination .ul_data_wide .ul_data_wide, #main .action_box.data .ul_data #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .ul_data .data.pagination .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data .ul_data_wide, #cboxContent .data.pagination .ul_data .ul_data_wide, #main .action_box.data .ul_data_wide #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .ul_data_wide .data.pagination .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide .ul_data_wide, #cboxContent .data.pagination .ul_data_wide .ul_data_wide {
+  width: auto;
+  float: none;
+  margin-top: 1em;
+}
+/* line 150, ../sass/_action_box.scss */
+#main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide {
+  width: 100%;
+}
+
+/* line 1, ../sass/_forms.scss */
+.form {
+  padding-right: 4%;
+}
+/* line 3, ../sass/_forms.scss */
+.form .row {
+  padding: 0.5em 3em 0.5em 0;
+  margin: 0;
+}
+/* line 7, ../sass/_forms.scss */
+.form label {
+  clear: right;
+  font-size: 1.2em;
+  text-align: left;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* line 14, ../sass/_forms.scss */
+.form input[type="text"], .form textarea {
+  width: 100%;
+}
+
+/* line 19, ../sass/_forms.scss */
+.botonera {
+  overflow: hidden;
+  clear: both;
+  margin: 1em 0;
+}
+/* line 23, ../sass/_forms.scss */
+.botonera .btn, .botonera .save,
+.botonera #main .action_box .save,
+#main .action_box .botonera .save,
+.botonera #cboxContent .action_box .save,
+#cboxContent .action_box .botonera .save,
+.botonera #main .pagination .save,
+#main .pagination .botonera .save,
+.botonera #cboxContent .pagination .save,
+#cboxContent .pagination .botonera .save, .botonera input[type="submit"], .botonera button {
+  float: right;
+  margin-right: 0;
+  margin-left: 1em;
+  overflow: hidden;
+}
+/* line 28, ../sass/_forms.scss */
+.botonera .btn span, .botonera .save span,
+.botonera #main .action_box .save span,
+#main .action_box .botonera .save span,
+.botonera #cboxContent .action_box .save span,
+#cboxContent .action_box .botonera .save span,
+.botonera #main .pagination .save span,
+#main .pagination .botonera .save span,
+.botonera #cboxContent .pagination .save span,
+#cboxContent .pagination .botonera .save span, .botonera input[type="submit"] span, .botonera button span {
+  position: absolute;
+  top: -3em;
+}
+/* line 33, ../sass/_forms.scss */
+.botonera input.btn, .botonera input.save,
+.botonera #main .action_box input.save,
+#main .action_box .botonera input.save,
+.botonera #cboxContent .action_box input.save,
+#cboxContent .action_box .botonera input.save,
+.botonera #main .pagination input.save,
+#main .pagination .botonera input.save,
+.botonera #cboxContent .pagination input.save,
+#cboxContent .pagination .botonera input.save {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+/* line 37, ../sass/_forms.scss */
+.botonera .request {
+  float: left;
+}
+
+/* line 41, ../sass/_forms.scss */
+.desplegable.button {
+  float: right;
+  margin-left: 1em;
+}
+/* line 44, ../sass/_forms.scss */
+.desplegable.button .txt {
+  width: auto;
+  min-width: 100px;
+  padding: 0.5em 1em;
+  padding-left: 2.5em;
+  background: url("../images/icons/icon_collapsible.png") no-repeat #6d6e71 left bottom;
+  border: 2px solid #939598;
+  margin-left: 0;
+}
+/* line 52, ../sass/_forms.scss */
+.desplegable.button .txt:hover {
+  color: white;
+}
+/* line 55, ../sass/_forms.scss */
+.desplegable.button .txt.content_hide {
+  background: url("../images/icons/icon_collapsible.png") no-repeat #6d6e71 left top;
+}
+/* line 59, ../sass/_forms.scss */
+.desplegable.button .txt.content_hide {
+  width: auto;
+}
+/* line 62, ../sass/_forms.scss */
+.desplegable.button .collapsible {
+  padding: 1em;
+  float: right;
+  clear: both;
+  margin-top: .5em;
+  background: white;
+  border: 1px solid #6d6e71;
+}
+/* line 70, ../sass/_forms.scss */
+.desplegable.button .collapsible input[type="text"],
+.desplegable.button .collapsible textarea {
+  padding: 1%;
+  width: 98%;
+  font-size: 1em;
+}
+/* line 75, ../sass/_forms.scss */
+.desplegable.button .collapsible label {
+  padding-left: 0;
+  padding-right: 0;
+  font-weight: bold;
+}
+
+/* line 83, ../sass/_forms.scss */
+.btn, .save,
+#main .action_box .save,
+#cboxContent .action_box .save,
+#main .pagination .save,
+#cboxContent .pagination .save, input[type="submit"], input[type="reset"], button {
+  border: 2px solid #52bcec;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  color: white;
+  font-weight: normal;
+  font-size: 1em;
+  background: #009ee5;
+  float: left;
+  margin-right: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0.5em 1em;
+  display: block;
+  cursor: pointer;
+  width: auto;
+}
+/* line 99, ../sass/_forms.scss */
+.btn:hover, .save:hover,
+#main .action_box .save:hover,
+#cboxContent .action_box .save:hover,
+#main .pagination .save:hover,
+#cboxContent .pagination .save:hover, input[type="submit"]:hover, input[type="reset"]:hover, button:hover {
+  text-decoration: none;
+  background: #094fa4;
+}
+/* line 103, ../sass/_forms.scss */
+.row .btn, .row .save,
+.row #main .action_box .save,
+#main .action_box .row .save,
+.row #cboxContent .action_box .save,
+#cboxContent .action_box .row .save,
+.row #main .pagination .save,
+#main .pagination .row .save,
+.row #cboxContent .pagination .save,
+#cboxContent .pagination .row .save, .row input[type="submit"], .row input[type="reset"], .row button {
+  float: none;
+  display: inline;
+  margin: 0;
+  margin-left: 1em;
+}
+/* line 109, ../sass/_forms.scss */
+.btn.cancel, .cancel.save,
+#main .action_box .cancel.save,
+#cboxContent .action_box .cancel.save,
+#main .pagination .cancel.save,
+#cboxContent .pagination .cancel.save, input[type="submit"].cancel, input[type="reset"].cancel, button.cancel {
+  background: transparent;
+  color: #094fa4;
+  text-decoration: underline;
+  border: none;
+}
+/* line 114, ../sass/_forms.scss */
+.btn.cancel:hover, .cancel.save:hover,
+#main .action_box .cancel.save:hover,
+#cboxContent .action_box .cancel.save:hover,
+#main .pagination .cancel.save:hover,
+#cboxContent .pagination .cancel.save:hover, input[type="submit"].cancel:hover, input[type="reset"].cancel:hover, button.cancel:hover {
+  text-decoration: none;
+}
+/* line 118, ../sass/_forms.scss */
+.btn.delete, .delete.save,
+#main .action_box .delete.save,
+#cboxContent .action_box .delete.save,
+#main .pagination .delete.save,
+#cboxContent .pagination .delete.save, input[type="submit"].delete, input[type="reset"].delete, button.delete {
+  background: #c8175e;
+  border: 2px solid #c8175e;
+  color: white;
+}
+/* line 122, ../sass/_forms.scss */
+.btn.delete:hover, .delete.save:hover,
+#main .action_box .delete.save:hover,
+#cboxContent .action_box .delete.save:hover,
+#main .pagination .delete.save:hover,
+#cboxContent .pagination .delete.save:hover, input[type="submit"].delete:hover, input[type="reset"].delete:hover, button.delete:hover {
+  background: white;
+  color: #c8175e;
+}
+/* line 127, ../sass/_forms.scss */
+.btn.left, .left.save,
+#main .action_box .left.save,
+#cboxContent .action_box .left.save,
+#main .pagination .left.save,
+#cboxContent .pagination .left.save, input[type="submit"].left, input[type="reset"].left, button.left {
+  float: left;
+  margin-left: 0;
+  margin-right: 1em;
+}
+/* line 132, ../sass/_forms.scss */
+.btn.right, .right.save,
+#main .action_box .right.save,
+#cboxContent .action_box .right.save,
+#main .pagination .right.save,
+#cboxContent .pagination .right.save, input[type="submit"].right, input[type="reset"].right, button.right {
+  float: right;
+  margin-left: 1em;
+  margin-right: 0;
+}
+
+/* line 138, ../sass/_forms.scss */
+a.btn, a.save,
+#main .action_box a.save,
+#cboxContent .action_box a.save,
+#main .pagination a.save,
+#cboxContent .pagination a.save {
+  padding-bottom: .6em;
+  padding-top: .6em;
+}
+
+/* line 142, ../sass/_forms.scss */
+.txt_btn {
+  margin-right: 0;
+  right: 1em;
+  top: 1em;
+}
+
+/* line 147, ../sass/_forms.scss */
+input, select, textarea, label {
+  font-size: 1em;
+  padding: 0.5em 1em;
+  vertical-align: middle;
+}
+
+/* line 152, ../sass/_forms.scss */
+textarea {
+  height: 5em;
+}
+
+/* line 155, ../sass/_forms.scss */
+input.num {
+  width: 2em;
+}
+
+/* line 158, ../sass/_forms.scss */
+select {
+  margin: 0.5em 1em;
+  padding: 0.5em 1em;
+  border: 1px solid #6d6e71;
+}
+
+/* line 163, ../sass/_forms.scss */
+label {
+  display: block;
+  float: left;
+  text-align: right;
+  padding: .8em;
+}
+/* line 168, ../sass/_forms.scss */
+.colorbox_box label {
+  width: 25%;
+}
+
+/* line 172, ../sass/_forms.scss */
+input[type="checkbox"] {
+  margin: 0.8em 0;
+}
+
+/* line 175, ../sass/_forms.scss */
+.label {
+  margin: .8em;
+}
+
+/* line 178, ../sass/_forms.scss */
+.row {
+  margin: 0.5em 0;
+  padding: 0.5em 0;
+  overflow: hidden;
+}
+/* line 182, ../sass/_forms.scss */
+.row .left {
+  float: left;
+}
+/* line 185, ../sass/_forms.scss */
+.row .right {
+  float: right;
+}
+/* line 188, ../sass/_forms.scss */
+.colorbox_box .row input[type="text"], .row area {
+  width: 70%;
+}
+/* line 191, ../sass/_forms.scss */
+.row li {
+  float: left;
+  width: auto;
+  white-space: nowrap;
+}
+/* line 195, ../sass/_forms.scss */
+.row li label {
+  width: auto;
+}
+
+/* line 200, ../sass/_forms.scss */
+input:disabled {
+  background: #939598;
+  color: white;
+  border: 1px solid #6d6e71;
+}
+/* line 204, ../sass/_forms.scss */
+input:disabled:hover {
+  background: #939598;
+  color: white;
+  border: 1px solid #6d6e71;
+  cursor: inherit;
+}
+
+/* line 211, ../sass/_forms.scss */
+.graph_component {
+  overflow: hidden;
+}
+/* line 213, ../sass/_forms.scss */
+.graph_component label {
+  padding-top: 3em;
+  background-color: #8bd1f3;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  text-align: center;
+  margin: 1%;
+  width: 10%;
+  overflow: hidden;
+}
+/* line 222, ../sass/_forms.scss */
+.graph_component span {
+  display: none;
+  font-size: .8em;
+}
+
+/* line 227, ../sass/_forms.scss */
+.users_list {
+  margin: 1em 0;
+  overflow: hidden;
+}
+/* line 230, ../sass/_forms.scss */
+.users_list li {
+  float: left;
+  width: 33%;
+}
+
+/* line 235, ../sass/_forms.scss */
+.weekDay {
+  overflow: hidden;
+  display: block;
+  clear: both;
+}
+/* line 236, ../sass/_forms.scss */
+.weekDay li {
+  width: 33%;
+  margin: 0;
+  padding: 0;
+}
+/* line 244, ../sass/_forms.scss */
+.weekDay label {
+  float: none;
+}
+/* line 247, ../sass/_forms.scss */
+.weekDay input[type="radio"] {
+  float: left;
+  margin: 1em 0.5em;
+}
+
+/* line 1, ../sass/_table.scss */
+.margin-box {
+  overflow: auto;
+}
+
+/* line 4, ../sass/_table.scss */
+.table_buttons {
+  overflow: hidden;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  background: #eeeeee;
+  border: 1px solid #eeeeee;
+}
+/* line 9, ../sass/_table.scss */
+.table_buttons table {
+  border-right: none;
+  border-left: none;
+}
+/* line 12, ../sass/_table.scss */
+.table_buttons table td:first-child {
+  border-left: none;
+}
+/* line 16, ../sass/_table.scss */
+.table_buttons .botonera {
+  padding: 0;
+  margin: 0.5em 1em;
+}
+/* line 19, ../sass/_table.scss */
+.table_buttons .botonera label {
+  padding: 0.5em 1em 0;
+}
+
+/* line 24, ../sass/_table.scss */
+table {
+  width: 100%;
+  margin: 0.5em 0;
+  border: 1px solid #939598;
+}
+/* line 28, ../sass/_table.scss */
+table th {
+  background: #006ec1;
+  color: white;
+}
+/* line 31, ../sass/_table.scss */
+table th.order {
+  background-image: url("../images/icons/colunm_order.png");
+  background-repeat: no-repeat;
+  background-position: right top;
+  padding-right: 2em;
+}
+/* line 36, ../sass/_table.scss */
+table th.order.bottom {
+  background-image: url("../images/icons/colunm_order.png");
+  background-repeat: no-repeat;
+  background-position: right -40px;
+  background-color: #009ee5;
+  color: white;
+}
+/* line 42, ../sass/_table.scss */
+table th.order.bottom a {
+  color: white;
+}
+/* line 46, ../sass/_table.scss */
+table th.order.top {
+  background-image: url("../images/icons/colunm_order.png");
+  background-repeat: no-repeat;
+  background-position: right -80px;
+  background-color: #009ee5;
+  color: white;
+}
+/* line 52, ../sass/_table.scss */
+table th.order.top a {
+  color: white;
+}
+/* line 57, ../sass/_table.scss */
+table th a {
+  color: white;
+}
+/* line 61, ../sass/_table.scss */
+table th:last-child, table td:last-child {
+  border-right: none;
+}
+/* line 64, ../sass/_table.scss */
+table th, table td {
+  padding: 0.5em 0.8em;
+  border: 1px solid #bcbec0;
+  border-collapse: collapse;
+  vertical-align: top;
+}
+/* line 69, ../sass/_table.scss */
+table th.note_detail, table td.note_detail {
+  border-bottom: 2px solid #b5e5f9;
+  border-left: 2px solid #b5e5f9;
+  border-right: 2px solid #b5e5f9;
+  background: #b5e5f9;
+  float: none;
+  padding: 1em;
+}
+/* line 70, ../sass/_table.scss */
+table th.note_detail:hover, table td.note_detail:hover {
+  color: #4d4d4f;
+}
+/* line 79, ../sass/_table.scss */
+table th.note_detail div, table td.note_detail div {
+  position: relative;
+  background: white;
+  padding: 1em;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 0px 8px #6d6e71;
+  -moz-box-shadow: 0px 0px 8px #6d6e71;
+  box-shadow: 0px 0px 8px #6d6e71;
+}
+/* line 84, ../sass/_table.scss */
+table th.note_detail div:after, table td.note_detail div:after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 105px;
+  border-width: 0 15px 25px;
+  border-style: solid;
+  border-color: white transparent;
+  display: block;
+  width: 0;
+}
+/* line 96, ../sass/_table.scss */
+table th.note_detail div li, table td.note_detail div li {
+  border-bottom: 2px dotted #939598;
+  margin-bottom: 1em;
+}
+/* line 100, ../sass/_table.scss */
+table th.note_detail div li:last-child, table td.note_detail div li:last-child {
+  border: none;
+  margin-bottom: 0;
+}
+/* line 107, ../sass/_table.scss */
+table tr {
+  background: white;
+}
+/* line 109, ../sass/_table.scss */
+table tr:nth-child(2n+1) {
+  background: #eeeeee;
+}
+/* line 112, ../sass/_table.scss */
+table tr.active {
+  background: #b5e5f9;
+  border-top: 2px solid #b5e5f9;
+  border-left: 2px solid #b5e5f9;
+  border-right: 2px solid #b5e5f9;
+}
+/* line 119, ../sass/_table.scss */
+table.query-form {
+  border: 1px solid white;
+  margin-bottom: 2em;
+}
+/* line 122, ../sass/_table.scss */
+table.query-form tr {
+  border: 1px solid white;
+  border-bottom: 2px dotted #eeeeee;
+  background: white;
+}
+/* line 126, ../sass/_table.scss */
+table.query-form tr:hover {
+  cursor: inherit;
+  border: 1px solid white;
+  border-bottom: 2px dotted #eeeeee;
+}
+/* line 131, ../sass/_table.scss */
+table.query-form tr:nth-child(2n+1) {
+  background: white;
+}
+/* line 135, ../sass/_table.scss */
+table.query-form td:first-child {
+  width: 30%;
+}
+/* line 138, ../sass/_table.scss */
+table.query-form td:nth-child(2) {
+  width: 3em;
+}
+/* line 141, ../sass/_table.scss */
+table.query-form th {
+  border: 1px solid white;
+  border-bottom: 2px solid #eeeeee;
+  color: #094fa4;
+  background: #b5e5f9;
+}
+/* line 146, ../sass/_table.scss */
+table.query-form th:hover {
+  cursor: inherit;
+  border: 1px solid white;
+  border-bottom: 2px solid #eeeeee;
+}
+/* line 152, ../sass/_table.scss */
+table.query-form td {
+  background: white;
+  border: 1px solid white;
+}
+/* line 155, ../sass/_table.scss */
+table.query-form td:hover {
+  background: white;
+  border: 1px solid white;
+}
+/* line 159, ../sass/_table.scss */
+table.query-form td.btn_add {
+  border: 1px solid white;
+}
+/* line 161, ../sass/_table.scss */
+table.query-form td.btn_add div {
+  position: relative;
+  overflow: hidden;
+}
+/* line 166, ../sass/_table.scss */
+table.query-form td.btn_add .btn, table.query-form td.btn_add .save,
+table.query-form td.btn_add #main .action_box .save,
+#main .action_box table.query-form td.btn_add .save,
+table.query-form td.btn_add #cboxContent .action_box .save,
+#cboxContent .action_box table.query-form td.btn_add .save,
+table.query-form td.btn_add #main .pagination .save,
+#main .pagination table.query-form td.btn_add .save,
+table.query-form td.btn_add #cboxContent .pagination .save,
+#cboxContent .pagination table.query-form td.btn_add .save {
+  float: right;
+}
+/* line 172, ../sass/_table.scss */
+table.link tr {
+  cursor: pointer;
+}
+/* line 174, ../sass/_table.scss */
+table.link tr:hover {
+  background: #f1f8fc;
+  color: #094fa4;
+}
+/* line 179, ../sass/_table.scss */
+table.link label {
+  cursor: pointer;
+}
+/* line 183, ../sass/_table.scss */
+table.link tr.showdetail.open, table.link tr.showdetail.open:hover {
+  background: #8bd1f3;
+}
+/* line 187, ../sass/_table.scss */
+table.link tr.detail, table.link tr.detail:hover {
+  background: #8bd1f3;
+  color: #4d4d4f;
+}
+/* line 190, ../sass/_table.scss */
+table.link tr.detail div, table.link tr.detail:hover div {
+  position: relative;
+}
+/* line 193, ../sass/_table.scss */
+table.link tr.detail ul, table.link tr.detail:hover ul {
+  padding: 1%;
+  background: white;
+  -webkit-box-shadow: 0px 0px 8px #6d6e71;
+  -moz-box-shadow: 0px 0px 8px #6d6e71;
+  box-shadow: 0px 0px 8px #6d6e71;
+  overflow: hidden;
+  cursor: inherit;
+}
+/* line 199, ../sass/_table.scss */
+table.link tr.detail ul li, table.link tr.detail:hover ul li {
+  float: left;
+  width: 32%;
+  margin-right: 1%;
+  padding: 0.5em 0;
+  border-bottom: 1px solid #6d6e71;
+}
+/* line 205, ../sass/_table.scss */
+table.link tr.detail ul li strong, table.link tr.detail:hover ul li strong {
+  width: 30%;
+  display: block;
+  float: left;
+  text-align: right;
+  margin-right: 1em;
+}
+/* line 213, ../sass/_table.scss */
+table.link tr.detail ul:before, table.link tr.detail:hover ul:before {
+  content: "";
+  font-size: 20em;
+  color: #ff0000;
+  position: absolute;
+  top: -20px;
+  left: 45px;
+  border-width: 0 15px 25px;
+  border-style: solid;
+  border-color: white transparent;
+  display: block;
+  width: 0;
+}
+
+/* line 1, ../sass/_nav.scss */
+nav#main_nav {
+  background: url("../images/general/bg_main_nav.png") no-repeat;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 998;
+  padding-bottom: 45px;
+  padding-top: 50px;
+}
+/* line 9, ../sass/_nav.scss */
+nav#main_nav ul {
+  border-top: 1px solid #094fa4;
+}
+/* line 12, ../sass/_nav.scss */
+nav#main_nav li {
+  position: relative;
+}
+/* line 15, ../sass/_nav.scss */
+nav#main_nav .dashboard a {
+  background: url("../images/icons/icons_main_left.png") no-repeat 0 -80px transparent;
+}
+/* line 18, ../sass/_nav.scss */
+nav#main_nav .terminals a {
+  background: url("../images/icons/icons_main_left.png") no-repeat -90px -80px transparent;
+}
+/* line 21, ../sass/_nav.scss */
+nav#main_nav .users a {
+  background: url("../images/icons/icons_main_left.png") no-repeat -180px -80px transparent;
+}
+/* line 24, ../sass/_nav.scss */
+nav#main_nav .reports a {
+  background: url("../images/icons/icons_main_left.png") no-repeat -270px -80px transparent;
+}
+/* line 27, ../sass/_nav.scss */
+nav#main_nav .schedule a {
+  background: url("../images/icons/icons_main_left.png") no-repeat -360px -80px transparent;
+}
+/* line 30, ../sass/_nav.scss */
+nav#main_nav .help {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+/* line 35, ../sass/_nav.scss */
+nav#main_nav .help a {
+  background: url("../images/icons/icons_main_left.png") no-repeat -450px -80px transparent;
+}
+/* line 39, ../sass/_nav.scss */
+nav#main_nav a {
+  color: #b5e5f9;
+  display: block;
+  width: 90px;
+  padding-top: 70px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #bcbec0;
+  text-align: center;
+}
+/* line 47, ../sass/_nav.scss */
+nav#main_nav a:hover {
+  text-decoration: none;
+  background-color: #009ee5;
+  background-position-y: 0;
+  color: white;
+}
+
+/* line 55, ../sass/_nav.scss */
+#tabs {
+  min-height: 1080px;
+}
+/* line 57, ../sass/_nav.scss */
+#tabs .margin-box {
+  margin-bottom: 2em;
+  overflow: auto;
+}
+
+/* line 63, ../sass/_nav.scss */
+#tabs .desplegable .margin-box {
+  margin-bottom: 0;
+}
+
+/* line 67, ../sass/_nav.scss */
+nav.sub_nav {
+  background-color: #eeeeee;
+  height: 3em;
+  margin-bottom: 2em;
+}
+/* line 71, ../sass/_nav.scss */
+nav.sub_nav li {
+  float: left;
+  border-right: 1px solid #eeeeee;
+  position: relative;
+}
+/* line 75, ../sass/_nav.scss */
+nav.sub_nav li a {
+  display: block;
+  cursor: pointer;
+  padding: 1em;
+  color: #4d4d4f;
+}
+/* line 80, ../sass/_nav.scss */
+nav.sub_nav li a:hover {
+  text-decoration: none;
+  color: white;
+  background-color: #4d4d4f;
+}
+/* line 87, ../sass/_nav.scss */
+nav.sub_nav li.current a {
+  text-decoration: none;
+  color: white;
+  background-color: #4d4d4f;
+}
+/* line 91, ../sass/_nav.scss */
+nav.sub_nav li.current a:after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 38%;
+  border-top: 1.5em solid #4d4d4f;
+  border-top-color: #4d4d4f;
+  border-left: 1em solid transparent;
+  border-right: 1em solid transparent;
+}
+
+/* line 1, ../sass/_messages.scss */
+.notification {
+  background: #eeeeee url("../images/icons/notification.png") no-repeat 1em;
+  border: 2px dotted #86c82d;
+  padding: 1em 2em 1em 6em;
+  margin: 1em 0;
+  min-height: 2em;
+}
+/* line 2, ../sass/_messages.scss */
+.td .notification {
+  display: block;
+}
+/* line 10, ../sass/_messages.scss */
+.notification strong {
+  color: #094fa4;
+}
+
+/* line 14, ../sass/_messages.scss */
+.alert {
+  background: #f7e9e9 url("../images/icons/alert.png") no-repeat 1em;
+  border: 2px dotted #c8175e;
+  padding: 1em 2em 1em 6em;
+  margin: 1em 0;
+  min-height: 2em;
+}
+/* line 15, ../sass/_messages.scss */
+.td .alert {
+  display: block;
+}
+/* line 23, ../sass/_messages.scss */
+.alert strong {
+  color: #c8175e;
+}
+
+/* line 27, ../sass/_messages.scss */
+.message, .no_queries {
+  background: #eeeeee url("../images/icons/message.png") no-repeat 1em;
+  border: 2px dotted #f6891e;
+  padding: 1em 2em 1em 6em;
+  position: relative;
+  min-height: 2em;
+}
+/* line 33, ../sass/_messages.scss */
+.td .message, .td .no_queries {
+  display: block;
+}
+/* line 36, ../sass/_messages.scss */
+.message strong, .no_queries strong {
+  color: #009ee5;
+}
+/* line 39, ../sass/_messages.scss */
+.message.left:after, .left.no_queries:after {
+  content: "";
+  position: absolute;
+  top: 25px;
+  left: -32px;
+  border-width: 15px 30px 15px 0;
+  border-style: solid;
+  border-color: transparent #fdbd2c;
+  display: block;
+  width: 0;
+}
+
+/* line 51, ../sass/_messages.scss */
+.no_queries {
+  background: transparent url("../images/icons/message_24.png") no-repeat 1em;
+  border: none;
+  position: absolute;
+  margin: 0 180px 0 0;
+  padding: 1em;
+  padding-left: 3em;
+  font-size: 1.2em;
+  right: 0;
+  top: 40px;
+  text-align: right;
+}
+/* line 63, ../sass/_messages.scss */
+.no_queries .flecha {
+  background: url("../images/general/flecha.png") no-repeat;
+  width: 200px;
+  height: 40px;
+  display: block;
+  position: absolute;
+  top: 0;
+  right: -80px;
+}
+
+/* line 73, ../sass/_messages.scss */
+.error {
+  background: #c8175e;
+  border: 1px dotted white;
+  color: white;
+  padding: 1em 2em;
+  margin: 1em 0;
+  position: relative;
+}
+/* line 74, ../sass/_messages.scss */
+.td .error {
+  display: block;
+}
+/* line 84, ../sass/_messages.scss */
+.error.top:after {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 45%;
+  border-width: 0 15px 25px;
+  border-style: solid;
+  border-color: #c8175e transparent;
+  display: block;
+  width: 0;
+}
+/* line 97, ../sass/_messages.scss */
+.error.bottom:after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  left: 45%;
+  border-width: 25px 15px 0 15px;
+  border-style: solid;
+  border-color: #c8175e transparent;
+  display: block;
+  width: 0;
+}
+
+/* line 1, ../sass/_main.scss */
+body {
+  background: white url("../images/general/bg_body.png") repeat-y fixed;
+  color: #4d4d4f;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: .8em;
+  overflow-x: hidden;
+}
+
+/* line 8, ../sass/_main.scss */
+a {
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  color: #52bcec;
+  text-decoration: none;
+  outline: none;
+}
+/* line 13, ../sass/_main.scss */
+a:hover {
+  text-decoration: underline;
+}
+
+/* line 17, ../sass/_main.scss */
+p {
+  margin: 0.5em 0;
+  line-height: 1.5em;
+}
+
+/* line 21, ../sass/_main.scss */
+#main, #cboxContent {
+  padding: 16px 35px;
+  border-top: 50px solid white;
+  margin-left: 90px;
+  background: white;
+  min-height: 300px;
+  position: relative;
+}
+/* line 28, ../sass/_main.scss */
+#main h1, #cboxContent h1, #main h2, #cboxContent #main h2, #main #cboxContent h2, #main #cboxContent h2, #cboxContent #main h2, #cboxContent h2, #main h3, #cboxContent #main h3, #main #cboxContent h3, #main #cboxContent h3, #cboxContent #main h3, #cboxContent h3, #main h4, #cboxContent #main h4, #main #cboxContent h4, #main #cboxContent h4, #cboxContent #main h4, #cboxContent h4, #main h5, #cboxContent #main h5, #main #cboxContent h5, #main #cboxContent h5, #cboxContent #main h5, #cboxContent h5 {
+  font-family: "bbvaweb-light", Arial, Helvetica, sans-serif;
+  font-size: 2.2em;
+  color: #52bcec;
+  margin: 0.5em 0;
+  font-weight: normal;
+  clear: left;
+}
+/* line 36, ../sass/_main.scss */
+#main h2, #cboxContent h2 {
+  font-family: "bbvaweb-light", Arial, Helvetica, sans-serif;
+  font-size: 1.7em;
+}
+/* line 41, ../sass/_main.scss */
+#main h3, #cboxContent h3 {
+  font-family: "bbvaweb-light", Arial, Helvetica, sans-serif;
+  font-size: 1.5em;
+}
+/* line 46, ../sass/_main.scss */
+#main h4, #cboxContent h4 {
+  font-family: "bbvaweb-light", Arial, Helvetica, sans-serif;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+/* line 52, ../sass/_main.scss */
+#main h5, #cboxContent h5 {
+  font-family: "bbvaweb-light", Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+/* line 59, ../sass/_main.scss */
+#cboxContent {
+  border: none;
+}
+/* line 62, ../sass/_main.scss */
+#cboxContent #help_pop {
+  margin-right: 1em;
+}
+
+/* line 66, ../sass/_main.scss */
+.left {
+  float: left !important;
+}
+
+/* line 69, ../sass/_main.scss */
+.right {
+  float: right !important;
+}
+/* line 71, ../sass/_main.scss */
+.right.photo {
+  margin: 0 0 1em 2em;
+}
+
+/* line 75, ../sass/_main.scss */
+.pagination {
+  overflow: hidden;
+  margin: 2em 0;
+}
+/* line 79, ../sass/_main.scss */
+.pagination .t_number {
+  float: left;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+/* line 84, ../sass/_main.scss */
+.pagination .p_number {
+  float: right;
+}
+/* line 87, ../sass/_main.scss */
+.pagination span {
+  float: left;
+  margin-right: .2em;
+}
+/* line 90, ../sass/_main.scss */
+.pagination span.text {
+  padding: 0.3em 0.5em;
+}
+/* line 93, ../sass/_main.scss */
+.pagination span.pagingItemCurrent {
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  padding: 0.4em 0.5em;
+  background-color: #52bcec;
+  text-decoration: none;
+  color: white;
+}
+/* line 100, ../sass/_main.scss */
+.pagination span a {
+  padding: 0.3em 0.5em;
+  display: block;
+  border: 1px solid #52bcec;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+/* line 105, ../sass/_main.scss */
+.pagination span a:hover {
+  background-color: #52bcec;
+  text-decoration: none;
+  color: white;
+}
+
+/* line 114, ../sass/_main.scss */
+strong {
+  font-weight: bold;
+}
+
+/* line 117, ../sass/_main.scss */
+.hidden, .hide {
+  display: none;
+}
+
+/* line 121, ../sass/_main.scss */
+#help .content {
+  border-top: 2px dotted #939598;
+  padding-bottom: 1em;
+  margin-bottom: .5em;
+}
+/* line 125, ../sass/_main.scss */
+#help .content ul {
+  list-style-type: square;
+  padding-left: 2em;
+}
+/* line 129, ../sass/_main.scss */
+#help .content ol {
+  list-style-type: decimal;
+  padding-left: 2em;
+}
+/* line 133, ../sass/_main.scss */
+#help .content li {
+  padding: .5em;
+  padding-left: .5em;
+}
+
+/* line 139, ../sass/_main.scss */
+.photo {
+  border: 5px solid white;
+  padding: .5em;
+  background: white;
+}
+
+/* line 144, ../sass/_main.scss */
+.td {
+  border: none;
+}
+/* line 146, ../sass/_main.scss */
+.td label, .td input, .td select, .td div, .td form {
+  display: inline;
+  float: none;
+}
+
+/* line 152, ../sass/_main.scss */
+.editable .relative {
+  position: relative;
+  padding-right: 4em;
+}
+/* line 155, ../sass/_main.scss */
+.editable .relative .botonera {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 164, ../sass/_main.scss */
+.nowrap {
+  white-space: nowrap;
+}
+
+/* line 167, ../sass/_main.scss */
+.w33 {
+  width: 33%;
+}
+
+/* line 170, ../sass/_main.scss */
+.w66 {
+  width: 66%;
+}
+
+/* line 173, ../sass/_main.scss */
+.w25 {
+  width: 25%;
+}
+
+/* line 176, ../sass/_main.scss */
+.w50 {
+  width: 50%;
+}
+
+/* line 179, ../sass/_main.scss */
+.w75 {
+  width: 75%;
+}
+
+/* line 182, ../sass/_main.scss */
+.h100 {
+  height: 100%;
+}
+
+/* line 185, ../sass/_main.scss */
+.column33 {
+  width: 33%;
+  float: left;
+}
+
+/* line 189, ../sass/_main.scss */
+.column66 {
+  width: 66%;
+  float: left;
+}
+
+/* line 193, ../sass/_main.scss */
+#error_box {
+  background: url("../images/general/bg_error.png") no-repeat;
+  width: 580px;
+  height: 480px;
+  margin: 1em auto;
+  position: relative;
+}
+/* line 199, ../sass/_main.scss */
+#error_box .message_box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 100px;
+  max-height: 270px;
+  overflow: auto;
+}
+
+/* line 208, ../sass/_main.scss */
+.timeline-event-icon {
+  top: 7px !important;
+}
+
+/* line 214, ../sass/_main.scss */
+.timeline-copyright {
+  display: none;
+}
+
+/* line 220, ../sass/_main.scss */
+.history_legend {
+  padding: 0.5em 0;
+}
+
+/* line 225, ../sass/_main.scss */
+.timeline-band-scrollbar {
+  display: none !important;
+}
+
+/* line 228, ../sass/_main.scss */
+div#terminalsMap {
+  height: 600px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* line 234, ../sass/_main.scss */
+div.summaryContent {
+  width: 500px;
+  height: 350px;
+}
+
+/* line 238, ../sass/_main.scss */
+#main .summaryContent .action_box.data .ul_data, #cboxContent .summaryContent .action_box.data .ul_data, #main .summaryContent .data.pagination .ul_data, #cboxContent .summaryContent .data.pagination .ul_data, #main .summaryContent .action_box.data .ul_data_wide, #cboxContent .summaryContent #main .action_box.data .ul_data_wide, #main #cboxContent .summaryContent .action_box.data .ul_data_wide, #main .summaryContent #cboxContent .action_box.data .ul_data_wide, #cboxContent #main .summaryContent .action_box.data .ul_data_wide, #cboxContent .summaryContent .action_box.data .ul_data_wide, #cboxContent .summaryContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .summaryContent .data.pagination .ul_data_wide, #main .summaryContent .data.pagination .ul_data_wide, #cboxContent .summaryContent #main .data.pagination .ul_data_wide, #main #cboxContent .summaryContent .data.pagination .ul_data_wide, #cboxContent .summaryContent .action_box.data .data.pagination .ul_data_wide, #cboxContent .data.pagination .summaryContent .action_box.data .ul_data_wide, #main .summaryContent #cboxContent .data.pagination .ul_data_wide, #cboxContent #main .summaryContent .data.pagination .ul_data_wide, #cboxContent .summaryContent .data.pagination .ul_data_wide {
+  width: 100%;
+}
+
+/* line 2, ../sass/_login_user.scss */
+#login_user #scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  perspective: 800px;
+  -webkit-perspective: 800px;
+  background: #4d4d4f url(../images/general/login_bg.jpg) no-repeat;
+  background-size: cover;
+}
+/* line 13, ../sass/_login_user.scss */
+#login_user #login_box {
+  transition: transform 1s;
+  -webkit-transition: -webkit-transform 1s;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-origin: right center;
+  -webkit-transform-origin: right center;
+  transform-style: preserve3d;
+  -webkit-transform-style: preserve3d;
+  transform: translateX(30%) translateZ(-250px) rotateY(90deg);
+  -webkit-transform: translateX(30%) translateZ(-250px) rotateY(90deg);
+}
+/* line 25, ../sass/_login_user.scss */
+#login_user #login_box.flipped {
+  transform: translateX(0) translateZ(0) rotateY(0deg);
+  -webkit-transform: translateX(0) translateZ(0) rotateY(0deg);
+}
+/* line 34, ../sass/_login_user.scss */
+#login_user #login_box {
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  font-size: 1.5em;
+  background: white;
+  background: rgba(255, 255, 255, 0.85);
+  position: absolute;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  min-height: 290px;
+  margin-top: -250px;
+  margin-left: -250px;
+  padding-bottom: 1em;
+}
+/* line 35, ../sass/_login_user.scss */
+#login_user #login_box h1, #login_user #login_box #main h2, #main #login_user #login_box h2, #login_user #login_box #cboxContent h2, #cboxContent #login_user #login_box h2, #login_user #login_box #main h3, #main #login_user #login_box h3, #login_user #login_box #cboxContent h3, #cboxContent #login_user #login_box h3, #login_user #login_box #main h4, #main #login_user #login_box h4, #login_user #login_box #cboxContent h4, #cboxContent #login_user #login_box h4, #login_user #login_box #main h5, #main #login_user #login_box h5, #login_user #login_box #cboxContent h5, #cboxContent #login_user #login_box h5 {
+  color: #094fa4;
+  background: white;
+  padding: 0.5em 1.2em;
+  text-align: right;
+  overflow: hidden;
+}
+/* line 41, ../sass/_login_user.scss */
+#login_user #login_box h1 span, #login_user #login_box #main h2 span, #main #login_user #login_box h2 span, #login_user #login_box #cboxContent h2 span, #cboxContent #login_user #login_box h2 span, #login_user #login_box #main h3 span, #main #login_user #login_box h3 span, #login_user #login_box #cboxContent h3 span, #cboxContent #login_user #login_box h3 span, #login_user #login_box #main h4 span, #main #login_user #login_box h4 span, #login_user #login_box #cboxContent h4 span, #cboxContent #login_user #login_box h4 span, #login_user #login_box #main h5 span, #main #login_user #login_box h5 span, #login_user #login_box #cboxContent h5 span, #cboxContent #login_user #login_box h5 span {
+  position: absolute;
+  top: -300px;
+}
+/* line 45, ../sass/_login_user.scss */
+#login_user #login_box h1 img, #login_user #login_box #main h2 img, #main #login_user #login_box h2 img, #login_user #login_box #cboxContent h2 img, #cboxContent #login_user #login_box h2 img, #login_user #login_box #main h3 img, #main #login_user #login_box h3 img, #login_user #login_box #cboxContent h3 img, #cboxContent #login_user #login_box h3 img, #login_user #login_box #main h4 img, #main #login_user #login_box h4 img, #login_user #login_box #cboxContent h4 img, #cboxContent #login_user #login_box h4 img, #login_user #login_box #main h5 img, #main #login_user #login_box h5 img, #login_user #login_box #cboxContent h5 img, #cboxContent #login_user #login_box h5 img {
+  float: left;
+}
+/* line 48, ../sass/_login_user.scss */
+#login_user #login_box h1 strong, #login_user #login_box #main h2 strong, #main #login_user #login_box h2 strong, #login_user #login_box #cboxContent h2 strong, #cboxContent #login_user #login_box h2 strong, #login_user #login_box #main h3 strong, #main #login_user #login_box h3 strong, #login_user #login_box #cboxContent h3 strong, #cboxContent #login_user #login_box h3 strong, #login_user #login_box #main h4 strong, #main #login_user #login_box h4 strong, #login_user #login_box #cboxContent h4 strong, #cboxContent #login_user #login_box h4 strong, #login_user #login_box #main h5 strong, #main #login_user #login_box h5 strong, #login_user #login_box #cboxContent h5 strong, #cboxContent #login_user #login_box h5 strong {
+  font-size: 2em;
+  font-weight: normal;
+}
+/* line 66, ../sass/_login_user.scss */
+#login_user #login_box label {
+  width: 30%;
+  text-align: right;
+}
+/* line 70, ../sass/_login_user.scss */
+#login_user #login_box .row {
+  border: none;
+  padding: 0.5em 0 0 0;
+}
+/* line 73, ../sass/_login_user.scss */
+#login_user #login_box .row input {
+  width: 50%;
+  color: #6d6e71;
+}
+/* line 78, ../sass/_login_user.scss */
+#login_user #login_box .botonera {
+  padding-right: .5em;
+  border-top: 2px dotted #939598;
+  padding-top: .5em;
+  margin-bottom: 0;
+}
+/* line 83, ../sass/_login_user.scss */
+#login_user #login_box .botonera .btn, #login_user #login_box .botonera .save,
+#login_user #login_box .botonera #cboxContent .pagination .save,
+#cboxContent .pagination #login_user #login_box .botonera .save {
+  float: right;
+}
+/* line 87, ../sass/_login_user.scss */
+#login_user #login_box .error {
+  margin: .5em;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+/* line 1, ../sass/_icons.scss */
+.tab_buttons {
+  position: relative;
+  height: 3em;
+}
+
+/* line 5, ../sass/_icons.scss */
+.icons_bg {
+  display: none;
+  background: white;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid #eeeeee;
+  -webkit-box-shadow: 0px 0px 8px #6d6e71;
+  -moz-box-shadow: 0px 0px 8px #6d6e71;
+  box-shadow: 0px 0px 8px #6d6e71;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 73px;
+  height: 32px;
+  z-index: 1;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+
+/* line 19, ../sass/_icons.scss */
+.close {
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  background: url("../images/icons/close.png") no-repeat;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: block;
+  z-index: 2;
+  cursor: pointer;
+}
+/* line 30, ../sass/_icons.scss */
+.close span {
+  position: absolute;
+  top: 2em;
+}
+/* line 34, ../sass/_icons.scss */
+.fc-event .close {
+  background: url("../images/icons/icon_note.png") no-repeat -20px 0;
+  top: 1px;
+  right: 1px;
+}
+
+/* line 40, ../sass/_icons.scss */
+.icons_menu {
+  position: absolute;
+  top: 8px;
+  right: 30px;
+  width: 35px;
+  height: 20px;
+  z-index: 2;
+}
+/* line 47, ../sass/_icons.scss */
+.icons_menu ul {
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-top: 2em;
+}
+/* line 54, ../sass/_icons.scss */
+.icons_menu ul a {
+  display: block;
+  color: white;
+  padding: 0.5em 1em;
+  border-bottom: 1px solid #939598;
+  background: #094fa4;
+  -webkit-box-shadow: 0px 0px 8px #6d6e71;
+  -moz-box-shadow: 0px 0px 8px #6d6e71;
+  box-shadow: 0px 0px 8px #6d6e71;
+}
+/* line 61, ../sass/_icons.scss */
+.icons_menu ul a:hover {
+  text-decoration: none;
+  background: #6d6e71;
+}
+/* line 66, ../sass/_icons.scss */
+.icons_menu ul li:last-child a {
+  border: none;
+}
+
+/* line 71, ../sass/_icons.scss */
+.icon16 {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  z-index: 100;
+}
+/* line 78, ../sass/_icons.scss */
+.icon16 span {
+  position: absolute;
+  top: -40px;
+}
+/* line 82, ../sass/_icons.scss */
+.icon16.config {
+  background: url("../images/icons/icons.png") no-repeat 0 -20px;
+  cursor: pointer;
+}
+/* line 86, ../sass/_icons.scss */
+.icon16.config.content_hide {
+  background: url("../images/icons/icons.png") no-repeat 0 0;
+}
+/* line 88, ../sass/_icons.scss */
+.icon16.config.content_hide:hover {
+  background: url("../images/icons/icons.png") no-repeat 0 0;
+}
+
+/* line 93, ../sass/_icons.scss */
+.add {
+  background: url("../images/icons/icon_add.png") no-repeat left bottom;
+  background-color: #009ee5;
+  padding-left: 35px;
+}
+/* line 97, ../sass/_icons.scss */
+.add:hover, .link tr:hover .add {
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  background: url("../images/icons/icon_add.png") no-repeat left top #094fa4;
+}
+/* line 101, ../sass/_icons.scss */
+td .add, th .add {
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  background-color: #009ee5;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  float: right;
+  overflow: hidden;
+  position: relative;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+/* line 111, ../sass/_icons.scss */
+td .add span, th .add span {
+  position: absolute;
+  top: 50px;
+}
+/* line 116, ../sass/_icons.scss */
+.add th, th .add:hover, .link tr:hover th .add {
+  background: url("../images/icons/icon_add.png") no-repeat left bottom;
+}
+/* line 119, ../sass/_icons.scss */
+.link .open td .add {
+  background: url("../images/icons/icon_less.png") no-repeat left bottom;
+}
+/* line 121, ../sass/_icons.scss */
+.link .open td .add:hover {
+  background: url("../images/icons/icon_less.png") no-repeat left top #094fa4;
+  color: white;
+}
+
+/* line 127, ../sass/_icons.scss */
+.less {
+  background-image: url("../images/icons/icon_next.png");
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  padding-left: 35px;
+}
+/* line 132, ../sass/_icons.scss */
+.less:hover {
+  background-position: left top;
+  background-color: white;
+}
+
+/* line 138, ../sass/_icons.scss */
+.clock {
+  background: url("../images/icons/icon_clock.png") no-repeat left bottom;
+  background-color: #009ee5;
+  padding-left: 35px;
+}
+/* line 142, ../sass/_icons.scss */
+.clock:hover {
+  background: url("../images/icons/icon_clock.png") no-repeat left top;
+  background-color: #094fa4;
+}
+
+/* line 147, ../sass/_icons.scss */
+.next {
+  background: url("../images/icons/icon_next.png") no-repeat left bottom;
+  background-color: #52bcec;
+  padding-left: 35px;
+}
+/* line 151, ../sass/_icons.scss */
+.next:hover {
+  background: url("../images/icons/icon_next.png") no-repeat left top;
+  background-color: #094fa4;
+}
+
+/* line 157, ../sass/_icons.scss */
+.zoom {
+  position: absolute;
+  bottom: .5em;
+  right: .5em;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  display: block;
+  background: url("../images/icons/zoom.png") no-repeat;
+}
+
+/* line 167, ../sass/_icons.scss */
+.import {
+  background: url("../images/icons/icon_import.png") no-repeat left bottom;
+  background-color: #52bcec;
+  padding-left: 35px;
+}
+/* line 171, ../sass/_icons.scss */
+.import:hover {
+  background: url("../images/icons/icon_import.png") no-repeat left top;
+  background-color: #094fa4;
+}
+
+/* line 177, ../sass/_icons.scss */
+.back {
+  background: url("../images/icons/icon_back.png") no-repeat left top transparent;
+  padding-left: 35px;
+  border: none;
+  color: #009ee5;
+}
+/* line 182, ../sass/_icons.scss */
+.back:hover {
+  background: url("../images/icons/icon_back.png") no-repeat left top #eeeeee;
+}
+
+/* line 186, ../sass/_icons.scss */
+.calendar {
+  background: url("../images/icons/icon_date.png") no-repeat bottom;
+  background-color: #009ee5;
+  width: 55px;
+  height: 30px;
+  overflow: hidden;
+}
+/* line 192, ../sass/_icons.scss */
+.calendar:hover {
+  background: url("../images/icons/icon_date.png") no-repeat top;
+  background-color: #094fa4;
+}
+/* line 196, ../sass/_icons.scss */
+.calendar span {
+  position: absolute;
+  top: -3em;
+}
+
+/* line 202, ../sass/_icons.scss */
+.save,
+#main .action_box .save,
+#cboxContent .action_box .save,
+#main .pagination .save,
+#cboxContent .pagination .save {
+  background: url("../images/icons/icon_save.png") no-repeat left bottom;
+  background-color: #009ee5;
+  padding-left: 35px;
+}
+/* line 207, ../sass/_icons.scss */
+.save:hover,
+#main .action_box .save:hover,
+#cboxContent .action_box .save:hover,
+#main .pagination .save:hover,
+#cboxContent .pagination .save:hover {
+  background: url("../images/icons/icon_save.png") no-repeat left top;
+  background-color: #094fa4;
+}
+
+/* line 213, ../sass/_icons.scss */
+.play, input.play {
+  background: url("../images/icons/icon_play.png") no-repeat left bottom;
+  background-color: #009ee5;
+  padding-left: 35px;
+}
+/* line 217, ../sass/_icons.scss */
+.play:hover, input.play:hover {
+  background: url("../images/icons/icon_play.png") no-repeat left top;
+  background-color: #094fa4;
+}
+
+/* line 223, ../sass/_icons.scss */
+.info {
+  width: 25px;
+  height: 25px;
+  background: url("../images/icons/icon_info.png") no-repeat top left;
+  padding-left: 2em;
+  overflow: hidden;
+  position: relative;
+  display: inline;
+  cursor: pointer;
+  cursor: help;
+}
+/* line 233, ../sass/_icons.scss */
+.info:hover {
+  background: url("../images/icons/icon_info.png") no-repeat bottom left;
+}
+/* line 236, ../sass/_icons.scss */
+.info span {
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  height: 0;
+  width: 0;
+}
+
+/* line 244, ../sass/_icons.scss */
+.icons_action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  white-space: nowrap;
+}
+/* line 249, ../sass/_icons.scss */
+.icons_action .note, .icons_action .edit, .icons_action .delete, .icons_action .delete_wrong {
+  background: url("../images/icons/icon_note.png") no-repeat;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  display: block;
+  cursor: help;
+  margin-left: 2px;
+  float: left;
+}
+/* line 258, ../sass/_icons.scss */
+.icons_action .note span, .icons_action .edit span, .icons_action .delete span, .icons_action .delete_wrong span {
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  height: 0;
+  width: 0;
+}
+/* line 265, ../sass/_icons.scss */
+.icons_action .note:hover, .icons_action .edit:hover, .icons_action .delete:hover, .icons_action .delete_wrong:hover {
+  background-position-y: -20px;
+}
+/* line 269, ../sass/_icons.scss */
+.icons_action .edit {
+  background-position: -40px 0;
+  cursor: pointer;
+}
+/* line 274, ../sass/_icons.scss */
+.icons_action .delete {
+  background-position: -20px 0;
+  cursor: pointer;
+}
+/* line 279, ../sass/_icons.scss */
+.icons_action .delete_wrong {
+  background: url("../images/icons/close_grey_small.png") no-repeat;
+}
+/* line 282, ../sass/_icons.scss */
+.icons_action .delete_wrong:hover {
+  background-position-y: 0px;
+}
+
+/* line 287, ../sass/_icons.scss */
+.download {
+  background: url("../images/icons/icon_download.png") no-repeat top left transparent;
+  border: none;
+  color: #52bcec;
+  padding-left: 35px;
+}
+/* line 292, ../sass/_icons.scss */
+.download:hover {
+  background: url("../images/icons/icon_download.png") no-repeat top left transparent;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+/* line 298, ../sass/_icons.scss */
+.update, .btn.update, .update.save,
+#main .action_box .update.save,
+#cboxContent .action_box .update.save,
+#main .pagination .update.save,
+#cboxContent .pagination .update.save {
+  background: url("../images/icons/icon_update.png") no-repeat bottom left;
+  background-color: #009ee5;
+  padding-left: 35px;
+}
+/* line 302, ../sass/_icons.scss */
+.update:hover, .btn.update:hover, .update.save:hover,
+#main .action_box .update.save:hover,
+#cboxContent .action_box .update.save:hover,
+#main .pagination .update.save:hover,
+#cboxContent .pagination .update.save:hover {
+  background: url("../images/icons/icon_update.png") no-repeat top left;
+  background-color: #094fa4;
+}
+
+/* line 307, ../sass/_icons.scss */
+.edit {
+  display: inline;
+  width: 22px;
+  height: 22px;
+  background: url("../images/icons/icon_edit.png") no-repeat transparent;
+  overflow: hidden;
+  font-size: 20px;
+}
+/* line 314, ../sass/_icons.scss */
+.edit span {
+  visibility: hidden;
+}
+
+/* line 318, ../sass/_icons.scss */
+.graph_01 {
+  background: url("../images/icons/icon_graph_01.png") no-repeat top;
+}
+
+/* line 321, ../sass/_icons.scss */
+.graph_02 {
+  background: url("../images/icons/icon_graph_02.png") no-repeat top;
+}
+
+/* line 324, ../sass/_icons.scss */
+.graph_03 {
+  background: url("../images/icons/icon_graph_03.png") no-repeat top;
+}
+
+/* line 327, ../sass/_icons.scss */
+.graph_04 {
+  background: url("../images/icons/icon_graph_04.png") no-repeat top;
+}
+
+/* line 330, ../sass/_icons.scss */
+.graph_05 {
+  background: url("../images/icons/icon_graph_05.png") no-repeat top;
+}
+
+/* line 333, ../sass/_icons.scss */
+.graph_component label.current {
+  background-color: #094fa4;
+}
+
+/* line 336, ../sass/_icons.scss */
+.columns_botonera {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 28px;
+  overflow: hidden;
+  border: 1px solid #939598;
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+/* line 345, ../sass/_icons.scss */
+.columns_botonera ul li {
+  float: left;
+  padding: 4px;
+}
+/* line 349, ../sass/_icons.scss */
+.columns_botonera ul a {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+/* line 355, ../sass/_icons.scss */
+.columns_botonera ul .column1 a {
+  background: url("../images/icons/icons_column.png") no-repeat 0 0;
+}
+/* line 358, ../sass/_icons.scss */
+.columns_botonera ul .column1.current a {
+  background-position: 0 -20px;
+}
+/* line 364, ../sass/_icons.scss */
+.columns_botonera ul .column2 a {
+  background: url("../images/icons/icons_column.png") no-repeat -20px 0;
+}
+/* line 367, ../sass/_icons.scss */
+.columns_botonera ul .column2.current a {
+  background-position: -20px -20px;
+}
+/* line 373, ../sass/_icons.scss */
+.columns_botonera ul .column3 a {
+  background: url("../images/icons/icons_column.png") no-repeat -40px 0;
+}
+/* line 376, ../sass/_icons.scss */
+.columns_botonera ul .column3.current a {
+  background-position: -40px -20px;
+}
+/* line 381, ../sass/_icons.scss */
+.columns_botonera ul .column4 a {
+  background: url("../images/icons/icons_column.png") no-repeat -60px 0;
+}
+/* line 384, ../sass/_icons.scss */
+.columns_botonera ul .column4.current a {
+  background-position: -60px -20px;
+}
+/* line 389, ../sass/_icons.scss */
+.columns_botonera ul .lista a {
+  background: url("../images/icons/icons_column.png") no-repeat -80px 0;
+}
+/* line 392, ../sass/_icons.scss */
+.columns_botonera ul .lista.current a {
+  background-position: -80px -20px;
+}
+/* line 397, ../sass/_icons.scss */
+.columns_botonera ul .calendario a {
+  background: url("../images/icons/icons_column.png") no-repeat -100px 0;
+}
+/* line 400, ../sass/_icons.scss */
+.columns_botonera ul .calendario.current a {
+  background-position: -100px -20px;
+}
+/* line 406, ../sass/_icons.scss */
+.columns_botonera ul .mapa a {
+  background: url("../images/icons/icons_column.png") no-repeat -120px 0;
+}
+/* line 409, ../sass/_icons.scss */
+.columns_botonera ul .mapa.current a {
+  background-position: -120px -20px;
+}
+/* line 417, ../sass/_icons.scss */
+.columns_botonera span {
+  position: absolute;
+  top: 5em;
+}
+
+/* line 1, ../sass/_iframes.scss */
+#iframe {
+  background: white;
+}
+/* line 3, ../sass/_iframes.scss */
+#iframe #main, #iframe #cboxContent {
+  height: 100%;
+  border-top: 0;
+  margin-left: 0;
+  padding: 0;
+  width: 98%;
+  position: relative;
+  left: 0;
+}
+/* line 11, ../sass/_iframes.scss */
+#iframe #main .box, #iframe #cboxContent .box {
+  position: relative;
+}
+/* line 13, ../sass/_iframes.scss */
+#iframe #main .box h1, #iframe #cboxContent .box h1, #iframe #main .box h2, #iframe #cboxContent .box #main h2, #main #iframe #cboxContent .box h2, #iframe #main .box #cboxContent h2, #cboxContent #iframe #main .box h2, #iframe #cboxContent .box h2, #iframe #main .box h3, #iframe #cboxContent .box #main h3, #main #iframe #cboxContent .box h3, #iframe #main .box #cboxContent h3, #cboxContent #iframe #main .box h3, #iframe #cboxContent .box h3, #iframe #main .box h4, #iframe #cboxContent .box #main h4, #main #iframe #cboxContent .box h4, #iframe #main .box #cboxContent h4, #cboxContent #iframe #main .box h4, #iframe #cboxContent .box h4, #iframe #main .box h5, #iframe #cboxContent .box #main h5, #main #iframe #cboxContent .box h5, #iframe #main .box #cboxContent h5, #cboxContent #iframe #main .box h5, #iframe #cboxContent .box h5 {
+  color: white;
+  background: #094fa4;
+  padding: .5em;
+  margin-top: 0;
+}
+/* line 21, ../sass/_iframes.scss */
+#iframe #main.installation #primary .botonera, #iframe .installation#cboxContent #primary .botonera {
+  margin: 0 2em 0 0;
+}
+/* line 24, ../sass/_iframes.scss */
+#iframe #main.installation .content, #iframe .installation#cboxContent .content {
+  margin-right: 2em;
+}
+/* line 27, ../sass/_iframes.scss */
+#iframe #main.installation iframe, #iframe .installation#cboxContent iframe {
+  border: 5px solid #939598;
+}
+/* line 30, ../sass/_iframes.scss */
+#iframe #main.installation li, #iframe .installation#cboxContent li {
+  overflow: hidden;
+  margin-bottom: .3em;
+}
+/* line 33, ../sass/_iframes.scss */
+#iframe #main.installation li a, #iframe .installation#cboxContent li a {
+  float: none;
+  display: inline;
+  margin: 0;
+}
+/* line 39, ../sass/_iframes.scss */
+#iframe #main.installation label, #iframe .installation#cboxContent label {
+  width: 150px;
+  margin-left: 2%;
+  display: block;
+  float: left;
+  padding: .5em;
+}
+/* line 46, ../sass/_iframes.scss */
+#iframe #main.installation input[type="text"], #iframe .installation#cboxContent input[type="text"] {
+  width: 180px;
+  padding: .2em;
+}
+/* line 49, ../sass/_iframes.scss */
+#iframe #main.installation input[type="text"].date, #iframe .installation#cboxContent input[type="text"].date {
+  width: 148px;
+}
+/* line 53, ../sass/_iframes.scss */
+#iframe #main.installation select, #iframe .installation#cboxContent select {
+  margin: 0;
+  width: 180px;
+}
+/* line 57, ../sass/_iframes.scss */
+#iframe #main.installation input[type="checkbox"], #iframe .installation#cboxContent input[type="checkbox"] {
+  margin: 0.5em 0;
+}
+/* line 60, ../sass/_iframes.scss */
+#iframe #main.installation input.withbutton, #iframe .installation#cboxContent input.withbutton {
+  width: 25%;
+  float: left;
+}
+/* line 64, ../sass/_iframes.scss */
+#iframe #main.installation .message, #iframe .installation#cboxContent .message, #iframe #main.installation .no_queries, #iframe .installation#cboxContent .no_queries {
+  clear: both;
+  float: right;
+  margin-left: 44%;
+  margin-right: 1em;
+}
+/* line 70, ../sass/_iframes.scss */
+#iframe #main.installation .row, #iframe .installation#cboxContent .row {
+  -o-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  padding: .5em;
+  background: #eeeeee;
+}
+/* line 74, ../sass/_iframes.scss */
+#iframe #main.installation .row label, #iframe .installation#cboxContent .row label {
+  width: auto;
+  padding: 0;
+  margin: 0;
+  margin-right: .5em;
+}
+/* line 80, ../sass/_iframes.scss */
+#iframe #main.installation .row input[type="radio"], #iframe .installation#cboxContent .row input[type="radio"] {
+  margin-right: .5em;
+}
+/* line 84, ../sass/_iframes.scss */
+#iframe #main.installation .form, #iframe .installation#cboxContent .form {
+  padding-right: 0;
+  clear: both;
+}
+/* line 87, ../sass/_iframes.scss */
+#iframe #main.installation .form label, #iframe .installation#cboxContent .form label {
+  text-align: right;
+  margin-right: 1em;
+}
+/* line 92, ../sass/_iframes.scss */
+#iframe #main.installation #map, #iframe .installation#cboxContent #map {
+  width: 50%;
+  height: 380px;
+  float: right;
+  margin-top: 7.5em;
+}
+/* line 100, ../sass/_iframes.scss */
+#iframe .content.fixed {
+  margin-bottom: 3em;
+}
+/* line 102, ../sass/_iframes.scss */
+#iframe .content.fixed .botonera {
+  border-top: 1px solid #6d6e71;
+  margin: 0;
+  background: white;
+  padding-top: .5em;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+/* line 113, ../sass/_iframes.scss */
+#iframe .row {
+  padding: 0;
+}
+/* line 115, ../sass/_iframes.scss */
+#iframe .row label {
+  width: 30%;
+  text-align: left;
+  margin-right: 1em;
+}
+
+@media screen and (max-width: 1200px) {
+  /* line 4, ../sass/_responsive.scss */
+  #dashboard #columns .column4 {
+    display: none;
+  }
+  /* line 8, ../sass/_responsive.scss */
+  #dashboard #sortable.column4 li.ui-state-default {
+    width: 29%;
+  }
+}
+@media screen and (max-width: 1023px) {
+  /* line 15, ../sass/_responsive.scss */
+  #rButton {
+    display: block;
+    cursor: pointer;
+  }
+
+  /* line 20, ../sass/_responsive.scss */
+  #main_header h1, #main_header #main h2, #main #main_header h2, #main_header #cboxContent h2, #cboxContent #main_header h2, #main_header #main h3, #main #main_header h3, #main_header #cboxContent h3, #cboxContent #main_header h3, #main_header #main h4, #main #main_header h4, #main_header #cboxContent h4, #cboxContent #main_header h4, #main_header #main h5, #main #main_header h5, #main_header #cboxContent h5, #cboxContent #main_header h5 {
+    left: 40px;
+  }
+  /* line 22, ../sass/_responsive.scss */
+  #main_header h1 strong, #main_header #main h2 strong, #main #main_header h2 strong, #main_header #cboxContent h2 strong, #cboxContent #main_header h2 strong, #main_header #main h3 strong, #main #main_header h3 strong, #main_header #cboxContent h3 strong, #cboxContent #main_header h3 strong, #main_header #main h4 strong, #main #main_header h4 strong, #main_header #cboxContent h4 strong, #cboxContent #main_header h4 strong, #main_header #main h5 strong, #main #main_header h5 strong, #main_header #cboxContent h5 strong, #cboxContent #main_header h5 strong {
+    left: 85px;
+    font-size: 1.2em;
+    top: 10px;
+  }
+  /* line 28, ../sass/_responsive.scss */
+  #main_header #user_info {
+    right: 5px;
+    margin-left: 0;
+  }
+  /* line 31, ../sass/_responsive.scss */
+  #main_header #user_info .welcome, #main_header #user_info .date {
+    display: none;
+  }
+  /* line 35, ../sass/_responsive.scss */
+  #main_header #lang ul {
+    right: 0;
+  }
+  /* line 37, ../sass/_responsive.scss */
+  #main_header #lang ul a {
+    font-size: 1.5em;
+  }
+
+  /* line 42, ../sass/_responsive.scss */
+  #main_nav.btn_close {
+    display: none;
+  }
+
+  /* line 45, ../sass/_responsive.scss */
+  #main, #cboxContent {
+    margin-left: 0;
+    padding-top: 5%;
+    left: 90px;
+  }
+
+  /* line 50, ../sass/_responsive.scss */
+  #cboxContent {
+    left: 0;
+  }
+
+  /* line 53, ../sass/_responsive.scss */
+  #main.btn_close, .btn_close#cboxContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 5%;
+    width: 90%;
+    z-index: 999;
+    min-height: 100%;
+  }
+
+  /* line 63, ../sass/_responsive.scss */
+  #cboxClose {
+    top: 0;
+    right: 0;
+  }
+
+  /* line 70, ../sass/_responsive.scss */
+  #dashboard #columns .column3 {
+    display: none;
+  }
+  /* line 74, ../sass/_responsive.scss */
+  #dashboard #header_g #components ul li {
+    font-size: 1.5em;
+  }
+  /* line 77, ../sass/_responsive.scss */
+  #dashboard #sortable.column3 li.ui-state-default, #dashboard #sortable.column4 li.ui-state-default {
+    width: 46%;
+  }
+
+  /* line 82, ../sass/_responsive.scss */
+  #main .action_box.data .model, #cboxContent .action_box.data .model, #main .data.pagination .model, #cboxContent .data.pagination .model, #cboxContent .action_box.data .model, #cboxContent .data.pagination .model, #main .data.pagination .model, #cboxContent .data.pagination .model, #cboxContent .data.pagination .model {
+    width: 35%;
+  }
+
+  /* line 85, ../sass/_responsive.scss */
+  #main .action_box.data .ul_data, #cboxContent .action_box.data .ul_data, #main .data.pagination .ul_data, #cboxContent .data.pagination .ul_data, #main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .ul_data, #cboxContent .data.pagination .ul_data, #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #main .data.pagination .ul_data, #cboxContent .data.pagination .ul_data, #cboxContent .data.pagination #main .action_box.data .ul_data_wide, #main .data.pagination #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide {
+    width: 60%;
+  }
+
+  /* line 88, ../sass/_responsive.scss */
+  #main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide {
+    width: 100%;
+  }
+
+  /* line 91, ../sass/_responsive.scss */
+  #main .action_box.data .ul_data > ul li, #cboxContent .action_box.data .ul_data > ul li, #main .data.pagination .ul_data > ul li, #cboxContent .data.pagination .ul_data > ul li, #main .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li, #main .data.pagination .ul_data_wide > ul li, #cboxContent #main .data.pagination .ul_data_wide > ul li, #main #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li, #main #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent #main .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent .action_box.data .ul_data > ul li, #cboxContent .data.pagination .ul_data > ul li, #cboxContent .action_box.data .ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li, #cboxContent #main .data.pagination .ul_data_wide > ul li, #main #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li, #main .data.pagination .ul_data > ul li, #cboxContent .data.pagination .ul_data > ul li, #cboxContent .data.pagination #main .action_box.data .ul_data_wide > ul li, #main .data.pagination #cboxContent .action_box.data .ul_data_wide > ul li, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li, #main .data.pagination .ul_data_wide > ul li, #cboxContent #main .data.pagination .ul_data_wide > ul li, #main #cboxContent .data.pagination .ul_data_wide > ul li, #main #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent #main .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data > ul li, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li, #cboxContent #main .data.pagination .ul_data_wide > ul li, #main #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li, #main .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .ul_data_wide > ul li, #main .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent .action_box.data .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li, #main .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li {
+    width: 96%;
+  }
+  /* line 93, ../sass/_responsive.scss */
+  #main .action_box.data .ul_data > ul li li strong, #cboxContent .action_box.data .ul_data > ul li li strong, #main .data.pagination .ul_data > ul li li strong, #cboxContent .data.pagination .ul_data > ul li li strong, #main .action_box.data .ul_data_wide > ul li li strong, #cboxContent .action_box.data .ul_data_wide > ul li li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li li strong, #main .data.pagination .ul_data_wide > ul li li strong, #cboxContent #main .data.pagination .ul_data_wide > ul li li strong, #main #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li li strong, #main #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent #main .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent .action_box.data .ul_data > ul li li strong, #cboxContent .data.pagination .ul_data > ul li li strong, #cboxContent .action_box.data .ul_data_wide > ul li li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li li strong, #cboxContent #main .data.pagination .ul_data_wide > ul li li strong, #main #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data_wide > ul li li strong, #main .data.pagination .ul_data > ul li li strong, #cboxContent .data.pagination .ul_data > ul li li strong, #cboxContent .data.pagination #main .action_box.data .ul_data_wide > ul li li strong, #main .data.pagination #cboxContent .action_box.data .ul_data_wide > ul li li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li li strong, #main .data.pagination .ul_data_wide > ul li li strong, #cboxContent #main .data.pagination .ul_data_wide > ul li li strong, #main #cboxContent .data.pagination .ul_data_wide > ul li li strong, #main #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent #main .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data > ul li li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide > ul li li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide > ul li li strong, #cboxContent #main .data.pagination .ul_data_wide > ul li li strong, #main #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data_wide > ul li li strong, #main .action_box.data .ul_data_wide > ul li li strong, #cboxContent .action_box.data .ul_data_wide > ul li li strong, #main .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent .action_box.data .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data_wide > ul li li strong, #main .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data_wide > ul li li strong, #cboxContent .data.pagination .ul_data_wide > ul li li strong {
+    width: 40%;
+  }
+
+  /* line 97, ../sass/_responsive.scss */
+  nav.sub_nav {
+    font-size: .9em;
+  }
+
+  /* line 100, ../sass/_responsive.scss */
+  table.link tr.detail ul li, table.link tr.detail:hover ul li {
+    width: 49%;
+  }
+
+  /* line 105, ../sass/_responsive.scss */
+  .documentation #header_g, .documentation .menu, .documentation .scroll {
+    width: 100%;
+    margin-top: 1em;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+@media screen and (max-width: 600px) {
+  /* line 117, ../sass/_responsive.scss */
+  #error_box {
+    background: none;
+    width: auto;
+    height: auto;
+    margin: 0;
+    position: static;
+  }
+  /* line 123, ../sass/_responsive.scss */
+  #error_box .message_box {
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0;
+    max-height: auto;
+    overflow: auto;
+  }
+
+  /* line 132, ../sass/_responsive.scss */
+  nav#main_nav #nav_icons a {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    background: none;
+  }
+
+  /* line 137, ../sass/_responsive.scss */
+  nav#main_nav #nav_icons .help {
+    position: relative;
+  }
+
+  /* line 140, ../sass/_responsive.scss */
+  .add, .clock, .next, .import, .back, .save, .download, .update {
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0;
+    padding-left: 30px;
+  }
+  /* line 146, ../sass/_responsive.scss */
+  #iframe .add, #iframe .clock, #iframe .next, #iframe .import, #iframe .back, #iframe .save, #iframe .download, #iframe .update {
+    width: auto;
+    padding: 0.5em 1em;
+    padding-left: 30px;
+  }
+
+  /* line 154, ../sass/_responsive.scss */
+  #main .action_box.data .model, #cboxContent .action_box.data .model, #main .data.pagination .model, #cboxContent .data.pagination .model, #cboxContent .action_box.data .model, #cboxContent .data.pagination .model, #main .data.pagination .model, #cboxContent .data.pagination .model, #cboxContent .data.pagination .model {
+    width: 96%;
+  }
+
+  /* line 157, ../sass/_responsive.scss */
+  #main .action_box.data .ul_data, #cboxContent .action_box.data .ul_data, #main .data.pagination .ul_data, #cboxContent .data.pagination .ul_data, #main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .ul_data, #cboxContent .data.pagination .ul_data, #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #main .data.pagination .ul_data, #cboxContent .data.pagination .ul_data, #cboxContent .data.pagination #main .action_box.data .ul_data_wide, #main .data.pagination #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data, #cboxContent .data.pagination .action_box.data .ul_data_wide, #cboxContent .action_box.data .data.pagination .ul_data_wide, #cboxContent #main .data.pagination .ul_data_wide, #main #cboxContent .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide {
+    width: 96%;
+  }
+  /* line 159, ../sass/_responsive.scss */
+  #main .action_box.data .ul_data li strong, #cboxContent .action_box.data .ul_data li strong, #main .data.pagination .ul_data li strong, #cboxContent .data.pagination .ul_data li strong, #main .action_box.data .ul_data_wide li strong, #cboxContent .action_box.data .ul_data_wide li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide li strong, #main .data.pagination .ul_data_wide li strong, #cboxContent #main .data.pagination .ul_data_wide li strong, #main #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide li strong, #main #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent #main .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent .action_box.data .ul_data li strong, #cboxContent .data.pagination .ul_data li strong, #cboxContent .action_box.data .ul_data_wide li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide li strong, #cboxContent #main .data.pagination .ul_data_wide li strong, #main #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide li strong, #cboxContent .data.pagination .ul_data_wide li strong, #main .data.pagination .ul_data li strong, #cboxContent .data.pagination .ul_data li strong, #cboxContent .data.pagination #main .action_box.data .ul_data_wide li strong, #main .data.pagination #cboxContent .action_box.data .ul_data_wide li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide li strong, #main .data.pagination .ul_data_wide li strong, #cboxContent #main .data.pagination .ul_data_wide li strong, #main #cboxContent .data.pagination .ul_data_wide li strong, #main #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent #main .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .ul_data li strong, #cboxContent .data.pagination .action_box.data .ul_data_wide li strong, #cboxContent .action_box.data .data.pagination .ul_data_wide li strong, #cboxContent #main .data.pagination .ul_data_wide li strong, #main #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .ul_data_wide li strong, #main .action_box.data .ul_data_wide li strong, #cboxContent .action_box.data .ul_data_wide li strong, #main .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent .action_box.data .ul_data_wide li strong, #cboxContent .data.pagination .ul_data_wide li strong, #main .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .ul_data_wide li strong, #cboxContent .data.pagination .ul_data_wide li strong {
+    width: 30%;
+  }
+
+  /* line 163, ../sass/_responsive.scss */
+  nav.sub_nav {
+    font-size: .7em;
+  }
+
+  /* line 166, ../sass/_responsive.scss */
+  table.link tr.detail ul li, table.link tr.detail:hover ul li {
+    width: 49%;
+  }
+
+  /* line 169, ../sass/_responsive.scss */
+  .w33, .w66 {
+    width: 100%;
+  }
+
+  /* line 173, ../sass/_responsive.scss */
+  #main .fc-header h2, #cboxContent .fc-header h2 {
+    font-size: 1em;
+  }
+}
+
+div.summaryContent {
+	width: 500px;
+	height : 350px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+#main .summaryContent .action_box.data .ul_data {
+	width : 100%;
+}
+
+form#newWidgetForm .row select {
+	width: 225px;	
+}

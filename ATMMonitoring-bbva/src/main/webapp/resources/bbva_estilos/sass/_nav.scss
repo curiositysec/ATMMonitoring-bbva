@@ -1,0 +1,102 @@
+nav#main_nav{
+	background:url("../images/general/bg_main_nav.png") no-repeat;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 998;
+	padding-bottom: 45px;
+	padding-top: 50px;
+	ul{
+		border-top: 1px solid $colorB;
+	}
+	li{
+		position: relative;
+	}
+	& .dashboard a{
+		background:url("../images/icons/icons_main_left.png") no-repeat 0 -80px transparent;
+	}
+	& .terminals a{
+		background:url("../images/icons/icons_main_left.png") no-repeat -90px -80px transparent;
+	}
+	& .users a{
+		background:url("../images/icons/icons_main_left.png") no-repeat -180px -80px transparent;
+	}
+	& .reports a{
+		background:url("../images/icons/icons_main_left.png") no-repeat -270px -80px transparent;
+	}
+	& .schedule a{
+		background:url("../images/icons/icons_main_left.png") no-repeat -360px -80px transparent;
+	}
+	& .help{
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 2;
+		 a{
+			background:url("../images/icons/icons_main_left.png") no-repeat -450px -80px transparent;
+		}
+	}
+	a{
+		color: $colorB5;
+		display: block;
+		width: 90px;
+		padding-top: 70px;
+		padding-bottom: 5px;
+		border-bottom: 1px solid $colorK5;
+		text-align: center;
+		&:hover{
+			text-decoration: none;
+			background-color: $colorB2;
+			background-position-y: 0;
+			color: $colorW;
+		}
+	}
+}
+#tabs{
+	min-height: 1080px;
+	.margin-box{
+		margin-bottom: 2em;
+		overflow: auto;
+	}
+}
+#tabs .desplegable{
+	.margin-box{
+		margin-bottom: 0;
+	}
+}
+nav.sub_nav{
+	background-color: $colorW1;
+	height: 3em;
+	margin-bottom: 2em;
+	li{
+		float: left;
+		border-right: 1px solid $colorW1;
+		position: relative;
+		a{
+			display: block;
+			cursor: pointer;
+			padding: 1em;
+			color: $colorK1;
+			&:hover{
+				text-decoration: none;
+				color: $colorW;
+				background-color: $colorK1;
+			}
+		}
+	}
+	li.current a{
+		text-decoration: none;
+		color: $colorW;
+		background-color: $colorK1;
+		&:after {
+		   content: "";
+		   position: absolute;
+		   top: 100%;
+		   left: 38%;
+		   border-top: 1.5em solid $colorK1;
+		   border-top-color: $colorK1;
+		   border-left: 1em solid transparent;
+		   border-right: 1em solid transparent;
+		  }
+	}
+}

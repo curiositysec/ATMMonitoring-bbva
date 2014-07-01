@@ -1,0 +1,92 @@
+#login_user {
+    #scene {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        perspective: 800px;
+        -webkit-perspective: 800px;
+        background: $colorK1 url(../images/general/login_bg.jpg) no-repeat;
+        background-size: cover;
+    }
+    #login_box {
+        transition: transform 1s;
+        -webkit-transition: -webkit-transform 1s;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform-origin: right center;
+        -webkit-transform-origin: right center;
+        transform-style: preserve3d;
+        -webkit-transform-style: preserve3d;
+        transform: translateX(30%) translateZ(-250px) rotateY(90deg);
+        -webkit-transform: translateX(30%) translateZ(-250px) rotateY(90deg);
+    }
+    #login_box.flipped {
+        transform: translateX(0) translateZ(0) rotateY(0deg);
+        -webkit-transform: translateX(0) translateZ(0) rotateY(0deg);
+    }
+    //width: 100%;
+    //height: 100%;
+    // overflow: hidden;
+    // background: $colorK1 url(../images/general/login_bg.jpg) no-repeat;
+    // background-size: cover;
+    #login_box {
+        h1 {
+            color: $colorB;
+            background:$colorW;
+            padding: 0.5em 1.2em;
+            text-align: right;
+            overflow: hidden;
+            span {
+                position: absolute;
+                top: -300px;
+            }
+            img {
+                float: left;
+            }
+            strong {
+                font-size: 2em;
+                font-weight: normal;
+            }
+        }
+        @include transitionAll;
+        font-size: 1.5em;
+        background: $colorW;
+        background: rgba(255, 255, 255, 0.85);
+        position: absolute;
+        @include border-radius(4px);
+        top: 50%;
+        left: 50%;
+        width: 500px;
+        min-height: 290px;
+        margin-top: -250px;
+        margin-left: -250px;
+        padding-bottom: 1em;
+        label {
+            width: 30%;
+            text-align: right;
+        }
+        .row {
+            border: none;
+            padding: 0.5em 0 0 0;
+            input {
+                width: 50%;
+                color: $colorK3;
+            }
+        }
+        .botonera {
+            padding-right: .5em;
+            border-top: 2px dotted $colorK4;
+            padding-top: .5em;
+            margin-bottom: 0;
+            .btn {
+                float: right;
+            }
+        }
+        .error {
+            margin: .5em;
+            @include transitionAll;
+        }
+    }
+}

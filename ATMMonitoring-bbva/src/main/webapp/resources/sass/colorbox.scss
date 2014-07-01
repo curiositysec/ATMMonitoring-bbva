@@ -1,0 +1,53 @@
+@import "compass/reset";
+@import "compass/css3";
+@import "variables";
+@import "forms";
+@import "icons";
+@import "messages";
+@import "table";
+
+.colorbox_box{
+	background: $colorW;
+	color: $colorK1;
+	font-family: Arial, Sans-Serif;
+	font-size: .8em;
+    padding: 2em;
+    h1{
+		font-size: 2.2em;
+		color: $colorB;
+		margin-bottom: 1em;
+		font-weight: normal;
+	}
+	h2{
+		@extend h1;
+		font-size: 2em;
+	}
+	p{
+		margin: .5em 0;
+		line-height: 1.5em;
+	}
+	a{
+		@include transitionAll;
+		color:$colorB;
+		text-decoration: none;
+	}
+	.botonera{
+		border-top:1px solid $colorK3;
+		padding: 1em 0 0 0;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		background:$colorW;
+		ul{
+			margin-right: 2em;
+		}
+		li{
+			float: right;
+			margin-left: .5em;
+			a{
+				margin: 0;
+			}
+		}
+	}
+}

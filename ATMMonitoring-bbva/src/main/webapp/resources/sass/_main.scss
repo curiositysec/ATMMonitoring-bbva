@@ -1,0 +1,240 @@
+body{
+	background: $colorW url("../images/general/bg_body.png") repeat-y fixed;
+	color: $colorK1;
+	font-family: $generalFont;
+	font-size: .8em;
+	overflow-x:hidden;
+}
+a{
+	@include transitionAll;
+	color:$colorB3;
+	text-decoration: none;
+	outline: none;
+	&:hover{
+		text-decoration: underline;
+	}
+}
+p{
+	margin: .5em 0;
+	line-height: 1.5em;
+}
+#main{
+	padding: 16px 35px;
+	border-top: 50px solid $colorW;
+	margin-left: 90px;
+	background:$colorW;
+	min-height: 300px;
+	position: relative;
+	h1{
+		font-family: $designFont;
+		font-size: 2.2em;
+		color: $colorB3;
+		margin: .5em 0;
+		font-weight: normal;
+		clear: left;
+	}
+	h2{
+		font-family: $designFont;
+		@extend h1;
+		font-size: 1.7em;
+	}
+	h3{
+		font-family: $designFont;
+		@extend h1;
+		font-size: 1.5em;
+	}
+	h4{
+		font-family: $designFont;
+		@extend h1;
+		font-size: 1.2em;
+		font-weight: bold;
+	}
+	h5{
+		font-family: $designFont;
+		@extend h1;
+		font-size: 1em;
+		font-weight: bold;
+	}
+}
+#cboxContent{
+	@extend #main;
+	border:none;
+	#help_pop{
+		margin-right: 1em;
+	}
+}
+.left{
+	float: left !important;
+}
+.right{
+	float: right !important;
+	&.photo{
+		margin: 0 0 1em 2em;
+	}
+}
+.pagination{
+	@extend .action_box;
+	overflow: hidden;
+	margin: 2em 0;
+	.t_number{
+		float: left;
+		font-size: 1.2em;
+		font-weight: bold;
+	}
+	.p_number{
+		float: right;
+	}
+	span{
+		float: left;
+		margin-right: .2em;
+		&.text{
+			padding: .3em .5em;
+		}
+		&.pagingItemCurrent{
+			@include border-radius(4px);
+			padding: .4em .5em;
+			background-color: $colorB3;
+			text-decoration: none;
+			color: $colorW;
+		 }
+		a{
+			padding: .3em .5em;
+			display: block;
+			border: 1px solid $colorB3;
+			@include border-radius(4px);
+			&:hover{
+				background-color: $colorB3;
+				text-decoration: none;
+				color: $colorW;
+			}
+		}
+
+	}
+}
+strong{
+	font-weight: bold;
+}
+.hidden, .hide{
+	display: none;
+}
+.content{
+	#help &{
+		border-top: 2px dotted $colorK4;
+		padding-bottom: 1em;
+		margin-bottom: .5em;
+		ul{
+			list-style-type:square;
+			padding-left: 2em;
+		}
+		ol{
+			list-style-type:decimal;
+			padding-left: 2em;
+		}
+		li{
+			padding: .5em;
+			padding-left: .5em;
+		}
+	}
+}
+.photo{
+	border:5px solid $colorW;
+	padding: .5em;
+	background:$colorW;
+}
+.td{
+	border:none;
+	label, input, select, div, form{
+		display: inline;
+		float: none;
+	}
+}
+.editable{
+	.relative{
+		position: relative;
+		padding-right:4em;
+		.botonera{
+			position: absolute;
+			right: 0;
+			top: 0;
+			margin: 0;
+			padding: 0;
+		}
+	}
+}
+.nowrap{
+	white-space: nowrap;
+}
+.w33{
+	width: 33%;
+}
+.w66{
+	width: 66%;
+}
+.w25{
+	width: 25%;
+}
+.w50{
+	width: 50%;
+}
+.w75{
+	width: 75%;
+}
+.h100{
+	height: 100%;
+}
+.column33{
+	width: 33%;
+	float: left;
+}
+.column66{
+	width: 66%;
+	float: left;
+}
+#error_box{
+	background:url("../images/general/bg_error.png") no-repeat;
+	width: 580px;
+	height: 480px;
+	margin: 1em auto;
+	position: relative;
+	.message_box{
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin: 100px;
+		max-height: 270px;
+		overflow: auto;
+	}
+}
+.timeline-event-icon{
+
+  top: 7px !important;
+
+}
+
+.timeline-copyright{
+
+display:none;
+
+}
+
+.history_legend{ 
+
+padding: .5em 0;
+
+}
+.timeline-band-scrollbar{
+	display: none !important;
+}
+div#terminalsMap {
+	height : 600px;
+	width  : 80%;
+	margin-left: auto;
+  	margin-right: auto;
+}
+div.summaryContent {
+	width: 500px;
+	height : 350px;
+}
+#main .summaryContent .action_box.data .ul_data {
+	width : 100%;
+}

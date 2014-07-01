@@ -1,0 +1,2 @@
+<h1 style="font-size: 3.2em;">%(title)s</h1>
+%(body)s

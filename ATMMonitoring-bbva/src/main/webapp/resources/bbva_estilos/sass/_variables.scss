@@ -1,0 +1,75 @@
+// FONTS
+$generalFont: Arial, Helvetica, sans-serif;
+$designFont: "bbvaweb-light", Arial, Helvetica, sans-serif;
+$handFont: "architects_daughterregular", Arial, Helvetica, sans-serif;
+// COLORS
+$colorK: #4D4D4F;
+$colorK1: #4D4D4F;
+$colorK2: #6D6E71;
+$colorK3: #6D6E71;
+$colorK4: #939598;
+$colorK5: #BCBEC0;
+$colorK6: #D1D3D4;
+
+$colorB:#094FA4; // Azul oscuro
+$colorB1:#006EC1; // Color hover enla
+$colorB2:#009EE5; // Color de títulos y enlaces
+$colorB3:#52bcec;
+$colorB4:#8BD1F3;
+$colorB5:#B5E5F9;
+$colorB6:#f1f8fc; // Azul Fondo cajas
+$colorB7:#e5f5ff; // AZul Fondo cajas oscuro 
+
+$colorR:#C8175E; // Magenta - Color ERROR y alert_date N1
+$colorR1:#FF3691; // Magenta claro
+$colorR2:#f7e9e9; // Magenta fondo
+
+$colorY1:#FDBD2C; // Yellow
+$colorY2:#FFE9B9; // Yellow light
+
+$colorW: #FFFFFF;
+$colorW1:#eeeeee;
+
+$colorO:#F6891E; // Orange - Color alert_date N2
+$colorG:#86C82D; // Green - Color alert_date N3
+
+$colorN:#B7C204; // Green lemon
+$colorT:#3EB6BB; // Turquoise
+
+@mixin transitionAll{
+ -webkit-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+}
+@mixin transitionNone{
+ -webkit-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+@mixin shadow(){
+	-webkit-box-shadow: 0px 0px 8px $colorK3;
+    -moz-box-shadow: 0px 0px 8px $colorK3;
+    box-shadow: 0px 0px 8px $colorK3;
+}
+@mixin shadow1(){
+	-webkit-box-shadow: 8px 8px 5px $colorK3;
+    -moz-box-shadow: 8px 8px 5px $colorK3;
+    box-shadow: 8px 8px 5px $colorK3;
+}
+@mixin shadowK(){
+  -webkit-box-shadow: 8px 8px 30px $colorK;
+    -moz-box-shadow: 8px 8px 30px $colorK;
+    box-shadow: 8px 8px 30px $colorK;
+}
+@mixin shadow0(){
+  -webkit-box-shadow: 0 0 0 $colorK;
+    -moz-box-shadow: 0 0 0 $colorK;
+    box-shadow: 0 0 0 $colorK;
+}
+@mixin border-radius($radius){
+	-o-border-radius: $radius;
+ 	-moz-border-radius: $radius;
+ 	-webkit-border-radius: $radius;
+ 	border-radius: $radius;
+}

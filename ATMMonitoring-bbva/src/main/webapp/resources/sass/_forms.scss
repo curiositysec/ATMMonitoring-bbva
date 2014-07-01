@@ -1,0 +1,251 @@
+.form{
+	padding-right: 4%;
+	.row{
+		padding:.5em 3em .5em 0;
+		margin: 0;
+	}
+	label{
+		clear: right;
+		font-size: 1.2em;
+		text-align: left;
+		padding-left: 0;
+		padding-right: 0;
+	}
+	input[type="text"], textarea{
+		width: 100%;
+	}
+
+}
+.botonera{
+	overflow: hidden;
+	clear: both;
+	margin: 1em 0;
+	.btn, input[type="submit"], button{
+		float: right;
+		margin-right: 0;
+		margin-left: 1em;
+		overflow: hidden;
+		span{
+			position: absolute;
+			top: -3em;
+		}
+	}
+	input.btn{
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.request{
+		float: left;
+	}
+}
+.desplegable.button{
+	float: right;
+	margin-left: 1em;
+	.txt{
+		width: auto;
+		min-width: 100px;
+		padding: .5em 1em;
+		padding-left: 2.5em;
+		background:url("../images/icons/icon_collapsible.png") no-repeat $colorK3 left bottom;
+		border: 2px solid $colorK4;
+		margin-left: 0;
+		&:hover{
+			color: $colorW;
+		}
+		&.content_hide{
+			background:url("../images/icons/icon_collapsible.png") no-repeat $colorK2 left top;
+		}
+	}
+	.txt.content_hide{
+		width: auto;
+	}
+	.collapsible{
+		padding: 1em;
+		float: right;
+		clear: both;
+		margin-top: .5em;
+		background:$colorW;
+		border: 1px solid $colorK3;
+		input[type="text"],
+		textarea{
+			padding: 1%;
+			width: 98%;
+			font-size: 1em;
+		}
+		label{
+			padding-left: 0;
+			padding-right: 0;
+			font-weight: bold;
+		}
+	}
+}
+
+ .btn, input[type="submit"], input[type="reset"], button{
+	border:2px solid $colorB3;
+	@include border-radius(4px);
+	@include transitionAll;
+	color: $colorW;
+	font-weight: normal;
+	font-size: 1em;
+	background:$colorB2;
+	float: left;
+	margin-right: 1em;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: .5em 1em;
+	display: block;
+	cursor: pointer;
+	width: auto;
+	&:hover{
+		text-decoration: none;
+		background:$colorB;
+	}
+	.row &{
+		float: none;
+		display: inline;
+		margin: 0;
+		margin-left: 1em;
+	}
+	&.cancel{
+		background:transparent;
+		color: $colorB;
+		text-decoration: underline;
+		border: none;
+		&:hover{
+			text-decoration: none;
+		}
+	}
+	&.delete{
+		background: $colorR;
+		border:2px solid $colorR;
+		color: $colorW;
+		&:hover{
+			background: $colorW;
+			color: $colorR;
+		}
+	}
+	&.left{
+		float: left;
+		margin-left: 0;
+		margin-right: 1em;
+	}
+	&.right{
+		float: right;
+		margin-left: 1em;
+		margin-right: 0;
+	}
+}
+a.btn{
+	padding-bottom: .6em;
+	padding-top: .6em;
+}
+.txt_btn{
+	margin-right: 0;
+	right: 1em;
+	top: 1em;
+}
+input, select, textarea, label{
+	font-size: 1em;
+	padding: .5em 1em;
+	vertical-align: middle;
+}
+textarea{
+	height: 5em;
+}
+input.num{
+	width: 2em;
+}
+select{
+	margin: .5em 1em;
+	padding:  .5em 1em;
+	border: 1px solid $colorK3;
+}
+label{
+	display: block;
+	float: left;
+	text-align: right;
+	padding: .8em;
+	.colorbox_box &{
+		width: 25%;
+	}
+}
+input[type="checkbox"]{
+	margin: .8em 0;
+}
+.label{
+	margin: .8em;
+}
+.row{
+	margin: .5em 0;
+	padding: .5em 0;
+	overflow: hidden;
+	.left{
+		float: left;
+		}
+	.right{
+		float: right;
+	}
+	.colorbox_box & input[type="text"], area{
+		width: 70%;
+	}
+	li{
+		float: left;
+		width: auto;
+		white-space: nowrap;
+		label{
+			width: auto;
+		}
+	}
+}
+input:disabled{
+	background:$colorK4;
+	color: $colorW;
+	border:1px solid $colorK3;
+	&:hover{
+		background:$colorK4;
+		color: $colorW;
+		border:1px solid $colorK3;
+		cursor: inherit;
+	}
+}
+.graph_component{
+	overflow: hidden;
+	label{
+		padding-top: 3em;
+		background-color:$colorB4;
+		@include border-radius(4px);
+		text-align: center;
+		margin: 1%;
+		width: 10%;
+		overflow: hidden;
+	}
+	span{
+		display: none;
+		font-size: .8em;
+	}
+}
+.users_list{
+	margin: 1em 0;
+	overflow: hidden;
+	li{
+		float: left;
+		width: 33%;
+	}
+}
+.weekDay{
+	li{
+		width: 33%;
+		margin: 0;
+		padding: 0;
+	}
+	overflow: hidden;
+	display: block;
+	clear: both;
+	label{
+		float: none;
+	}
+	input[type="radio"]{
+		float: left;
+		margin: 1em .5em;
+	}
+}

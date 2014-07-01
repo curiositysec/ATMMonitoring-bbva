@@ -1,0 +1,131 @@
+#dashboard{
+	#sortable{
+		overflow: hidden;
+		&.one_column li{
+			width: 98%;
+		}
+		&>li{
+			margin-right: 4%;
+			margin-top:4%;
+			float: left;
+			&.ui-sortable-helper .content{
+				@include shadow;
+			}
+			&>div{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				z-index: 0;
+			}
+		}
+		&.column1 li.ui-state-default{
+			width: 96%;
+		}
+		&.column2 li.ui-state-default{
+			width: 46%;
+		}
+		&.column3 li.ui-state-default{
+			width: 29%;
+		}
+		&.column4 li.ui-state-default{
+			width: 21%;
+		}
+		div.content{
+			position: relative;
+			border:1px solid $colorK3;
+			background:$colorW url("../images/icons/icon_loader.gif") no-repeat center;
+			cursor: move;
+			padding-bottom: 86.25%;
+			padding-top: 3em;
+			height: 0;
+			overflow: hidden;
+			margin-bottom: 1em;
+			.graph{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+			}
+			&:hover{
+				.icons_bg{
+					display: block;
+				}
+			}
+		}
+	}
+	.message{
+		margin-left: 350px;
+		margin-top: 2em;
+	}
+	#header_g{
+		#components{
+			position: relative;
+			@include border-radius(4px);
+			cursor: pointer;
+			#my_components, #add_components{
+				border:2px solid $colorB3;
+				background-color: $colorB;
+				color: $colorW;
+				@include border-radius(4px);
+				float: left;
+				margin-right: 1em;
+				&>a:hover{
+					text-decoration: none;
+					background:$colorB;
+					color: $colorW;
+				}
+				&>a{
+					padding: 8px 20px;
+					display: block;
+				}
+				.content_hide{
+					span{
+						background:url("../images/icons/icons_onoff.png") no-repeat right top $colorB2;
+					}
+				}
+			}
+			#my_components{
+				span{
+					background:url("../images/icons/icons_onoff.png") no-repeat right bottom;
+				}
+				span, &>a{
+					padding: 8px 40px 8px 8px;
+					display: block;
+				}
+			}
+
+			ul{
+				display: none;
+				margin: 0;
+				padding: 0;
+				margin-top: 1em;
+				position: absolute;
+				z-index: 5;
+				border:1px solid $colorK4;
+				width: 250px;
+				@include border-radius(4px);
+				@include shadow1;
+				li{
+					background:$colorW;
+					padding: .5em 1em;
+					border-bottom: 1px solid $colorK3;
+					white-space: nowrap;
+					&.off{
+						background:$colorW1;
+						color: $colorK3;
+					}
+					&.on{
+						color: $colorB3;
+						padding-right: 3em;
+						display: block;
+						background:url("../images/icons/ico_add.png") right no-repeat $colorW;
+					}
+				}
+				li:last-child{
+					border:none;
+				}
+			}
+		}
+	}
+}

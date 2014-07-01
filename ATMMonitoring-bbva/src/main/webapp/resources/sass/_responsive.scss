@@ -1,0 +1,177 @@
+@media screen and (max-width: 1200px) {
+	#dashboard{
+		#columns{
+			.column4{
+				display: none;
+			}
+		}
+		#sortable.column4 li.ui-state-default{
+			width:29%;
+		}
+	}
+}
+@media screen and (max-width: 1023px) {
+// Generales
+	#rButton{
+		display: block;
+		cursor: pointer;
+	}
+	#main_header{ 
+		h1{
+			left: 40px;
+			strong{
+				left: 85px;
+				font-size: 1.2em;
+				top: 10px;
+			}
+		}
+		#user_info{
+			right: 5px;
+			margin-left: 0;
+			.welcome, .date{
+				display: none;
+			}
+		}
+		#lang ul{
+			right: 0;
+			a{
+				font-size: 1.5em;
+			}
+		}
+	}
+	#main_nav.btn_close{
+		display: none;
+	}
+	#main{
+		margin-left: 0;
+		padding-top: 5%;
+		left: 90px;
+	}
+	#cboxContent{
+		left: 0;
+	}
+	#main.btn_close{
+		position: absolute;
+		top: 0;
+		left: 0;
+		margin: 0;
+		padding: 5%;
+		width: 90%;
+		z-index: 999;
+		min-height: 100%;
+	}
+	#cboxClose{
+		top: 0;
+		right: 0;
+	}
+// por SECCION
+	#dashboard{
+		#columns{
+			.column3{
+				display: none;
+			}
+		}
+		#header_g #components ul li{
+			font-size: 1.5em;
+		}
+		#sortable.column3 li.ui-state-default, #sortable.column4 li.ui-state-default{
+			width:46%;
+		}
+	}
+// detalle TERMINAL
+	#main .action_box.data .model, #cboxContent .action_box.data .model, #main .data.pagination .model, #cboxContent .data.pagination .model {
+		width: 35%;
+	}
+	#main .action_box.data .ul_data, #cboxContent .action_box.data .ul_data, #main .data.pagination .ul_data, #cboxContent .data.pagination .ul_data {
+		width: 60%;
+	}
+	#main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide {
+		width: 100%;
+	}
+	#main .action_box.data .ul_data > ul li, #cboxContent .action_box.data .ul_data > ul li, #main .data.pagination .ul_data > ul li, #cboxContent .data.pagination .ul_data > ul li, #main .action_box.data .ul_data_wide > ul li, #cboxContent .action_box.data .ul_data_wide > ul li, #main .data.pagination .ul_data_wide > ul li, #cboxContent .data.pagination .ul_data_wide > ul li {
+		width: 96%;
+		li strong{
+			width: 40%;
+		}
+	}
+	nav.sub_nav {
+		font-size: .9em;
+	}
+	table.link tr.detail ul li, table.link tr.detail:hover ul li {
+		width: 49%;
+	}
+// Usuarios
+	.documentation{
+		#header_g, .menu, .scroll{
+			width: 100%;
+			margin-top: 1em;
+			position: relative;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+	}
+}
+
+@media screen and (max-width: 600px) {
+	#error_box{
+		background:none;
+		width: auto;
+		height: auto;
+		margin: 0;
+		position: static;
+		.message_box{
+			position: relative;
+			top: 0;
+			left: 0;
+			margin: 0;
+			max-height: auto;
+			overflow: auto;
+		}
+	}
+	nav#main_nav #nav_icons a{
+		padding-top: 25px;
+		padding-bottom: 25px;
+		background:none;
+	}
+	nav#main_nav #nav_icons .help{
+		position: relative;
+	}
+	.add,.clock,.next,.import,.back,.save, .download, .update{
+		width: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		padding: 0;
+		padding-left: 30px;
+		#iframe &{
+			width: auto;
+			padding: 0.5em 1em;
+			padding-left: 30px;
+		}
+
+	}
+// detalle TERMINAL
+	#main .action_box.data .model, #cboxContent .action_box.data .model, #main .data.pagination .model, #cboxContent .data.pagination .model {
+		width: 96%;
+	}
+	#main .action_box.data .ul_data, #cboxContent .action_box.data .ul_data, #main .data.pagination .ul_data, #cboxContent .data.pagination .ul_data, #main .action_box.data .ul_data_wide, #cboxContent .action_box.data .ul_data_wide, #main .data.pagination .ul_data_wide, #cboxContent .data.pagination .ul_data_wide {
+		width: 96%;
+		li strong{
+			width: 30%;
+		}
+	}
+	nav.sub_nav {
+		font-size: .7em;
+	}
+	table.link tr.detail ul li, table.link tr.detail:hover ul li {
+		width: 49%;
+	}
+	.w33, .w66{
+		width: 100%;
+	}
+// Calendario
+	#main .fc-header h2{
+		font-size: 1em;
+	}
+
+}

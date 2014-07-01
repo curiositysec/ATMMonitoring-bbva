@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+				http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<beans:bean id="loginSuccessHandler" class="com.ncr.ATMMonitoring.handler.LoginSuccessHandler"/>
+
+    <http use-expressions="true">
+        <intercept-url pattern="/dashboard/unsetAsDefault/**" access="hasAnyRole(${security.editWidgetsLibraryAllowedRoles})"/>
+        <intercept-url pattern="/dashboard/setAsDefault/**" access="hasAnyRole(${security.editWidgetsLibraryAllowedRoles})"/>
+        <intercept-url pattern="/dashboard/addToLibrary/**" access="hasAnyRole(${security.editWidgetsLibraryAllowedRoles})"/>
+        <intercept-url pattern="/dashboard/removeFromLibrary/**" access="hasAnyRole(${security.editWidgetsLibraryAllowedRoles})"/>
+        <intercept-url pattern="/dashboard/**" access="hasAnyRole(${security.dashboardAccessAllowedRoles})"/>
+        <intercept-url pattern="/help/users" access="hasAnyRole(${security.usersAccessAllowedRoles})"/>
+        <intercept-url pattern="/help/**" access="hasAnyRole(${security.helpAccessAllowedRoles})"/>
+        <intercept-url pattern="/users/**" access="hasAnyRole(${security.usersAccessAllowedRoles})"/>
+        <intercept-url pattern="/terminals/**" access="hasAnyRole(${security.terminalsAccessAllowedRoles})"/>
+        <intercept-url pattern="/terminals/import" access="hasAnyRole(${security.terminalsManagementAllowedRoles})"/>
+        <intercept-url pattern="/terminals/update" access="hasAnyRole(${security.terminalsManagementAllowedRoles})"/>
+        <intercept-url pattern="/terminals/delete/**" access="hasAnyRole(${security.terminalsManagementAllowedRoles})"/>
+        <intercept-url pattern="/terminals/new" access="hasAnyRole(${security.terminalsManagementAllowedRoles})"/>
+        <intercept-url pattern="/terminals/installations/new" access="hasAnyRole(${security.terminalsManagementAllowedRoles})"/>
+        <intercept-url pattern="/terminals/request**" access="hasAnyRole(${security.terminalsUpdateRequestAllowedRoles})"/>
+        <intercept-url pattern="/terminals/schedules/**" access="hasAnyRole(${security.schedulesAccessAllowedRoles})"/>
+        <intercept-url pattern="/queries/**" access="hasAnyRole(${security.queriesAccessAllowedRoles})"/>
+        <intercept-url pattern="/terminals/export/**" access="hasAnyRole(${security.queriesAccessAllowedRoles})"/>
+        <intercept-url pattern="/terminals/byQuery" access="hasAnyRole(${security.queriesAccessAllowedRoles})"/>
+        <intercept-url pattern="/ups/**" access="hasAnyRole(${security.upsAccessAllowedRoles})"/>
+        <intercept-url pattern="/upsQueries/**" access="hasAnyRole(${security.upsQueriesAccessAllowedRoles})"/>
+        <intercept-url pattern="/ups/export/**" access="hasAnyRole(${security.upsQueriesAccessAllowedRoles})"/>
+        <intercept-url pattern="/ups/byQuery" access="hasAnyRole(${security.upsQueriesAccessAllowedRoles})"/>
+        <intercept-url pattern="/externalreports/**" access="hasAnyRole(${security.reportsAccessAllowedRoles})"/>
+        <!-- <intercept-url pattern="/banks/**" access="hasAnyRole(${security.banksAccessAllowedRoles})"/> -->
+        <form-login login-page="/preLogin"
+                    authentication-success-handler-ref="loginSuccessHandler"
+                    authentication-failure-url="/loginfailed" />
+        <logout logout-url="/logout"/>
+        <access-denied-handler error-page="/403"/> 
+    </http>
+
+    <authentication-manager>
+	    <authentication-provider user-service-ref="userService">
+	        <password-encoder ref="passwordEncoder">
+	        </password-encoder>
+	    </authentication-provider>
+	</authentication-manager>
+
+	<beans:bean id="passwordEncoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder">
+		<beans:constructor-arg name="secret"
+		value="9CS8oBiYtptQooBvsuRqR8SdmXebqrBSL1jwPAtOXOVoWOvKKUY4fLI1DlqQWIwe2jMTotwbwyFMzEP3Pu4TZZKGgdCVkuio4wI2" />
+	</beans:bean>
+
+</beans:beans>

@@ -1,0 +1,109 @@
+.notification{
+	.td &{
+		display: block;
+	}
+	background:$colorW1 url("../images/icons/notification.png") no-repeat 1em;
+	border:2px dotted $colorG;
+	padding: 1em 2em 1em 6em;
+	margin: 1em 0;
+	min-height: 2em;
+	strong{
+		color: $colorB;
+	}
+}
+.alert{
+	.td &{
+		display: block;
+	}
+	background:$colorR2 url("../images/icons/alert.png") no-repeat 1em;
+	border:2px dotted $colorR;
+	padding: 1em 2em 1em 6em;
+	margin: 1em 0;
+	min-height: 2em;
+	strong{
+		color: $colorR;
+	}
+}
+.message{
+	background:$colorW1 url("../images/icons/message.png") no-repeat 1em;
+	border:2px dotted $colorO;
+	padding: 1em 2em 1em 6em;
+	position: relative;
+	min-height: 2em;
+	.td &{
+		display: block;
+	}
+	strong{
+		color: $colorB2;
+	}
+	&.left:after {
+	    content: "";
+	    position: absolute;
+	    top: 25px;
+	    left: -32px;
+	    border-width: 15px 30px 15px 0;
+	    border-style: solid;
+	    border-color: transparent $colorY1;
+	    display: block;
+	    width: 0;
+	}
+}
+.no_queries{
+	@extend .message;
+	background: transparent url("../images/icons/message_24.png") no-repeat 1em;
+	border: none;
+	position: absolute;
+	margin: 0 180px 0 0;
+	padding: 1em;
+	padding-left: 3em;
+	font-size: 1.2em;
+	right: 0;
+	top: 40px;
+	text-align: right;
+	.flecha{
+		background:url("../images/general/flecha.png") no-repeat;
+		width: 200px;
+		height: 40px;
+		display: block;
+		position: absolute;
+		top: 0;
+		right:-80px;
+	}
+}
+.error{
+	.td &{
+		display: block;
+	}
+	background:$colorR;
+	border:1px dotted $colorW;
+	color: $colorW;
+	padding: 1em 2em;
+	margin: 1em 0;
+	position: relative;
+	&.top{
+		&:after {
+		    content: "";
+		    position: absolute;
+		    top: -20px;
+		    left: 45%;
+		    border-width: 0 15px 25px;
+		    border-style: solid;
+		    border-color: $colorR transparent;
+		    display: block;
+		    width: 0;
+		  }
+	}
+	&.bottom{
+		&:after {
+		    content: "";
+		    position: absolute;
+		    bottom: -20px;
+		    left: 45%;
+		    border-width: 25px 15px 0 15px;
+		    border-style: solid;
+		    border-color: $colorR transparent;
+		    display: block;
+		    width: 0;
+		  }
+	}
+}

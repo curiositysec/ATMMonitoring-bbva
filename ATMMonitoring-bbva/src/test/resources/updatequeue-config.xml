@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+   		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+<!-- 
+	<bean id="propertyConfigurer"
+		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:updatequeue.properties</value>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean> -->
+
+	<!-- <bean id="updateATMbroker" class="org.apache.activemq.broker.BrokerService" 
+		init-method="start" destroy-method="stop"> <property name="brokerName" value="atmqueuebroker" 
+		/> <property name="persistent" value="false" /> <property name="useJmx" value="false" 
+		/> <property name="transportConnectorURIs"> <list> <value>${atm.queue.broker.url}</value> 
+		</list> </property> </bean> -->
+
+	<bean id="atmQueueConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="vm://embedded?broker.persistent=false" />
+		<property name="sendTimeout" value="5000"/>
+	</bean>
+
+	<bean id="atmQueuecachingConnectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<property name="targetConnectionFactory" ref="atmQueueConnectionFactory" />
+	</bean>
+
+	<bean id="updateAtmQueue" class="org.apache.activemq.command.ActiveMQQueue"
+		autowire="constructor">
+		<constructor-arg value="update.atm.queue" />
+	</bean>
+
+	<bean id="atmUpdateJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="atmQueuecachingConnectionFactory" />
+		<property name="defaultDestination" ref="updateAtmQueue" />
+	</bean>
+
+</beans>

@@ -1,0 +1,92 @@
+.documentation{
+	#header_g{
+		width: 100%;
+		background: white;
+		background-position: rgba(255, 255, 255, 0.7);
+		position: fixed;
+		top: 40px;
+		left: 125px;
+		padding-top: 16px;
+	}
+	.menu{
+		position: fixed;
+		top: 80px;
+		left: 126px;
+		width: 15%;
+		ul{
+			width: 90%;
+		}
+		li{
+			border-top: 2px doted $colorK3;
+			li{
+				a{
+					margin-left: 1em;
+					color: $colorK3;
+				}
+			}
+			a{
+			padding: .5em;
+			display: block;
+			&:hover{
+				text-decoration: none;
+				background:$colorW1;
+				font-size: 1.2em;
+			}
+			&.current{
+				background:$colorB5;
+				color: $colorB;
+				position: relative;
+				font-size: 1.2em;
+				&:after {
+				    content: "";
+				    position: absolute;
+				    top: 0;
+				    right: -20px;
+				    border-width: 15px 0 15px 20px;
+				    border-style: solid;
+				    border-color: transparent $colorB5;
+				    display: block;
+				    width: 0;
+				}
+			}
+		}
+		}
+	}
+	.scroll{
+		width: 80%;
+		float: right;
+		margin-top: 40px;
+		ul.features{
+			overflow: hidden;
+			padding: 2em;
+			background:$colorB6;
+			@include border-radius(4px);
+		}
+	}
+	#users &{
+		.scroll{
+			h3{
+				border-bottom: 2px dotted $colorK3;
+			}
+			ul{
+				margin-bottom: 1em;
+				overflow: hidden;
+			}
+			margin-top: 110px;
+			li li{
+				float: left;
+				margin-right: 1%;
+				width: 32%;
+				border: none;
+			}
+		}
+		label{
+			float: none;
+			text-align: left;
+		}
+		input[type="checkbox"]{
+			float: left;
+			margin-right: 1em;
+		}
+	}
+}

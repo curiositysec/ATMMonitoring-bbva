@@ -1,0 +1,155 @@
+h1#editQuery,
+h2#editQuery,
+h3#editQuery,
+h4#editQuery,
+h5#editQuery,
+h6#editQuery,
+h1.txt,
+h2.txt,
+h3.txt,
+h4.txt,
+h5.txt,
+h6.txt{
+	background:url("../images/icons/icon_box_show.png") no-repeat top left;
+	cursor: pointer;
+	margin: 0;
+	padding: 3px;
+	padding-left: 1.5em;
+	border-bottom: 2px dotted $colorB5;
+	@include border-radius(4px);
+	&:hover{
+		background-color:$colorB5;
+	}
+	&.content_hide{
+		background-position: left -62px;
+		&.last{
+			border-bottom: none;
+		}
+	}
+}
+#main .action_box{
+	border: 1px solid $colorB5;
+	background:$colorB6;
+	padding: 1em;
+	margin-bottom: 2em;
+	overflow: hidden;
+	position: relative;
+	@include border-radius(4px);
+	.collapsible{
+		border-bottom: 1px dotted $colorK4;
+		padding: 1em;
+		margin-bottom: 1em;
+		&.last{
+			border-bottom: none;
+		}
+	}
+	.photo{
+		float: left;
+	}
+	&.data{
+		.model{
+				margin-top: 2em;
+				float: left;
+				width: 20%;
+				position: relative;
+			.photo{
+				@include border-radius(4px);
+				@include transitionAll;
+				border: 1px solid $colorK5;
+				background:$colorW;
+				height: 0;
+				width: 100%;
+				margin: 0;
+				margin-bottom: .5em;
+				padding: 0;
+				padding-top: 100%;
+				overflow: hidden;
+				position: relative;
+				img{
+					width: 100%;
+					position: absolute;
+					top: 0;
+				}
+			}
+			.desplegable{
+				background:$colorW;
+				clear: both;
+				@include border-radius(4px);
+				margin-top: 1em;
+					.txt{
+						&.content_hide{
+							background:url("../images/icons/icon_collapsible.png") no-repeat $colorK2 left top;
+						}
+						cursor: pointer;
+						float: none;
+						padding: .5em 1em .5em 3em;
+						background:url("../images/icons/icon_collapsible.png") no-repeat $colorK2 left bottom;
+						color: $colorW;
+						border: 2px solid $colorK3;
+					}
+					dl{
+						margin-top: 1em;
+						padding: 1em;
+						background:$colorW;
+						overflow: hidden;
+						dt{
+							font-weight: bold;
+						}
+						dd{
+							border-bottom: 1px solid $colorK4;
+							padding: .5em 0;
+							margin-bottom: .5em;
+							&:last-child{
+								border:none;
+							}
+						}
+					}
+				}
+		}
+		.ul_data{
+			margin-top: 2em;
+			float: right;
+			width: 75%;
+			&>ul{
+				overflow: hidden;
+				margin-bottom: 2em;
+				li{
+					margin-left: 4%;
+					padding: .5em 0;
+					float: left;
+					width: 46%;
+					border-bottom: 1px solid $colorB4;
+					strong{
+						width: 45%;
+						margin-right: 4%;
+						float: left;
+						display: block;
+						label{
+							width: 100%
+						}
+					}
+				}
+			}
+			&.editable{
+				&>ul li{
+					min-height: 3em;
+				}
+				input[type="text"]{
+					width: 40%;
+					&.num{
+						width: 2em;
+					}
+				}
+			}
+			.ul_data{
+				width: auto;
+				float: none;
+				margin-top: 1em;
+			}
+		}
+		.ul_data_wide{
+		@extend .ul_data;
+		width: 100%;
+		}
+	}
+}
