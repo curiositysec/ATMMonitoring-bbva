@@ -30,7 +30,7 @@
 -->
 </tr>
 <c:forEach items="${hardwareDevices}" var="hardwareDevice">
-    <tr class="showdetail open">
+    <tr class="showdetail open" id="HardwareDeviceNDT.${hardwareDevice.id}.${hardwareDevice.startDate.time}">
     	<c:if test="${hardwareDevice.name != null}">
 			<td>${hardwareDevice.name}</td>
 		</c:if>

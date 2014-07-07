@@ -24,7 +24,7 @@
 	<th><div class="add"><span>Ver más información</span></div></th>
 </tr>
 <c:forEach items="${hardwareDevices}" var="hardwareDevice">
-    <tr class="showdetail open">
+    <tr class="showdetail open" id="HardwareDeviceCST.${hardwareDevice.id}.${hardwareDevice.startDate.time}">
 	    <c:if test="${hardwareDevice.name != null}">
 			<td>${hardwareDevice.name}</td>
 		</c:if>

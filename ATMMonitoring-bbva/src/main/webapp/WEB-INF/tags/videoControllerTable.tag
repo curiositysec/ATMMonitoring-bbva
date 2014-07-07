@@ -18,7 +18,7 @@
 	<th><spring:message code="label.hardwareDevice.currentRefreshRate"/></th>
 </tr>
 <c:forEach items="${hardwareDevices}" var="hardwareDevice">
-    <tr >
+    <tr id="HardwareDeviceVCT.${hardwareDevice.id}.${hardwareDevice.startDate.time}">
     	<c:if test="${hardwareDevice.name != null}">
 			<td>${hardwareDevice.name}</td>
 		</c:if>

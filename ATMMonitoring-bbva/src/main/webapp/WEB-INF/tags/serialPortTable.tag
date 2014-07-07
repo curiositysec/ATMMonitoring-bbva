@@ -16,7 +16,7 @@
 	<th><spring:message code="label.hardwareDevice.status"/></th>
 </tr>
 <c:forEach items="${hardwareDevices}" var="hardwareDevice">
-    <tr >
+    <tr id="HardwareDeviceSPT.${hardwareDevice.id}.${hardwareDevice.startDate.time}">
     	<c:if test="${hardwareDevice.name != null}">
 			<td>${hardwareDevice.name}</td>
 		</c:if>

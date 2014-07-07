@@ -77,7 +77,7 @@
 	<tbody>
 	<c:set var="alt" value="${false}"/>
 	<c:forEach items="${config.software}" var="software">
-		<tr <c:if test="${alt}">class="alt"</c:if>>
+		<tr id="OtherSoftware.${software.id}.${software.installDate.time}" <c:if test="${alt}">class="alt"</c:if>>
 	        <td>${software.nameVersion}</td>
 	        <td>
 		        <c:if test="${software.swType != null && software.swType != ''}">

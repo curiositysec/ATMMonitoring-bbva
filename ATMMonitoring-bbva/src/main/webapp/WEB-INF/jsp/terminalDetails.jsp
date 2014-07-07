@@ -8,8 +8,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<%@page contentType="text/html;charset=UTF-8" %>
-<%@page pageEncoding="UTF-8"%>
+<%@page contentType="text/html;charset=ISO-8859-1" %>
+<%@page pageEncoding="ISO-8859-1"%>
 
 <t:osoco-wrapper titleCode="label.terminalsManager" userMsg="${userMsg}" section="terminals">
 
@@ -24,9 +24,10 @@
                 $("#showTerminal").show();
                 $("#editForm").hide();
 	        });
-
+           
             initTabs();
             onLoadModelCB();
+           
 	    });
 
     </script>
@@ -306,7 +307,7 @@
 				<terminal:historical historicalChanges="${historicalChanges}" timelineDates="${historicalChangesTimelineDates}" />
 					
 				</div>
-				<h2 id="features">CaracterÃ­sticas 
+				<h2 id="features">Características 
 				<c:if test="${date != null}">
                 	 <spring:message code="label.terminal.forDate" />    
                      <fmt:formatDate value="${date}" pattern="dd/MM/yyyy HH:mm:ss" />    
@@ -315,7 +316,7 @@
 				<div id="tabs">
 					<nav class="sub_nav">
 						<ul>
-							<li class="current">
+							<li class="current" >
 							  <a class="Installation" href="${currentUrl}#features"><spring:message code="label.installations"/></a>
 							</li>
 							<li>
@@ -328,7 +329,7 @@
 								<a class="TerminalConfig" href="${currentUrl}#features"><spring:message code="label.software"/></a>
 							</li>
 							<li>
-								<a class="SoftwareAggregate" href="${currentUrl}#features"><spring:message code="label.softwareAggregates"/></a>
+								<a class="AuditableSoftwareAggregate" href="${currentUrl}#features"><spring:message code="label.softwareAggregates"/></a>
 							</li>
 							<li>
 								<a class="Hotfix" href="${currentUrl}#features"><spring:message code="label.hotfixes"/></a>
@@ -459,7 +460,7 @@
 													</th>
 
 --%>
-													<th><div class="add"><span>Ver mÃ¡s informaciÃ³n</span></div></th>
+													<th><div class="add"><span>Ver más información</span></div></th>
 												</tr>
 											</thead>
 										</c:when>
@@ -554,15 +555,15 @@
 
 --%>														</th>
 
-														<th><div class="add"><span>Ver mÃ¡s informaciÃ³n</span></div></th>
+														<th><div class="add"><span>Ver más información</span></div></th>
 													</tr>
 												</thead>
 											</c:otherwise>
 										</c:choose>
-										<tbody>
+										<tbody id ="FinancialDeviceBody">
 
 											<c:forEach items="${activeFinancialDevicesByDate}" var="financialDevice">
-												<tr class="showdetail open">
+												<tr class="showdetail open" id="FinancialDevice.${financialDevice.id}.${financialDevice.startDate.time}">
 												<td>
 													<label>${financialDevice.name}</label>
 												</td>
@@ -618,7 +619,7 @@
 														</c:forEach>
 												</td>
 --%>
-												<td><div class="add"><span>Ver mÃ¡s informaciÃ³n</span></div></td>
+												<td><div class="add"><span>Ver más información</span></div></td>
 											</tr>
 											<tr class="detail">
 										          <td colspan="9">
@@ -925,8 +926,7 @@
 								</c:choose>
 								<c:set var="alt" value="${false}"/>
 								<c:forEach items="${terminal.getActiveAuditableSoftwareAggregatesByDate(date)}" var="auditableSoftwareAggregate">
-									<tr <c:if test="${alt}">class="alt"</c:if>
-									>
+									<tr id="SoftwareAggregate.${auditableSoftwareAggregate.id}.${auditableSoftwareAggregate.startDate.time}" <c:if test="${alt}">class="alt"</c:if>>
 									<td>${auditableSoftwareAggregate.softwareAggregate.nameVersion}</td>
 									<td>${auditableSoftwareAggregate.softwareAggregate.number}</td>
 									<td>${auditableSoftwareAggregate.softwareAggregate.description}</td>
@@ -1015,7 +1015,7 @@
 								</c:choose>
 								<c:set var="alt" value="${false}"/>
 								<c:forEach items="${terminal.getActiveHotfixesByDate(date)}" var="hotfix">
-									<tr <c:if test="${alt}">class="alt"</c:if>
+									<tr id="Hotfix.${hotfix.id}.${hotfix.startDate.time}" <c:if test="${alt}">class="alt"</c:if>
 									>
 									<td>${hotfix.hotfixId}</td>
 									<td>${hotfix.description}</td>
@@ -1049,7 +1049,7 @@
 							</tr>
 							<c:set var="alt" value="${false}"/>
 							<c:forEach items="${terminal.getActiveAuditableInternetExplorersByDate(date)}" var="auditableInternetExplorer">
-								<tr <c:if test="${alt}">class="alt"</c:if>
+								<tr id="AuditableInternetExplorer.${auditableInternetExplorer.id}.${auditableInternetExplorer.startDate.time}"  <c:if test="${alt}">class="alt"</c:if>
 								>
 								<td>${auditableInternetExplorer.internetExplorer.version}</td>
 							</tr>
@@ -1080,7 +1080,10 @@
            }
        }); 
        <c:if test="${preselectedTab != null}" >
-	  		$('li > a[href*=#].${preselectedTab}').click()	
+	  		$('li > a[href*=#].${preselectedTab}').click();
+	
+	  		highligthNewAdd('${date.time}');
+	  
 	   </c:if>
 	}
 	
@@ -1216,6 +1219,48 @@
 		});
 
 	});
+
+	function highligthNewAdd(date){
+		
+		 $("table.data").find("tr").each(function() {
+		        var id = this.id;
+		        if(id !=""){
+			       
+					var dateInMilis = getTimeInMilsFromId(id);
+				    var dateHistoricalMilis = parseFloat(date);
+
+					   if(isSameDate(dateHistoricalMilis, dateInMilis)){
+						
+				    	 $(this).find('td').each (function() {
+						    	$(this).addClass("historicalAddedFeature");
+						    });  
+					 }
+			         
+		        }
+		    });
+	} 
+
+	 function getTimeInMilsFromId(id){
+
+		var dateInMilisString = id.split(".")[2];
+		var dateInMilis = parseFloat(dateInMilisString);
+		return dateInMilis;
+	}
+
+	function isSameDate(dateInMils,presentDateInMils){
+		var dateToCompare = new Date(dateInMils);
+		var presentDate = new Date(presentDateInMils);
+		var dateToCompareString =""+dateToCompare;
+		var presentDateString =""+presentDate;
+
+		if(dateToCompareString == presentDateString){
+
+			return true;
+		}else{
+			return false;
+		}
+
+	} 
     </script>
 
 </jsp:body>
