@@ -52,6 +52,10 @@ public class AuditableSoftwareAggregate extends Auditable {
 	this.softwareAggregate = softwareAggregate;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     /**
      * Gets the software aggregate
      * 
