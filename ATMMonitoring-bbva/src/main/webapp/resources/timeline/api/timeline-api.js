@@ -74,7 +74,7 @@ var isLoaded = false;
   
     var isCompiled = ("Timeline_isCompiled" in window) && window.Timeline_isCompiled;
     
-    var useLocalResources = false;
+    var useLocalResources = true;
     if (document.location.search.length > 0) {
         var params = document.location.search.substr(1).split("&");
         for (var i = 0; i < params.length; i++) {
