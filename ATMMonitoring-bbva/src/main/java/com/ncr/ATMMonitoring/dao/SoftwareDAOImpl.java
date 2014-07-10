@@ -15,7 +15,7 @@ import com.ncr.ATMMonitoring.pojo.Software;
  * 
  * Default implementation of SoftwareDAO.
  * 
- * @author Jorge L√≥pez Fern√°ndez (lopez.fernandez.jorge@gmail.com)
+ * @author Jorge LÛpez Fern·ndez (lopez.fernandez.jorge@gmail.com)
  */
 
 @Repository

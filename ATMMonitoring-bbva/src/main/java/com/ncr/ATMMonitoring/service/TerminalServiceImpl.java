@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ncr.ATMMonitoring.dao.TerminalDAO;
 import com.ncr.ATMMonitoring.pojo.AuditableInternetExplorer;
+import com.ncr.ATMMonitoring.pojo.AuditableOperatingSystem;
+import com.ncr.ATMMonitoring.pojo.AuditableSoftware;
 import com.ncr.ATMMonitoring.pojo.AuditableSoftwareAggregate;
 import com.ncr.ATMMonitoring.pojo.BankCompany;
 import com.ncr.ATMMonitoring.pojo.FinancialDevice;
@@ -291,27 +293,37 @@ public class TerminalServiceImpl implements TerminalService {
     private void addNewEntities(Terminal terminal,
 	    ATMDataStorePojo dataStoreTerminal) {
 
+	// a general date to create the auditables
+	Date eventDate = new Date();
+
 	TerminalModel model = getTerminalModel(dataStoreTerminal);
 	if (model != null) {
 	    terminal.setTerminalModel(model);
 	    terminal.setTerminalVendor(model.getManufacturer());
 	}
-	terminal.updateHardwareDevices(getHwDevs(terminal, dataStoreTerminal));
-	terminal.updateHotfixes(getHotfixes(terminal, dataStoreTerminal));
+	terminal.updateHardwareDevices(getHwDevs(terminal, dataStoreTerminal,
+		eventDate));
+	terminal.updateHotfixes(getHotfixes(terminal, dataStoreTerminal,
+		eventDate));
 	terminal.updateFinancialDevices(getFinancialDevs(terminal,
-		dataStoreTerminal));
+		dataStoreTerminal, eventDate));
 
 	Set<InternetExplorer> ies = getInternetExplorers(dataStoreTerminal);
-	terminal.updateAuditableInternetExplorers(buildAuditableInternetExplorers(ies));
+	terminal.updateAuditableInternetExplorers(buildAuditableInternetExplorers(
+		ies, eventDate));
 
 	TerminalConfig newConfig = getTerminalConfig(dataStoreTerminal,
-		terminal);
+		terminal, eventDate);
+	logger.debug("terminal config auditable sets:"
+		+ newConfig.getAuditableOperatingSystems().size() + " -- "
+		+ newConfig.getAuditableSoftware().size());
 	terminal.setCurrentTerminalConfig(newConfig);
 	logger.debug("Adding new Software Config to Terminal with IP "
 		+ terminal.getIp());
 
 	Set<SoftwareAggregate> swAggregates = getSwAggregates(dataStoreTerminal);
-	terminal.updateAuditableSoftwareAggregates(buildAuditableSoftwareAggregate(swAggregates));
+	terminal.updateAuditableSoftwareAggregates(buildAuditableSoftwareAggregate(
+		swAggregates, eventDate));
     }
 
     /**
@@ -348,10 +360,10 @@ public class TerminalServiceImpl implements TerminalService {
 		if (dbTerminal != null) {
 		    dbTerminal.replaceTerminalDataWoVoidValues(terminal);
 		    terminal = dbTerminal;
-		    terminalDAO.updateTerminal(terminal);
-		    logger.debug("Updated Terminal from ATMDataStore with IP "
-			    + terminal.getIp() + " and generated id "
-			    + terminal.getMatricula());
+		    // terminalDAO.updateTerminal(terminal);
+		    // logger.debug("Updated Terminal from ATMDataStore with IP "
+		    // + terminal.getIp() + " and generated id "
+		    // + terminal.getMatricula());
 		} else {
 		    terminalDAO.addTerminal(terminal);
 		    logger.debug("Created Terminal from ATMDataStore with IP "
@@ -413,6 +425,7 @@ public class TerminalServiceImpl implements TerminalService {
 	if (vector != null) {
 	    for (FinancialPackagePojo item : vector) {
 		SoftwareAggregate swAggregate = new SoftwareAggregate(item);
+
 		swAggregates.add(swAggregate);
 	    }
 	}
@@ -446,13 +459,15 @@ public class TerminalServiceImpl implements TerminalService {
      *            the agent's pojo
      * @return the software
      */
-    private Set<Software> getSoftware(ATMDataStorePojo dataStoreTerminal) {
+    private Set<Software> getSoftware(ATMDataStorePojo dataStoreTerminal,
+	    Date event) {
 	Set<Software> software = new HashSet<Software>();
 	Vector<ProductPojo> vector = dataStoreTerminal.getvProduct();
 	if (vector != null) {
 	    for (ProductPojo item : vector) {
 		Software sw = new Software(item);
 		software.add(sw);
+
 	    }
 	}
 	return software;
@@ -466,7 +481,7 @@ public class TerminalServiceImpl implements TerminalService {
      * @return the operating systems
      */
     private Set<OperatingSystem> getOperatingSystems(
-	    ATMDataStorePojo dataStoreTerminal) {
+	    ATMDataStorePojo dataStoreTerminal, Date event) {
 	Set<OperatingSystem> oss = new HashSet<OperatingSystem>();
 	Vector<OperatingSystemPojo> vector = dataStoreTerminal
 		.getvOperatingSystem();
@@ -548,1347 +563,1407 @@ public class TerminalServiceImpl implements TerminalService {
      * @return the financial devs
      */
     private Set<FinancialDevice> getFinancialDevs(Terminal terminal,
-	    ATMDataStorePojo dataStoreTerminal) {
-    	
-		Set<FinancialDevice> finDevs = new HashSet<FinancialDevice>();
-		Vector<FinancialDevicePojo> vector = dataStoreTerminal
-			.getvFinancialDevice();
-		// Create and assign xfs components
-		if (vector != null) {
-		    for (FinancialDevicePojo item : vector) {
-			FinancialDevice finDev = new FinancialDevice(item);
-			finDev.setTerminal(terminal);
-			finDevs.add(finDev);
+	    ATMDataStorePojo dataStoreTerminal, Date event) {
+
+	Set<FinancialDevice> finDevs = new HashSet<FinancialDevice>();
+	Vector<FinancialDevicePojo> vector = dataStoreTerminal
+		.getvFinancialDevice();
+	// Create and assign xfs components
+	if (vector != null) {
+	    for (FinancialDevicePojo item : vector) {
+		FinancialDevice finDev = new FinancialDevice(item);
+		finDev.setTerminal(terminal);
+		finDev.setStartDate(event);
+		finDevs.add(finDev);
+	    }
+	}
+
+	// Eva - Si el size es 0
+	// - Creamos un Financial Device
+	// - Cogemos la info de XFS y o JXFS (provider o algo así)
+	// - Asignamos el dato al Financial Device en la posición correcta
+	// - Recorridos todos los xfs y o jxfs, asignamos el FinancialDevice al
+	// terminal
+	if ((vector != null) && (vector.size() == 0)) {
+	    // Eva
+	    logger.warn("El vector no es nulo pero sí su tamaño");
+	    FinancialDevicePojo fdp = null;
+	    XfsComponent xfs = null;
+	    JxfsComponent jxfs = null;
+
+	    if (dataStoreTerminal.getvAlm() != null) {
+		for (ALM xfsPojo : dataStoreTerminal.getvAlm()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("Alarms_Device_" + xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("Alarms_Device_" + xfsPojo.getProvider());
+		    fdp.setDescription("Alarms_Device_" + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvBcr() != null) {
+		for (BCR xfsPojo : dataStoreTerminal.getvBcr()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("BarcodeReader_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("BarcodeReader_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("BarcodeReader_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvCam() != null) {
+		for (CAM xfsPojo : dataStoreTerminal.getvCam()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("Camera_Device_" + xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("Camera_Device_" + xfsPojo.getProvider());
+		    fdp.setDescription("Camera_Device_" + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvCdm() != null) {
+		for (CDM xfsPojo : dataStoreTerminal.getvCdm()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("CashDispenserModule_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("CashDispenserModule_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("CashDispenserModule_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvCeu() != null) {
+		for (CEU xfsPojo : dataStoreTerminal.getvCeu()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("CardEmbossingUnit_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("CardEmbossingUnit_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("CardEmbossingUnit_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvChk() != null) {
+		for (CHK xfsPojo : dataStoreTerminal.getvChk()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("CheckReader_Scanner_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("CheckReader_Scanner_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("CheckReader_Scanner_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvCim() != null) {
+		for (CIM xfsPojo : dataStoreTerminal.getvCim()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("CashInModule_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("CashInModule_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("CashInModule_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvCrd() != null) {
+		for (CRD xfsPojo : dataStoreTerminal.getvCrd()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("CardDispenser_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("CardDispenser_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("CardDispenser_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvDep() != null) {
+		for (DEP xfsPojo : dataStoreTerminal.getvDep()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("CardDispenser_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("CardDispenser_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("CardDispenser_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvIdc() != null) {
+		for (IDC xfsPojo : dataStoreTerminal.getvIdc()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("IdentificationCard_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("IdentificationCard_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("IdentificationCard_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvIpm() != null) {
+		for (IPM xfsPojo : dataStoreTerminal.getvIpm()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("ItemProcessingModule_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("ItemProcessingModule_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("ItemProcessingModule_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvPin() != null) {
+		for (PIN xfsPojo : dataStoreTerminal.getvPin()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("PinKeypad_Device_" + xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("PinKeypad_Device_" + xfsPojo.getProvider());
+		    fdp.setDescription("PinKeypad_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvPtr() != null) {
+		for (PTR xfsPojo : dataStoreTerminal.getvPtr()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("PrinterAndScanning_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("PrinterAndScanning_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("PrinterAndScanning_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvSiu() != null) {
+		for (SIU xfsPojo : dataStoreTerminal.getvSiu()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("SensorsAndIndicators_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("SensorsAndIndicators_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("SensorsAndIndicators_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvTtu() != null) {
+		for (TTU xfsPojo : dataStoreTerminal.getvTtu()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("TextTerminalUnit_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("TextTerminalUnit_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("TextTerminalUnit_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getvVdm() != null) {
+		for (VDM xfsPojo : dataStoreTerminal.getvVdm()) {
+		    fdp = new FinancialDevicePojo();
+		    if (xfsPojo.getLogical().length() < 10)
+			fdp.setName("VendorDependantModule_Device_"
+				+ xfsPojo.getLogical());
+		    else
+			fdp.setName(xfsPojo.getLogical());
+		    fdp.setCaption("VendorDependantModule_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDescription("VendorDependantModule_Device_"
+			    + xfsPojo.getProvider());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    xfs = new XfsComponent(xfsPojo);
+		    finDev.getXfsComponents().add(xfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjAlm() != null) {
+		for (CapabilitiesJxfsALMCollector jxfsPojo : dataStoreTerminal
+			.getVjAlm()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjCam() != null) {
+		for (CapabilitiesJxfsCAMCollector jxfsPojo : dataStoreTerminal
+			.getVjCam()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjCdr() != null) {
+		for (CapabilitiesJxfsCDRCollector jxfsPojo : dataStoreTerminal
+			.getVjCdr()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjChk() != null) {
+		for (CapabilitiesJxfsCHKCollector jxfsPojo : dataStoreTerminal
+			.getVjChk()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjDep() != null) {
+		for (CapabilitiesJxfsDEPCollector jxfsPojo : dataStoreTerminal
+			.getVjDep()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjMsd() != null) {
+		for (CapabilitiesJxfsMSDCollector jxfsPojo : dataStoreTerminal
+			.getVjMsd()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjPin() != null) {
+		for (CapabilitiesJxfsPINCollector jxfsPojo : dataStoreTerminal
+			.getVjPin()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjPtr() != null) {
+		for (CapabilitiesJxfsPTRCollector jxfsPojo : dataStoreTerminal
+			.getVjPtr()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjScn() != null) {
+		for (CapabilitiesJxfsSCNCollector jxfsPojo : dataStoreTerminal
+			.getVjScn()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjSiu() != null) {
+		for (CapabilitiesJxfsSIUCollector jxfsPojo : dataStoreTerminal
+			.getVjSiu()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjTio() != null) {
+		for (CapabilitiesJxfsTIOCollector jxfsPojo : dataStoreTerminal
+			.getVjTio()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+
+	    if (dataStoreTerminal.getVjVdm() != null) {
+		for (CapabilitiesJxfsVDMCollector jxfsPojo : dataStoreTerminal
+			.getVjVdm()) {
+		    fdp = new FinancialDevicePojo();
+
+		    fdp.setName(jxfsPojo.getDevicecontrolname());
+		    fdp.setCaption(jxfsPojo.getDevicecontrolname());
+		    fdp.setDescription(jxfsPojo.getDevicecontrolname());
+		    fdp.setDeviceinstance("0");
+		    fdp.setDevicestatus("0");
+		    fdp.setFirmwareversion("xxxx");
+		    fdp.setHotswappable(" ");
+		    fdp.setManufacturer(" ");
+		    fdp.setModel(" ");
+		    fdp.setPmstatus("0");
+		    fdp.setRemovable(" ");
+		    fdp.setReplaceable(" ");
+		    fdp.setSerialnumber("xxxxxxxx");
+		    fdp.setUniversalid(" ");
+		    fdp.setVariant(" ");
+		    fdp.setVersion(" ");
+
+		    FinancialDevice finDev = new FinancialDevice(fdp);
+		    finDev.setTerminal(terminal);
+		    jxfs = new JxfsComponent(jxfsPojo);
+		    finDev.getJxfsComponents().add(jxfs);
+
+		    finDevs.add(finDev);
+
+		    logger.warn("Añadido dispositivo "
+			    + jxfsPojo.getDevicecontrolname());
+		}
+	    }
+	} else {
+
+	    if (dataStoreTerminal.getvAlm() != null) {
+		for (ALM xfsPojo : dataStoreTerminal.getvAlm()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
 		    }
 		}
-		
+	    }
+	    if (dataStoreTerminal.getvBcr() != null) {
+		for (BCR xfsPojo : dataStoreTerminal.getvBcr()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvCam() != null) {
+		for (CAM xfsPojo : dataStoreTerminal.getvCam()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvCdm() != null) {
+		for (CDM xfsPojo : dataStoreTerminal.getvCdm()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvCeu() != null) {
+		for (CEU xfsPojo : dataStoreTerminal.getvCeu()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvChk() != null) {
+		for (CHK xfsPojo : dataStoreTerminal.getvChk()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvCim() != null) {
+		for (CIM xfsPojo : dataStoreTerminal.getvCim()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvCrd() != null) {
+		for (CRD xfsPojo : dataStoreTerminal.getvCrd()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvDep() != null) {
+		for (DEP xfsPojo : dataStoreTerminal.getvDep()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvIdc() != null) {
+		for (IDC xfsPojo : dataStoreTerminal.getvIdc()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvIpm() != null) {
+		for (IPM xfsPojo : dataStoreTerminal.getvIpm()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvPin() != null) {
+		for (PIN xfsPojo : dataStoreTerminal.getvPin()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvPtr() != null) {
+		for (PTR xfsPojo : dataStoreTerminal.getvPtr()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvSiu() != null) {
+		for (SIU xfsPojo : dataStoreTerminal.getvSiu()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvTtu() != null) {
+		for (TTU xfsPojo : dataStoreTerminal.getvTtu()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getvVdm() != null) {
+		for (VDM xfsPojo : dataStoreTerminal.getvVdm()) {
+		    XfsComponent xfs = new XfsComponent(xfsPojo);
+		    if (xfsPojo.getDevicename() != null) {
+			assignXfsComponent(xfs, finDevs, xfsPojo
+				.getDevicename().split(","));
+		    } else {
+			logger.warn("Xfs component of type '"
+				+ xfs.getXfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
 
-		//Eva - Si el size es 0
-		//- Creamos un Financial Device
-		//- Cogemos la info de XFS y o JXFS (provider o algo así)
-		//- Asignamos el dato al Financial Device en la posición correcta
-		//- Recorridos todos los xfs y o jxfs, asignamos el FinancialDevice al terminal
-		if((vector!=null) && (vector.size()==0)){
-			//Eva
-		    logger.warn("El vector no es nulo pero sí su tamaño");
-			FinancialDevicePojo fdp = null;
-			XfsComponent xfs = null;
-			JxfsComponent jxfs = null;
-			
-			
-			if (dataStoreTerminal.getvAlm() != null) {
-			    for (ALM xfsPojo : dataStoreTerminal.getvAlm()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("Alarms_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("Alarms_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("Alarms_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			
-			if (dataStoreTerminal.getvBcr() != null) {
-			    for (BCR xfsPojo : dataStoreTerminal.getvBcr()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("BarcodeReader_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("BarcodeReader_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("BarcodeReader_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			
-			if (dataStoreTerminal.getvCam() != null) {
-			    for (CAM xfsPojo : dataStoreTerminal.getvCam()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("Camera_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("Camera_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("Camera_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			
-			if (dataStoreTerminal.getvCdm() != null) {
-			    for (CDM xfsPojo : dataStoreTerminal.getvCdm()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("CashDispenserModule_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("CashDispenserModule_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("CashDispenserModule_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvCeu() != null) {
-			    for (CEU xfsPojo : dataStoreTerminal.getvCeu()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("CardEmbossingUnit_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("CardEmbossingUnit_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("CardEmbossingUnit_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvChk() != null) {
-			    for (CHK xfsPojo : dataStoreTerminal.getvChk()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("CheckReader_Scanner_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("CheckReader_Scanner_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("CheckReader_Scanner_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvCim() != null) {
-			    for (CIM xfsPojo : dataStoreTerminal.getvCim()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("CashInModule_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("CashInModule_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("CashInModule_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvCrd() != null) {
-			    for (CRD xfsPojo : dataStoreTerminal.getvCrd()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("CardDispenser_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("CardDispenser_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("CardDispenser_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvDep() != null) {
-			    for (DEP xfsPojo : dataStoreTerminal.getvDep()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("CardDispenser_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("CardDispenser_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("CardDispenser_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvIdc() != null) {
-			    for (IDC xfsPojo : dataStoreTerminal.getvIdc()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("IdentificationCard_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("IdentificationCard_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("IdentificationCard_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvIpm() != null) {
-			    for (IPM xfsPojo : dataStoreTerminal.getvIpm()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("ItemProcessingModule_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("ItemProcessingModule_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("ItemProcessingModule_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvPin() != null) {
-			    for (PIN xfsPojo : dataStoreTerminal.getvPin()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("PinKeypad_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("PinKeypad_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("PinKeypad_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-	
-			if (dataStoreTerminal.getvPtr() != null) {
-			    for (PTR xfsPojo : dataStoreTerminal.getvPtr()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("PrinterAndScanning_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("PrinterAndScanning_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("PrinterAndScanning_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvSiu() != null) {
-			    for (SIU xfsPojo : dataStoreTerminal.getvSiu()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("SensorsAndIndicators_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("SensorsAndIndicators_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("SensorsAndIndicators_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvTtu() != null) {
-			    for (TTU xfsPojo : dataStoreTerminal.getvTtu()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("TextTerminalUnit_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("TextTerminalUnit_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("TextTerminalUnit_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getvVdm() != null) {
-			    for (VDM xfsPojo : dataStoreTerminal.getvVdm()) {
-			    	fdp = new FinancialDevicePojo();
-			    	if(xfsPojo.getLogical().length()<10)
-			    		fdp.setName("VendorDependantModule_Device_" + xfsPojo.getLogical());
-			    	else
-			    		fdp.setName(xfsPojo.getLogical());
-			    	fdp.setCaption("VendorDependantModule_Device_" + xfsPojo.getProvider());
-			    	fdp.setDescription("VendorDependantModule_Device_" + xfsPojo.getProvider());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					xfs = new XfsComponent(xfsPojo);
-			    	finDev.getXfsComponents().add(xfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + xfsPojo.getLogical());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjAlm() != null) {
-			    for (CapabilitiesJxfsALMCollector jxfsPojo : dataStoreTerminal.getVjAlm()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjCam() != null) {
-			    for (CapabilitiesJxfsCAMCollector jxfsPojo : dataStoreTerminal.getVjCam()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjCdr() != null) {
-			    for (CapabilitiesJxfsCDRCollector jxfsPojo : dataStoreTerminal.getVjCdr()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjChk() != null) {
-			    for (CapabilitiesJxfsCHKCollector jxfsPojo : dataStoreTerminal.getVjChk()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjDep() != null) {
-			    for (CapabilitiesJxfsDEPCollector jxfsPojo : dataStoreTerminal.getVjDep()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjMsd() != null) {
-			    for (CapabilitiesJxfsMSDCollector jxfsPojo : dataStoreTerminal.getVjMsd()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjPin() != null) {
-			    for (CapabilitiesJxfsPINCollector jxfsPojo : dataStoreTerminal.getVjPin()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjPtr() != null) {
-			    for (CapabilitiesJxfsPTRCollector jxfsPojo : dataStoreTerminal.getVjPtr()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjScn() != null) {
-			    for (CapabilitiesJxfsSCNCollector jxfsPojo : dataStoreTerminal.getVjScn()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjSiu() != null) {
-			    for (CapabilitiesJxfsSIUCollector jxfsPojo : dataStoreTerminal.getVjSiu()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjTio() != null) {
-			    for (CapabilitiesJxfsTIOCollector jxfsPojo : dataStoreTerminal.getVjTio()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
-			
-			if (dataStoreTerminal.getVjVdm() != null) {
-			    for (CapabilitiesJxfsVDMCollector jxfsPojo : dataStoreTerminal.getVjVdm()) {
-			    	fdp = new FinancialDevicePojo();
-			    	
-			    	fdp.setName(jxfsPojo.getDevicecontrolname());
-			    	fdp.setCaption(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDescription(jxfsPojo.getDevicecontrolname());
-			    	fdp.setDeviceinstance("0");
-			    	fdp.setDevicestatus("0");
-			    	fdp.setFirmwareversion("xxxx");
-			    	fdp.setHotswappable(" ");
-			    	fdp.setManufacturer(" ");
-			    	fdp.setModel(" ");
-			    	fdp.setPmstatus("0");
-			    	fdp.setRemovable(" ");
-			    	fdp.setReplaceable(" ");
-			    	fdp.setSerialnumber("xxxxxxxx");
-			    	fdp.setUniversalid(" ");
-			    	fdp.setVariant(" ");
-			    	fdp.setVersion(" ");
-			    	
-			    	FinancialDevice finDev = new FinancialDevice(fdp);
-					finDev.setTerminal(terminal);
-					jxfs = new JxfsComponent(jxfsPojo);
-			    	finDev.getJxfsComponents().add(jxfs);
-			    	
-					finDevs.add(finDev);
-					
-					logger.warn("Añadido dispositivo " + jxfsPojo.getDevicecontrolname());
-			    }
-			}
+	    // Create and assign jxfs components
+	    if (dataStoreTerminal.getVjAlm() != null) {
+		for (CapabilitiesJxfsALMCollector jxfsPojo : dataStoreTerminal
+			.getVjAlm()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
 		}
-		else{
-		
-			if (dataStoreTerminal.getvAlm() != null) {
-			    for (ALM xfsPojo : dataStoreTerminal.getvAlm()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvBcr() != null) {
-			    for (BCR xfsPojo : dataStoreTerminal.getvBcr()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvCam() != null) {
-			    for (CAM xfsPojo : dataStoreTerminal.getvCam()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvCdm() != null) {
-			    for (CDM xfsPojo : dataStoreTerminal.getvCdm()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvCeu() != null) {
-			    for (CEU xfsPojo : dataStoreTerminal.getvCeu()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvChk() != null) {
-			    for (CHK xfsPojo : dataStoreTerminal.getvChk()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvCim() != null) {
-			    for (CIM xfsPojo : dataStoreTerminal.getvCim()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvCrd() != null) {
-			    for (CRD xfsPojo : dataStoreTerminal.getvCrd()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvDep() != null) {
-			    for (DEP xfsPojo : dataStoreTerminal.getvDep()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvIdc() != null) {
-			    for (IDC xfsPojo : dataStoreTerminal.getvIdc()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvIpm() != null) {
-			    for (IPM xfsPojo : dataStoreTerminal.getvIpm()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvPin() != null) {
-			    for (PIN xfsPojo : dataStoreTerminal.getvPin()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvPtr() != null) {
-			    for (PTR xfsPojo : dataStoreTerminal.getvPtr()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvSiu() != null) {
-			    for (SIU xfsPojo : dataStoreTerminal.getvSiu()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvTtu() != null) {
-			    for (TTU xfsPojo : dataStoreTerminal.getvTtu()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getvVdm() != null) {
-			    for (VDM xfsPojo : dataStoreTerminal.getvVdm()) {
-				XfsComponent xfs = new XfsComponent(xfsPojo);
-				if (xfsPojo.getDevicename() != null) {
-				    assignXfsComponent(xfs, finDevs, xfsPojo.getDevicename()
-					    .split(","));
-				} else {
-				    logger.warn("Xfs component of type '"
-					    + xfs.getXfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-		
-			// Create and assign jxfs components
-			if (dataStoreTerminal.getVjAlm() != null) {
-			    for (CapabilitiesJxfsALMCollector jxfsPojo : dataStoreTerminal
-				    .getVjAlm()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjCam() != null) {
-			    for (CapabilitiesJxfsCAMCollector jxfsPojo : dataStoreTerminal
-				    .getVjCam()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjCdr() != null) {
-			    for (CapabilitiesJxfsCDRCollector jxfsPojo : dataStoreTerminal
-				    .getVjCdr()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjChk() != null) {
-			    for (CapabilitiesJxfsCHKCollector jxfsPojo : dataStoreTerminal
-				    .getVjChk()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjDep() != null) {
-			    for (CapabilitiesJxfsDEPCollector jxfsPojo : dataStoreTerminal
-				    .getVjDep()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjMsd() != null) {
-			    for (CapabilitiesJxfsMSDCollector jxfsPojo : dataStoreTerminal
-				    .getVjMsd()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjPin() != null) {
-			    for (CapabilitiesJxfsPINCollector jxfsPojo : dataStoreTerminal
-				    .getVjPin()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjPtr() != null) {
-			    for (CapabilitiesJxfsPTRCollector jxfsPojo : dataStoreTerminal
-				    .getVjPtr()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjScn() != null) {
-			    for (CapabilitiesJxfsSCNCollector jxfsPojo : dataStoreTerminal
-				    .getVjScn()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjSiu() != null) {
-			    for (CapabilitiesJxfsSIUCollector jxfsPojo : dataStoreTerminal
-				    .getVjSiu()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjTio() != null) {
-			    for (CapabilitiesJxfsTIOCollector jxfsPojo : dataStoreTerminal
-				    .getVjTio()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
-			if (dataStoreTerminal.getVjVdm() != null) {
-			    for (CapabilitiesJxfsVDMCollector jxfsPojo : dataStoreTerminal
-				    .getVjVdm()) {
-				JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
-				String[] devs = jxfsPojo.getVendorinfo();
-				if ((devs != null) && (devs.length > 0)) {
-				    assignJxfsComponent(jxfs, finDevs, devs);
-				} else {
-				    logger.warn("Jxfs component of type '"
-					    + jxfs.getJxfsClass()
-					    + "' won't be saved because it has no financial device info!!");
-				}
-			    }
-			}
+	    }
+	    if (dataStoreTerminal.getVjCam() != null) {
+		for (CapabilitiesJxfsCAMCollector jxfsPojo : dataStoreTerminal
+			.getVjCam()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
 		}
-		return finDevs;
+	    }
+	    if (dataStoreTerminal.getVjCdr() != null) {
+		for (CapabilitiesJxfsCDRCollector jxfsPojo : dataStoreTerminal
+			.getVjCdr()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjChk() != null) {
+		for (CapabilitiesJxfsCHKCollector jxfsPojo : dataStoreTerminal
+			.getVjChk()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjDep() != null) {
+		for (CapabilitiesJxfsDEPCollector jxfsPojo : dataStoreTerminal
+			.getVjDep()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjMsd() != null) {
+		for (CapabilitiesJxfsMSDCollector jxfsPojo : dataStoreTerminal
+			.getVjMsd()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjPin() != null) {
+		for (CapabilitiesJxfsPINCollector jxfsPojo : dataStoreTerminal
+			.getVjPin()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjPtr() != null) {
+		for (CapabilitiesJxfsPTRCollector jxfsPojo : dataStoreTerminal
+			.getVjPtr()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjScn() != null) {
+		for (CapabilitiesJxfsSCNCollector jxfsPojo : dataStoreTerminal
+			.getVjScn()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjSiu() != null) {
+		for (CapabilitiesJxfsSIUCollector jxfsPojo : dataStoreTerminal
+			.getVjSiu()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjTio() != null) {
+		for (CapabilitiesJxfsTIOCollector jxfsPojo : dataStoreTerminal
+			.getVjTio()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	    if (dataStoreTerminal.getVjVdm() != null) {
+		for (CapabilitiesJxfsVDMCollector jxfsPojo : dataStoreTerminal
+			.getVjVdm()) {
+		    JxfsComponent jxfs = new JxfsComponent(jxfsPojo);
+		    String[] devs = jxfsPojo.getVendorinfo();
+		    if ((devs != null) && (devs.length > 0)) {
+			assignJxfsComponent(jxfs, finDevs, devs);
+		    } else {
+			logger.warn("Jxfs component of type '"
+				+ jxfs.getJxfsClass()
+				+ "' won't be saved because it has no financial device info!!");
+		    }
+		}
+	    }
+	}
+	return finDevs;
     }
 
     /**
@@ -1902,13 +1977,14 @@ public class TerminalServiceImpl implements TerminalService {
      * @return the hotfixes
      */
     private Set<Hotfix> getHotfixes(Terminal terminal,
-	    ATMDataStorePojo dataStoreTerminal) {
+	    ATMDataStorePojo dataStoreTerminal, Date event) {
 	Set<Hotfix> hotfixes = new HashSet<Hotfix>();
 	Vector<HotfixPojo> vector = dataStoreTerminal.getvHotfix();
 	if (vector != null) {
 	    for (HotfixPojo item : vector) {
 		Hotfix hotfix = new Hotfix(item);
 		hotfix.setTerminal(terminal);
+		hotfix.setStartDate(event);
 		hotfixes.add(hotfix);
 	    }
 	}
@@ -1927,7 +2003,7 @@ public class TerminalServiceImpl implements TerminalService {
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private Set<HardwareDevice> getHwDevs(Terminal terminal,
-	    ATMDataStorePojo dataStoreTerminal) {
+	    ATMDataStorePojo dataStoreTerminal, Date event) {
 
 	Set<HardwareDevice> hwDevs = new HashSet<HardwareDevice>();
 	Vector vector = dataStoreTerminal.getV1394Controller();
@@ -1935,6 +2011,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (_1394ControllerPojo item : (Vector<_1394ControllerPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -1943,6 +2020,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (BaseBoardPojo item : (Vector<BaseBoardPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -1951,6 +2029,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (BiosPojo item : (Vector<BiosPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -1959,6 +2038,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (CDROMDrivePojo item : (Vector<CDROMDrivePojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -1967,6 +2047,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (ComputerSystemPojo item : (Vector<ComputerSystemPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -1975,6 +2056,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (DesktopMonitorPojo item : (Vector<DesktopMonitorPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -1983,6 +2065,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (DiskDrivePojo item : (Vector<DiskDrivePojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -1991,6 +2074,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (FloppyDrivePojo item : (Vector<FloppyDrivePojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -1999,6 +2083,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (KeyboardPojo item : (Vector<KeyboardPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2007,6 +2092,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (LogicalDiskPojo item : (Vector<LogicalDiskPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2015,6 +2101,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (NetworkAdapterSettingPojo item : (Vector<NetworkAdapterSettingPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2023,6 +2110,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (ParallelPortPojo item : (Vector<ParallelPortPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2031,6 +2119,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (PhysicalMemoryPojo item : (Vector<PhysicalMemoryPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2039,6 +2128,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (PointingDevicePojo item : (Vector<PointingDevicePojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2047,6 +2137,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (ProcessorPojo item : (Vector<ProcessorPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2055,6 +2146,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (SCSIControllerPojo item : (Vector<SCSIControllerPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2063,6 +2155,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (SerialPortPojo item : (Vector<SerialPortPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2071,6 +2164,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (SoundDevicePojo item : (Vector<SoundDevicePojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2079,6 +2173,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (SystemSlotPojo item : (Vector<SystemSlotPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2087,6 +2182,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (USBControllerPojo item : (Vector<USBControllerPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2095,6 +2191,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (UsbHubPojo item : (Vector<UsbHubPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2103,6 +2200,7 @@ public class TerminalServiceImpl implements TerminalService {
 	    for (VideoControllerPojo item : (Vector<VideoControllerPojo>) vector) {
 		HardwareDevice hwDev = new HardwareDevice(item);
 		hwDev.setTerminal(terminal);
+		hwDev.setStartDate(event);
 		hwDevs.add(hwDev);
 	    }
 	}
@@ -2118,14 +2216,23 @@ public class TerminalServiceImpl implements TerminalService {
      * @return The terminal config
      */
     private TerminalConfig getTerminalConfig(
-	    ATMDataStorePojo dataStoreTerminal, Terminal terminal) {
+	    ATMDataStorePojo dataStoreTerminal, Terminal terminal, Date event) {
+
 	TerminalConfig newConfig = new TerminalConfig();
 	newConfig.setTerminal(terminal);
-	Set<Software> sws = getSoftware(dataStoreTerminal);
-	newConfig.setSoftware(sws);
+	Set<Software> sws = getSoftware(dataStoreTerminal, event);
+	Set<OperatingSystem> oss = getOperatingSystems(dataStoreTerminal, event);
 
-	Set<OperatingSystem> oss = getOperatingSystems(dataStoreTerminal);
+	Set<AuditableSoftware> auditableSW = this.buildAuditableSoftware(
+		terminal, sws, event);
+	Set<AuditableOperatingSystem> auditableOperatingSystems = this
+		.buildAuditableOperativeSystems(terminal, oss, event);
+
+	newConfig.setSoftware(sws);
 	newConfig.setOperatingSystems(oss);
+	newConfig.setDateCreated(event);
+	newConfig.setAuditableOperatingSystems(auditableOperatingSystems);
+	newConfig.setAuditableSoftware(auditableSW);
 	return newConfig;
     }
 
@@ -2137,7 +2244,7 @@ public class TerminalServiceImpl implements TerminalService {
      * @return The auditable internet explorer
      */
     private Set<AuditableInternetExplorer> buildAuditableInternetExplorers(
-	    Set<InternetExplorer> ies) {
+	    Set<InternetExplorer> ies, Date event) {
 	Set<AuditableInternetExplorer> iesAux = new HashSet<AuditableInternetExplorer>();
 	for (InternetExplorer ie : ies) {
 	    InternetExplorer storedIE = internetExplorerService
@@ -2147,6 +2254,7 @@ public class TerminalServiceImpl implements TerminalService {
 
 	    AuditableInternetExplorer auditableIE = new AuditableInternetExplorer(
 		    storedIE != null ? storedIE : ie);
+	    auditableIE.setStartDate(event);
 	    iesAux.add(auditableIE);
 	}
 
@@ -2161,7 +2269,7 @@ public class TerminalServiceImpl implements TerminalService {
      * @return The auditable terminal configs
      */
     private Set<AuditableSoftwareAggregate> buildAuditableSoftwareAggregate(
-	    Set<SoftwareAggregate> swAggregates) {
+	    Set<SoftwareAggregate> swAggregates, Date event) {
 	Set<AuditableSoftwareAggregate> swAggregatesAux = new HashSet<AuditableSoftwareAggregate>();
 	for (SoftwareAggregate swAggregate : swAggregates) {
 	    SoftwareAggregate swAggregateAux = softwareAggregateService
@@ -2175,11 +2283,99 @@ public class TerminalServiceImpl implements TerminalService {
 
 	    AuditableSoftwareAggregate auditableSwAggregate = new AuditableSoftwareAggregate(
 		    swAggregateAux != null ? swAggregateAux : swAggregate);
-
+	    auditableSwAggregate.setStartDate(event);
 	    swAggregatesAux.add(auditableSwAggregate);
 	}
 
 	return swAggregatesAux;
+    }
+
+    /**
+     * Build auditables software
+     * 
+     * @param Set
+     *            <Software> swSet the software set
+     * @param event
+     *            date when the software is being added
+     * @return The auditable AuditableSoftware
+     */
+    private Set<AuditableSoftware> buildAuditableSoftware(Terminal terminal,
+	    Set<Software> swSet, Date event) {
+	Set<AuditableSoftware> swAuditableSet = new HashSet<AuditableSoftware>();
+	for (Software sw : swSet) {
+	    Software swAux = this.terminalHasSoftwareInstalled(sw, terminal);
+	    if (swAux == null) {
+
+		AuditableSoftware auditableSw = new AuditableSoftware(sw);
+		auditableSw.setStartDate(event);
+		swAuditableSet.add(auditableSw);
+	    }
+	}
+
+	return swAuditableSet;
+    }
+
+    private Software terminalHasSoftwareInstalled(Software newSoftware,
+	    Terminal terminal) {
+	TerminalConfig activeConfig = terminal.getCurrentTerminalConfig();
+	Software installedInTerminal = null;
+
+	if (activeConfig != null) {
+	    logger.debug("active config is not null");
+	    Set<Software> actualInstalledSoftware = activeConfig.getSoftware();
+
+	    for (Software installedSoftware : actualInstalledSoftware) {
+		if (newSoftware.equals(installedSoftware)) {
+		    logger.debug("software is installed:"
+			    + installedSoftware.getCaption());
+		    installedInTerminal = installedSoftware;
+		    break;
+		}
+	    }
+
+	}
+
+	return installedInTerminal;
+    }
+
+    private Set<AuditableOperatingSystem> buildAuditableOperativeSystems(
+	    Terminal terminal, Set<OperatingSystem> osSet, Date event) {
+	Set<AuditableOperatingSystem> osAuditableAux = new HashSet<AuditableOperatingSystem>();
+	for (OperatingSystem os : osSet) {
+	    OperatingSystem osAux = terminalHasOSInstalled(os, terminal);
+
+	    if (osAux == null) {
+		AuditableOperatingSystem auditableOS = new AuditableOperatingSystem(
+			osAux != null ? osAux : os);
+		auditableOS.setStartDate(event);
+		osAuditableAux.add(auditableOS);
+	    }
+
+	}
+
+	return osAuditableAux;
+    }
+
+    private OperatingSystem terminalHasOSInstalled(OperatingSystem newOS,
+	    Terminal terminal) {
+	TerminalConfig activeConfig = terminal.getCurrentTerminalConfig();
+	OperatingSystem installedOS = null;
+
+	if (activeConfig != null) {
+
+	    Set<OperatingSystem> actualInstalledOS = activeConfig
+		    .getOperatingSystems();
+
+	    for (OperatingSystem terminalOS : actualInstalledOS) {
+		if (newOS.equals(terminalOS)) {
+		    installedOS = terminalOS;
+		    break;
+		}
+	    }
+
+	}
+
+	return installedOS;
     }
 
     /**
@@ -2235,5 +2431,18 @@ public class TerminalServiceImpl implements TerminalService {
 		    + " Deleting DB. Please contact the support team.", e);
 	    terminalDAO.deleteAllTerminalData();
 	}
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.ncr.ATMMonitoring.service.TerminalService#deleteTerminal(java.lang
+     * .Integer)
+     */
+    @Override
+    public void deleteTerminal(Integer id) {
+	this.terminalDAO.deleteTerminal(id);
+
     }
 }

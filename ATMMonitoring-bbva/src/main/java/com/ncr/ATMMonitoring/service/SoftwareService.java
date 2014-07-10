@@ -9,7 +9,7 @@ import com.ncr.ATMMonitoring.pojo.Software;
  * 
  * It contains the software related methods.
  * 
- * @author Jorge L√≥pez Fern√°ndez (lopez.fernandez.jorge@gmail.com)
+ * @author Jorge LÛpez Fern·ndez (lopez.fernandez.jorge@gmail.com)
  */
 
 public interface SoftwareService {

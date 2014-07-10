@@ -58,6 +58,20 @@ public class TerminalConfig extends Auditable {
     @JoinTable(name = "t_config_op_system", joinColumns = { @JoinColumn(name = "terminal_config_id") }, inverseJoinColumns = { @JoinColumn(name = "operating_system_id") })
     @OrderBy("name asc, major_version desc, minor_version desc, build_version desc, revision_version desc, remaining_version asc")
     private Set<OperatingSystem> operatingSystems = new HashSet<OperatingSystem>();
+    
+    /** The auditable operating systems. */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade(CascadeType.ALL)
+    @JoinTable(name = "terminal_config_auditable_os", joinColumns = { @JoinColumn(name = "terminal_config_id") }, inverseJoinColumns = { @JoinColumn(name = "auditable_os_id") })
+    @OrderBy("start_date")
+    private Set<AuditableOperatingSystem> auditableOperatingSystems = new HashSet<AuditableOperatingSystem>();
+    
+    /** The auditable operating systems. */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Cascade(CascadeType.ALL)
+    @JoinTable(name = "terminal_config_auditable_sw", joinColumns = { @JoinColumn(name = "terminal_config_id") }, inverseJoinColumns = { @JoinColumn(name = "auditable_software_id") })
+    @OrderBy("start_date")
+    private Set<AuditableSoftware> auditableSoftware = new HashSet<AuditableSoftware>();
 
     // Code with support for Terminal Config AUTHORS
     //
@@ -181,5 +195,24 @@ public class TerminalConfig extends Auditable {
 	}
 	return true;
     }
+
+    public Set<AuditableOperatingSystem> getAuditableOperatingSystems() {
+        return auditableOperatingSystems;
+    }
+
+    public void setAuditableOperatingSystems(
+    	Set<AuditableOperatingSystem> auditableOperatingSystems) {
+        this.auditableOperatingSystems = auditableOperatingSystems;
+    }
+
+    public Set<AuditableSoftware> getAuditableSoftware() {
+        return auditableSoftware;
+    }
+
+    public void setAuditableSoftware(Set<AuditableSoftware> auditableSoftware) {
+        this.auditableSoftware = auditableSoftware;
+    }
+    
+    
 
 }

@@ -165,5 +165,11 @@ public interface TerminalService {
      * case.
      */
     public void checkDateLicense();
+    
+    /**
+     * Deletes the given terminal
+     * @param id
+     */
+    void deleteTerminal(Integer id);
 
 }

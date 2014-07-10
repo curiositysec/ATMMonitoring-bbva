@@ -186,4 +186,10 @@ public interface TerminalDAO {
      * Deletes all the terminals' related data from the DB.
      */
     public void deleteAllTerminalData();
+    
+    /**
+     * deletes one terminal by the given id
+     * @param id
+     */
+    void deleteTerminal(Integer id);
 }

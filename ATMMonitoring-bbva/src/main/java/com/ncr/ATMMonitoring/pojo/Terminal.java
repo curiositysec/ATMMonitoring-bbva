@@ -1655,8 +1655,12 @@ public class Terminal {
     public void setCurrentTerminalConfig(TerminalConfig terminalConfig) {
 	auditableSetOperations.setCurrentAuditableElement(configs,
 		terminalConfig);
+	
+	
+	
     }
 
+    
     /**
      * Get the current terminal config
      * 

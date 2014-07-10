@@ -12,6 +12,10 @@ import java.io.InputStreamReader;
 import java.util.Collection;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ncr.ATMMonitoring.parser.exception.FileNotReadableException;
 import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
@@ -31,19 +35,26 @@ import com.ncr.ATMMonitoring.parser.users.dto.RolesInfo;
  * 
  * @version $Revision$
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration( locations = {"classpath:/applicationContext.xml"})
 public class ParseRolesChainBuilderTest {
 
-    private static String ROLES_FILES_FOLDER = "/home/oa250047/atmmonitoring-bbva_files/Users/";
-    private static String MDC_FILE = "SL.ASAPLL00.MAESTRO.CAPACI.PRU1";
-    private static String MDC_WITH_BLANCS_FILE = "SL.ASAPLL00.MAESTRO.CAPACI_blanks.PRU1";
-    private static String MDC_MALFORMED="SL.ASAPLL00.MAESTRO.CAPACI_MALFORMED.PRU1";
-    private static int BLANK_LINES=5;
+    @Value("${test.config.roles.files.folder}")
+    private  String rolesFilesFolder;
+    @Value("${test.config.roles.file.name}")
+    private  String MDC_FILE;
+    @Value("${test.config.roles.file.blanks.name}")
+    private  String MDC_WITH_BLANCS_FILE;
+    @Value("${test.config.roles.file.malformed.name}")
+    private  String MDC_MALFORMED;
+  
+    private  int BLANK_LINES=5;
    
 
     @Test
     public void testParseMDCFile() {
 	
-	String filename = ROLES_FILES_FOLDER + MDC_FILE;
+	String filename = rolesFilesFolder + MDC_FILE;
 	try {
 	 
 	    Collection<RolesInfo> roles = this.getRoles(filename);
@@ -60,7 +71,7 @@ public class ParseRolesChainBuilderTest {
     @Test
     public void testParseWithBlanks(){
 	
-	String filename = ROLES_FILES_FOLDER + MDC_WITH_BLANCS_FILE;
+	String filename = rolesFilesFolder + MDC_WITH_BLANCS_FILE;
 	try {
 	   
 	    Collection<RolesInfo> roles = this.getRoles(filename);
@@ -76,7 +87,7 @@ public class ParseRolesChainBuilderTest {
     
     @Test
     public void testParseBadFormat(){
-	String filename = ROLES_FILES_FOLDER + MDC_MALFORMED;
+	String filename = rolesFilesFolder + MDC_MALFORMED;
 	try {
 	    Collection<RolesInfo> roles = this.getRoles(filename);
 	    assertTrue(roles.size() == 0);

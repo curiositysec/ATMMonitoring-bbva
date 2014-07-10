@@ -1083,6 +1083,8 @@
 	  		$('li > a[href*=#].${preselectedTab}').click();
 	
 	  		highligthNewAdd('${date.time}');
+	  		higthligthSoftware();
+	  		higthligthOperativeSystem();
 	  
 	   </c:if>
 	}
@@ -1261,6 +1263,44 @@
 		}
 
 	} 
+
+	function higthligthSoftware(){
+
+		highligthTable("#SoftwareChromatable","#auditableSw");
+
+	}
+
+	function higthligthOperativeSystem(){
+
+		highligthTable("#operatingSystemTable","#auditableOS");
+
+	}
+
+	function highligthTable(tableId, divId){
+		var idArray = getHiddenFieldsForHighligthValues(divId);
+		 $(tableId).find("tr").each(function() {
+		        var id = this.id;
+		  
+		        if(id !="" && (idArray.indexOf(id) > -1)){
+			        
+			     	 $(this).find('td').each (function() {
+						    	$(this).addClass("historicalAddedFeature");
+				      });   
+		        }
+		    });
+	}
+
+
+	
+
+	function getHiddenFieldsForHighligthValues(divId){
+		 var rowsId = [];
+		$(divId+" > :input").each(function() {			
+			rowsId.push($(this).val());
+		});
+		console.log(rowsId);
+		return rowsId;
+	}
     </script>
 
 </jsp:body>

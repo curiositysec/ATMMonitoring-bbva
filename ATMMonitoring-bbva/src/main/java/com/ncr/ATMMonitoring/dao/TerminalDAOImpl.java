@@ -100,6 +100,7 @@ public class TerminalDAOImpl extends AbstractGenericDAO<Terminal> implements
     @Override
     public void updateTerminal(Terminal terminal) {
 	update(terminal);
+	logger.debug("terminal config:"+terminal.getConfigs().size());
 	logger.info("Updated terminal with id " + terminal.getId() + ", IP "
 		+ terminal.getIp() + " and matricula "
 		+ terminal.getMatricula());
@@ -451,5 +452,14 @@ public class TerminalDAOImpl extends AbstractGenericDAO<Terminal> implements
 				+ "DELETE FROM internet_explorers;"
 				+ "DELETE FROM terminals;"
 				+ "DELETE FROM installations;").executeUpdate();
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.ncr.ATMMonitoring.dao.TerminalDAO#deleteTerminal(java.lang.Integer)
+     */
+    @Override
+    public void deleteTerminal(Integer id){
+	this.delete(id);
     }
 }

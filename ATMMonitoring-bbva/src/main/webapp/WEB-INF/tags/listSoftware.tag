@@ -4,10 +4,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-
 <h3 class="txt content_hide"><spring:message code="label.operatingSystems"/></h3>
 <c:if  test="${!empty config.operatingSystems}">
-<div class="margin-box collapsible hide"><table class="data subform link">
+<div class="margin-box collapsible hide"><table class="data subform link" id="operatingSystemTable">
 	<tr>
 	    <th width="80px"><i><spring:message code="label.operatingSystem.name"/> + <spring:message code="label.operatingSystem.majorVersion"/></i></th>
 	    <th width="40px"><i><spring:message code="label.operatingSystem.osType"/></i></th>
@@ -19,7 +18,7 @@
 	</tr>
 	<c:set var="alt" value="${false}"/>
 	<c:forEach items="${config.operatingSystems}" var="operatingSystem">
-		<tr <c:if test="${alt}">class="alt"</c:if>>
+		<tr id="OperatingSystemID.${operatingSystem.id}" <c:if test="${alt}">class="alt"</c:if>>
 	        <td width="80px">${operatingSystem.nameVersion}</td>
 	        <td width="40px">${operatingSystem.osType}</td>
 	        <td width="80px">${operatingSystem.serialNumber}</td>
@@ -32,8 +31,6 @@
 	</c:forEach>
 </table></div>
 </c:if>
-
-
 
 <h3 clasS="txt content_hide"><spring:message code="label.otherSoftware"/></h3>
 <div class="margin-box collapsible hide">
@@ -58,7 +55,7 @@
 	</thead>
 </c:when>
 <c:otherwise>
-	<table class="data subform">
+	<table class="data subform"  id="SoftwareChromatable"">
 	<tr>
 	    <th width="90px"><i><spring:message code="label.software.name"/> + <spring:message code="label.software.majorVersion"/></i></th>
 	    <th width="70px"><i><spring:message code="label.software.swType"/></i></th>
@@ -77,7 +74,7 @@
 	<tbody>
 	<c:set var="alt" value="${false}"/>
 	<c:forEach items="${config.software}" var="software">
-		<tr id="OtherSoftware.${software.id}.${software.installDate.time}" <c:if test="${alt}">class="alt"</c:if>>
+		<tr id="Software.${software.id}" <c:if test="${alt}">class="alt"</c:if>>
 	        <td>${software.nameVersion}</td>
 	        <td>
 		        <c:if test="${software.swType != null && software.swType != ''}">
@@ -98,6 +95,23 @@
 	</c:forEach>
 	</tbody>
 </table>
+</c:if>
+<c:if  test="${!empty config.auditableOperatingSystems}">
+<div id="auditableOS">
+<c:forEach items="${config.auditableOperatingSystems}" var="auditableOS">
+
+<input type="hidden" value="OperatingSystemID.${auditableOS.os.id}"/>
+
+</c:forEach>
+</div>
+</c:if>
+<c:if  test="${!empty config.auditableSoftware}">
+<div id="auditableSw">
+<c:forEach items="${config.auditableSoftware}" var="auditableSw">
+
+<input type="hidden" value="Software.${auditableSw.software.id}"/>
+</c:forEach>
+</div>
 </c:if>
 </div>
 

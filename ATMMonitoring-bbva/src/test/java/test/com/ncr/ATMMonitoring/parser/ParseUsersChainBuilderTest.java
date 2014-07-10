@@ -11,6 +11,10 @@ import java.util.Collection;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ncr.ATMMonitoring.parser.exception.FileNotReadableException;
 import com.ncr.ATMMonitoring.parser.exception.NoParserFoundException;
@@ -18,20 +22,27 @@ import com.ncr.ATMMonitoring.parser.exception.ParserException;
 import com.ncr.ATMMonitoring.parser.users.ParseUsersChainBuilder;
 import com.ncr.ATMMonitoring.parser.users.dto.UsersInfo;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration( locations = {"classpath:/applicationContext.xml"})
 public class ParseUsersChainBuilderTest {
 
     private static final int FIRST_SHEET_ON_BOOK = 0;
-    private static String EXCEL_FILES_FOLDER = "/home/oa250047/atmmonitoring-bbva_files/Users/";
-    private static String EXCEL_FILE = "Consulta.xlsx";
-    private static String EXCEL_FILE_SOME_BLANKS = "Consulta_blanks.xlsx";
-    private static String EXCEL_FILE_NOT_EXISTING = "Consultano.xlsx";
+    @Value("${test.config.users.files.folder}")
+    private  String excelFilesFolder = "/home/oa250047/atmmonitoring-bbva_files/Users/";
+    @Value("${test.config.users.file.name}")
+    private  String excelFile = "Consulta.xlsx";
+    @Value("${test.config.users.file.blanks.name}")
+    private  String excelFileSomeBlanks = "Consulta_blanks.xlsx";
+    @Value("${test.config.users.file.nonexisting.name}")
+    private  String excelFileNonExisting = "Consultano.xlsx";
+    
     private static int TOTAL_REMOVED_ROWS_FROM_EXCEL_FILE=4;
  
     
     @Test
     public void testExcelParse() {
 	try {
-	    String fileCompleteName = EXCEL_FILES_FOLDER + EXCEL_FILE;
+	    String fileCompleteName = excelFilesFolder + excelFile;
 	    Collection<UsersInfo> userInfo = ParseUsersChainBuilder
 		    .parse(fileCompleteName);
 	    int rowsInDocument = getExcelSheetRowCount(fileCompleteName) + 1;// starts
@@ -48,8 +59,8 @@ public class ParseUsersChainBuilderTest {
     @Test
     public void testExcelParseWhitEmptyRows() {
 	try {
-	    String fileCompleteName = EXCEL_FILES_FOLDER + EXCEL_FILE_SOME_BLANKS;
-	    String fileCompleteNameOriginal = EXCEL_FILES_FOLDER + EXCEL_FILE;
+	    String fileCompleteName = excelFilesFolder + excelFileSomeBlanks;
+	    String fileCompleteNameOriginal = excelFilesFolder + excelFile;
 	    
 	    Collection<UsersInfo> userInfo = ParseUsersChainBuilder
 		    .parse(fileCompleteName);
@@ -66,7 +77,7 @@ public class ParseUsersChainBuilderTest {
     
     @Test(expected=FileNotReadableException.class)
     public void testNonExistingDocument() throws ParserException, FileNotReadableException, NoParserFoundException{
-	 String fileCompleteName = EXCEL_FILES_FOLDER + EXCEL_FILE_NOT_EXISTING;
+	 String fileCompleteName = excelFilesFolder + excelFileNonExisting;
 	   ParseUsersChainBuilder
 	    	    .parse(fileCompleteName);
 	

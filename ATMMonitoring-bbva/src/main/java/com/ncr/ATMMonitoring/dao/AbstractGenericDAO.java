@@ -1,10 +1,13 @@
 package com.ncr.ATMMonitoring.dao;
 
 import java.lang.reflect.ParameterizedType;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -111,5 +114,52 @@ public abstract class AbstractGenericDAO<T> {
 	    return null;
 	}
 
+    }
+    
+    /**
+     * Add restrictions eq or is null to the criteria 
+     * @param criteriaValues
+     * @param entityClass
+     * @return Criteria
+     */
+    protected Criteria setupCriteriaForEqualComparison(Map<String,Object> criteriaValues, Class entityClass){
+	
+	Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+		entityClass);
+	
+	this.addRestrictionsEqIsNullToCriteria(criteria, criteriaValues);
+	
+	return criteria;
+    }
+    
+    
+    private void addRestrictionsEqIsNullToCriteria(Criteria criteria, Map<String,Object> criteriaValues ){
+	
+	for (Map.Entry<String, Object> entry :  criteriaValues.entrySet()){
+	    
+	    String criteriaKey = entry.getKey();
+	    Object criteriaValue = entry.getValue();
+	    
+	    if(criteriaValue != null){
+		criteria.add(Restrictions.eq(criteriaKey,criteriaValue));
+		
+	    }else{
+		
+		criteria.add(Restrictions.isNull(criteriaKey));
+	    }
+	}
+    }
+    
+    protected Map<String,Object> getCriteriaRestrictionForSoftwareEntities(Integer majorVersion, Integer minorVersion, Integer buildVersion,
+	    Integer revisionVersion, String remainingVersion, String name){
+	Map<String,Object> queryRestrictions = new HashMap<String,Object>();
+	queryRestrictions.put("majorVersion", majorVersion);
+	queryRestrictions.put("minorVersion", minorVersion);
+	queryRestrictions.put("buildVersion", buildVersion);
+	queryRestrictions.put("revisionVersion", revisionVersion);
+	queryRestrictions.put("remainingVersion", remainingVersion);
+	queryRestrictions.put("name", name);
+	
+	return queryRestrictions;
     }
 }
