@@ -3812,9 +3812,9 @@ public class JxfsComponent {
 		+ ((eventOnStartSupported == null) ? 0 : eventOnStartSupported
 			.hashCode());
 	result = prime * result + ((extent == null) ? 0 : extent.hashCode());
-	result = prime
-		* result
-		+ ((financialDevices == null) ? 0 : financialDevices.hashCode());
+//	result = prime
+//		* result
+//		+ ((financialDevices == null) ? 0 : financialDevices.hashCode());
 	result = prime * result
 		+ ((guidlights == null) ? 0 : guidlights.hashCode());
 	result = prime * result + ((idKey == null) ? 0 : idKey.hashCode());
@@ -4233,9 +4233,9 @@ public class JxfsComponent {
 	if (financialDevices == null) {
 	    if (other.financialDevices != null)
 		return false;
-	} else if (!financialDevices.equals(other.financialDevices))
-	    return false;
-	if (guidlights == null) {
+//	} else if (!financialDevices.equals(other.financialDevices))
+//	    return false;
+	}if (guidlights == null) {
 	    if (other.guidlights != null)
 		return false;
 	} else if (!guidlights.equals(other.guidlights))
